@@ -1,5 +1,5 @@
 {
-  "name": "newsjs",
+  "name": "online-store",
   "version": "1.0.0",
   "description": "Ropository to work on task Online-store",
   "main": "webpack.base.config.js",
