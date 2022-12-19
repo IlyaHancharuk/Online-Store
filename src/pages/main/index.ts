@@ -1,4 +1,5 @@
 import Page from '../../global/templates/page';
+import Products from '../../global/components/products';
 
 class MainPage extends Page {
     static textObj = {
@@ -12,6 +13,8 @@ class MainPage extends Page {
     render() {
         const title = this.createTitle(MainPage.textObj.mainTitle);
         this.container.append(title);
+        const products = new Products('div', 'products');
+        this.container.append(products.render());
         return this.container;
     }
 }
