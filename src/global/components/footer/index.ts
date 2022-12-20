@@ -1,5 +1,5 @@
 import Component from '../../templates/component';
-
+// { [tag?: string, innerText?: string, href?: string] }
 const footerButtons = [
     {
         tag: 'a',
@@ -10,10 +10,16 @@ const footerButtons = [
     {
         tag: 'p',
         innerText: '2022',
+        href: '#',
     },
     {
         tag: 'a',
         innerText: 'Lights0n',
+        // backgroundImage: '#',
+        href: '#https://github.com/Lights0n',
+    },
+    {
+        tag: 'a',
         // backgroundImage: '#',
         href: '#https://github.com/Lights0n',
     },
@@ -29,12 +35,13 @@ class Footer extends Component {
         footerBody.classList.add('footer__body');
         const footerItemHTML = document.createElement('a');
         console.log(footerItemHTML);
-        // footerItemHTML.href = footerButtons[0].href;
-        // footerButtons.forEach((element, index) => {
-        //     const itemHTML: string | HTMLElement = document.createElement(`${element.tag}`);
-        //     Object.keys(element).forEach((tag) => {
-        //         itemHTML[tag] =
-        //     });
+
+        // footerButtons.forEach((element) => {
+        //     for (let i = 0; i < Object.keys(element).length; i++) {
+        //         console.log(Object.keys(element)[i]);
+        //         footerItemHTML[Object.keys(element)[i]] = Object.values(element)[i];
+        //         // footerItemHTML.
+        //     }
         // });
     }
 
