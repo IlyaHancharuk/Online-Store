@@ -1,4 +1,119 @@
+@import url("https://fonts.googleapis.com/css?family=Rubik:regular&display=swap&subset=cyrillic-ext");
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul,
+ol,
+li {
+  list-style: none;
+}
+
+img {
+  vertical-align: top;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: inherit;
+  font-size: inherit;
+}
+
+html,
+body {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  max-width: 1470px;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  font-family: Rubik;
+  line-height: 1;
+  font-size: 100%;
+  font-size: 16px;
+  color: #616161;
+  scroll-behavior: smooth;
+}
+
+.header {
+  padding: 20px 0;
+  background-color: rgba(255, 0, 0, 0.464);
+}
+
 .header div {
-    display: flex;
-    justify-content: space-around;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0px 30px;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.header__online-store {
+  padding-left: 40px;
+  font-weight: 700;
+  font-size: 34px;
+  color: white;
+  background-image: url("./logo.svg");
+  background-repeat: no-repeat;
+  background-size: 34px;
+}
+
+.header__online-store::after {
+  content: "";
+  display: block;
+  padding-top: 0;
+  width: 0%;
+  border-bottom: 3px solid #0096E6;
+  border-radius: 33px;
+  -webkit-transition: width 0.5s ease-in-out;
+  transition: width 0.5s ease-in-out;
+}
+
+.header__online-store:hover:after {
+  width: 100%;
+}
+
+.product-details {
+  position: absolute;
+  top: 80px;
+  right: 40px;
+}
+
+.header__cart {
+  background: url("./cart.svg") no-repeat center;
+  height: 40px;
+  width: 40px;
+  color: transparent;
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+}
+
+.header__cart:hover {
+  -webkit-box-shadow: 0px 0px 21px 0px rgba(255, 255, 255, 0.4);
+          box-shadow: 0px 0px 21px 0px rgba(255, 255, 255, 0.4);
 }
