@@ -9,7 +9,7 @@ const Buttons = [
     },
     {
         id: PageIds.CartPage,
-        text: 'Cart',
+        text: '',
         class: 'header__cart',
     },
     {
@@ -24,8 +24,9 @@ class Header extends Component {
         super(tagName, className);
     }
 
-    renderNavButtons() {
+    protected renderNavButtons() {
         const navButtons = document.createElement('div');
+        navButtons.classList.add('nav__body');
         Buttons.forEach((button) => {
             const buttonHTML = document.createElement('a');
             buttonHTML.href = `#${button.id}`;

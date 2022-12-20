@@ -1,4 +1,7 @@
 @import "global/components/header/header.scss";
+@import "global/components/main/main.scss";
+@import "global/components/footer/footer.scss";
+
 @import url("https://fonts.googleapis.com/css?family=Rubik:regular&display=swap&subset=cyrillic-ext");
 
 *,
@@ -45,6 +48,3 @@ body {
   color: #616161;
   scroll-behavior: smooth;
 }
-
-$cart: url("./cart.svg");
-$main_logo: url("./logo.svg");

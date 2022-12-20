@@ -1,27 +1,39 @@
 import Component from '../../templates/component';
+// import "../../../../"
 // { [tag?: string, innerText?: string, href?: string] }
-const footerButtons = [
+interface blabla {
+    tag: string;
+    innerText?: string;
+    class?: string;
+    backgroundImage?: string;
+    href?: string;
+}
+
+const footerElements: blabla[] = [
     {
         tag: 'a',
+        class: 'footer__ilya',
         innerText: 'IlyaHancharuk',
-        // backgroundImage: '#',
-        href: '#https://github.com/IlyaHancharuk',
+        backgroundImage: '/git-red.svg',
+        href: 'https://github.com/IlyaHancharuk',
     },
     {
         tag: 'p',
+        class: 'footer__year',
         innerText: '2022',
-        href: '#',
     },
     {
         tag: 'a',
+        class: 'footer__lights0n',
         innerText: 'Lights0n',
-        // backgroundImage: '#',
-        href: '#https://github.com/Lights0n',
+        backgroundImage: './src/git-blue.svg',
+        href: 'https://github.com/Lights0n',
     },
     {
         tag: 'a',
-        // backgroundImage: '#',
-        href: '#https://github.com/Lights0n',
+        class: 'footer__rs-school',
+        backgroundImage: './src/rs_school_js.svg',
+        href: 'https://rs.school/js/',
     },
 ];
 
@@ -33,16 +45,23 @@ class Footer extends Component {
     renderFooterButtons(): void {
         const footerBody = document.createElement('div');
         footerBody.classList.add('footer__body');
-        const footerItemHTML = document.createElement('a');
-        console.log(footerItemHTML);
 
-        // footerButtons.forEach((element) => {
-        //     for (let i = 0; i < Object.keys(element).length; i++) {
-        //         console.log(Object.keys(element)[i]);
-        //         footerItemHTML[Object.keys(element)[i]] = Object.values(element)[i];
-        //         // footerItemHTML.
-        //     }
-        // });
+        footerElements.forEach((element) => {
+            const footerItemHTML = document.createElement(element.tag);
+            footerItemHTML.classList.add(`${element.class}`);
+            if (element.href) {
+                footerItemHTML.setAttribute('href', element.href);
+                footerItemHTML.setAttribute('target', '_blank');
+            }
+            if (element.innerText) {
+                footerItemHTML.innerText = element.innerText;
+            }
+            if (element.backgroundImage) {
+                footerItemHTML.style.backgroundImage = `url(${element.backgroundImage})`;
+            }
+            footerBody.append(footerItemHTML);
+        });
+        this.container.append(footerBody);
     }
 
     render() {

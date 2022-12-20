@@ -1,0 +1,21 @@
+.footer {
+}
+.footer__body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  background-color: rgba(255, 0, 0, 0.45);
+
+  & > * {
+    width: 100%;
+  }
+}
+
+.footer__ilya {
+}
+.footer__year {
+  cursor: wait;
+}
+.footer__rs-school {
+}
