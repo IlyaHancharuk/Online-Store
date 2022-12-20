@@ -3,6 +3,16 @@ import Component from '../../templates/component';
 const footerButtons = [
     {
         tag: 'a',
+        innerText: 'IlyaHancharuk',
+        // backgroundImage: '#',
+        href: '#https://github.com/IlyaHancharuk',
+    },
+    {
+        tag: 'p',
+        innerText: '2022',
+    },
+    {
+        tag: 'a',
         innerText: 'Lights0n',
         // backgroundImage: '#',
         href: '#https://github.com/Lights0n',
@@ -17,14 +27,15 @@ class Footer extends Component {
     renderFooterButtons(): void {
         const footerBody = document.createElement('div');
         footerBody.classList.add('footer__body');
-
-        footerButtons.forEach((element, index) => {
-            const itemHTML: string | HTMLElement = document.createElement(`${element.tag}`);
-            console.log(Object.values(element));
-            for (let i = 1; i < Object.values(element).length; i++) {
-                itemHTML.[Object.keys(element)[i]] = Object.values(element)[i];
-            }
-        });
+        const footerItemHTML = document.createElement('a');
+        console.log(footerItemHTML);
+        // footerItemHTML.href = footerButtons[0].href;
+        // footerButtons.forEach((element, index) => {
+        //     const itemHTML: string | HTMLElement = document.createElement(`${element.tag}`);
+        //     Object.keys(element).forEach((tag) => {
+        //         itemHTML[tag] =
+        //     });
+        // });
     }
 
     render() {
