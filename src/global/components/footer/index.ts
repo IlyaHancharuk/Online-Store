@@ -32,6 +32,7 @@ const footerElements: blabla[] = [
     {
         tag: 'a',
         class: 'footer__rs-school',
+        innerText: 'Rs-shools',
         backgroundImage: './src/rs_school_js.svg',
         href: 'https://rs.school/js/',
     },
