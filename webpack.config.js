@@ -6,6 +6,11 @@ const EslingPlugin = require('eslint-webpack-plugin');
 
 const baseConfig = {
     entry: path.resolve(__dirname, './src/index'),
+    output: {
+        filename: 'index.js',
+        path: path.resolve(__dirname, './dist'),
+        assetModuleFilename: 'assets/[name][ext]',
+    },
     mode: 'development',
     module: {
         rules: [
@@ -22,11 +27,6 @@ const baseConfig = {
     },
     resolve: {
         extensions: ['.ts', '.js'],
-    },
-    output: {
-        filename: 'index.js',
-        path: path.resolve(__dirname, './dist'),
-        assetModuleFilename: 'assets/[name][ext]',
     },
     plugins: [
         new HtmlWebpackPlugin({
