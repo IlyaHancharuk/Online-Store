@@ -65,13 +65,7 @@
           box-shadow: 0px 0px 21px 0px #fff0e3;
 }
 
-.app {
-  -webkit-box-flex: 1;
-      -ms-flex: 1 1 auto;
-          flex: 1 1 auto;
-}
-
-.app {
+.main {
   -webkit-box-flex: 1;
       -ms-flex: 1 1 auto;
           flex: 1 1 auto;

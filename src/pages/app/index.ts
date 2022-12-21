@@ -48,7 +48,7 @@ class App {
 
     constructor() {
         this.header = new Header('header', 'header');
-        this.main = new Main('main', 'app');
+        this.main = new Main('main', 'main');
         this.footer = new Footer('footer', 'footer');
     }
 
