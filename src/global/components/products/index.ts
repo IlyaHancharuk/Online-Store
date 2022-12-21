@@ -54,6 +54,7 @@ class Products extends Component {
             itemButtons.append(detailsButton);
             productItem.append(itemButtons);
             this.container.append(productItem);
+            console.log(this);
         });
     }
 
