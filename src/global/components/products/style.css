@@ -1,0 +1,25 @@
+.products {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.product-item {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: right top;
+    width: 23%;
+    border: 1px solid black;
+}
+
+.item-info {
+    border: 1px solid black;
+    width: 50%;
+    background-color: rgba(68, 68, 68, 0.7);
+}
+
+.item-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
