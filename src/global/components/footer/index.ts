@@ -1,7 +1,6 @@
 import Component from '../../templates/component';
-// import "../../../../"
-// { [tag?: string, innerText?: string, href?: string] }
-interface blabla {
+
+interface footerHTMLTypes {
     tag: string;
     innerText?: string;
     class?: string;
@@ -9,7 +8,7 @@ interface blabla {
     href?: string;
 }
 
-const footerElements: blabla[] = [
+const footerElements: footerHTMLTypes[] = [
     {
         tag: 'a',
         class: 'footer__ilya',
