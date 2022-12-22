@@ -22,7 +22,6 @@ class CartPage extends Page {
         // TODO переписать через array.find как-то можно, а пока product[0]
         const productArr = data.filter((dataItem) => dataItem.id == itemId);
         const product = productArr[0];
-        console.log(productArr[0].title);
 
         // для найденого продукта делаем и заполняем html шаблон
         const cartProductItem = this.createElement('li', 'cart__product-item');
@@ -54,6 +53,30 @@ class CartPage extends Page {
         const itemDiscount = this.createElement('div', 'item__discount');
         itemDiscount.innerText = `Discount: ${product.discountPercentage}`;
         itemInnerBody.append(itemDiscount);
+        //
+        const itemAmountBody = this.createElement('div', 'item__amount-body');
+        const itemAmoutMinus = this.createElement('input', 'item__amount-minus');
+        itemAmoutMinus.setAttribute('type', 'button');
+        itemAmoutMinus.setAttribute('value', '-');
+        itemAmountBody.append(itemAmoutMinus);
+
+        const itemCurrentAmout = this.createElement('input', 'item__current-amount');
+        itemCurrentAmout.setAttribute('type', 'number');
+        itemCurrentAmout.setAttribute('value', '1');
+
+        const itemAmoutPlus = this.createElement('input', 'item__amount-plus');
+        itemAmoutPlus.setAttribute('type', 'button');
+        itemAmoutPlus.setAttribute('value', '+');
+
+        const itemInStock = this.createElement('p', 'item__in-stock');
+        itemInStock.innerText = `Stock: ${product.stock}`;
+        // itemAmountBody.append(itemDiscount);
+
+        itemAmountBody.append(itemCurrentAmout);
+        itemAmountBody.append(itemAmoutPlus);
+        itemAmountBody.append(itemInStock);
+
+        cartProductItem.append(itemAmountBody);
 
         outerContainer.append(cartProductItem);
     }
@@ -88,6 +111,23 @@ class CartPage extends Page {
             // пока что добавим 2 элемента
             this.createProduct(2, cartList);
             this.createProduct(1, cartList);
+
+            // test button to add product via ID
+            {
+                const testButton = this.createElement('input', 'test-button');
+                testButton.setAttribute('type', 'button');
+                testButton.setAttribute('value', 'Add to cart');
+                fullCartPageBody.append(testButton);
+                testButton.addEventListener('click', () => {
+                    const id = prompt('input id to add', '1');
+                    data.forEach((item) => {
+                        if (item.id === Number(id)) {
+                            this.createProduct(Number(id), cartList);
+                            return;
+                        }
+                    });
+                });
+            }
         }
     }
 

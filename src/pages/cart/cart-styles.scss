@@ -1,23 +1,54 @@
+$orange_line: url("./global/assets/orange-line.png");
+$orange_wing: url("./global/assets/pngwing.png");
+$orange_wing2: url("./global/assets/pngwing2.png");
+$orange_wing3: url("./global/assets/pngwing3.png");
+$orange_hair: url("./global/assets/pngwing-hair2.png");
+.test-button {
+  position: absolute;
+  cursor: pointer;
+  top: 40px;
+  right: 40px;
+  padding: 5px 10px;
+  background-image: linear-gradient(to right, #006bd7, #cd2d00);
+  border-radius: 5px;
+}
+
 .cart {
-  background: cyan;
+  // background: cyan;
 }
 .cart__body {
+  position: relative;
 }
 .cart__list {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
+  padding: 10px 0;
+  //   background-image: $orange_wing;
+  //   background-image: $orange_line;
+  //   background-image: $orange_hair;
+  //   background-size: cover;
+  //   background-position: center;
+  //   background-repeat: no-repeat;
 }
 
 .cart__product-item {
+  background-color: rgba(169, 169, 169, 0.539);
   display: flex;
   align-items: center;
 }
+
 .item__number {
+  color: seashell;
+  padding: 10px;
+  margin: 0 5px;
+  background-color: teal;
+  border-radius: 7px;
 }
 .item__photo-outer {
 }
 .item__photo-inner {
+  border-radius: 10px;
   object-fit: cover;
   height: 100px;
   width: 100%;
@@ -25,12 +56,75 @@
 }
 
 .item__inner-body {
+  padding: 5px 0px 0px 0px;
+  flex: 1 0 auto;
+  align-self: start;
+  padding-left: 10px;
 }
 .item__title {
+  display: inline;
+  color: black;
+  font-size: 1.5rem;
+  padding: 0px 0px 5px 0px;
+  // text-decoration: underline;
+
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 .item__descr {
+  max-width: 70%;
 }
 .item__rating {
 }
 .item__discount {
+}
+
+//
+.item__amount-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-wrap: wrap;
+  // flex-direction: column;
+  row-gap: 5px;
+  padding: 7px 10px 7px 0px;
+}
+
+.item__amount-minus,
+.item__amount-plus {
+  flex: 0 1 20px;
+  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  line-height: 1rem;
+  background-color: #cd2d00;
+  border-radius: 50%;
+
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+  &:hover {
+    transform: scale(1.2);
+    box-shadow: 0px 0px 21px 0px rgb(255, 240, 227);
+  }
+}
+.item__current-amount {
+  &[type="number"]::-webkit-outer-spin-button,
+  &[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  margin: 5px 10px;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  background-color: transparent;
+  border: 2px solid #cd2d00;
+  border-radius: 50%;
+}
+.item__in-stock {
+  flex: 1 0 100%;
 }
