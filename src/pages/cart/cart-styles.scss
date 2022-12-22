@@ -1,0 +1,36 @@
+.cart {
+  background: cyan;
+}
+.cart__body {
+}
+.cart__list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.cart__product-item {
+  display: flex;
+  align-items: center;
+}
+.item__number {
+}
+.item__photo-outer {
+}
+.item__photo-inner {
+  object-fit: cover;
+  height: 100px;
+  width: 100%;
+  width: 150px;
+}
+
+.item__inner-body {
+}
+.item__title {
+}
+.item__descr {
+}
+.item__rating {
+}
+.item__discount {
+}
