@@ -8,60 +8,47 @@ class Products extends Component {
     }
 
     private createHTML(data: types.Data[]) {
-        data.forEach((item) => {
-            const productItem = document.createElement('div');
-            productItem.className = 'product-item';
-            productItem.style.backgroundImage = `url(${item.thumbnail})`;
+        const fragment = document.createDocumentFragment();
+        const productsItemTemp: HTMLTemplateElement | null = document.querySelector('#productsItemTemp');
 
-            const itemTitle = document.createElement('h3');
-            itemTitle.className = 'item-title';
-            itemTitle.innerText = item.title;
-            productItem.append(itemTitle);
+        if (productsItemTemp) {
+            data.forEach((item) => {
+                const productClone: HTMLElement = <HTMLElement>productsItemTemp.content.cloneNode(true);
 
-            const itemInfo = document.createElement('div');
-            itemInfo.className = 'item-info';
+                if (productClone) {
+                    const productItem = productClone.querySelector<HTMLElement>('.products__item');
+                    const itemTitle = productClone.querySelector<HTMLElement>('.item__title');
+                    const itemInfo = productClone.querySelector<HTMLElement>('.item__info');
+                    const itemButtons = productClone.querySelector<HTMLElement>('.item__buttons');
+                    const dropButton = productClone.querySelector<HTMLElement>('.drop-button');
+                    const detailsButton = productClone.querySelector<HTMLElement>('.details-button');
 
-            const itemCategory = this.createInfo(item, 'category');
-            itemInfo.append(itemCategory);
+                    if (productItem && itemTitle && itemInfo && itemButtons && dropButton && detailsButton) {
+                        productItem.style.backgroundImage = `url(${item.thumbnail})`;
+                        itemTitle.innerText = item.title;
 
-            const itemBrand = this.createInfo(item, 'brand');
-            itemInfo.append(itemBrand);
+                        this.createInfoElement(item, 'category', itemInfo);
+                        this.createInfoElement(item, 'brand', itemInfo);
+                        this.createInfoElement(item, 'price', itemInfo);
+                        this.createInfoElement(item, 'discountPercentage', itemInfo);
+                        this.createInfoElement(item, 'rating', itemInfo);
+                        this.createInfoElement(item, 'stock', itemInfo);
 
-            const itemPrice = this.createInfo(item, 'price');
-            itemInfo.append(itemPrice);
+                        fragment.append(productClone);
+                    }
+                }
+            });
 
-            const itemDiscount = this.createInfo(item, 'discountPercentage');
-            itemInfo.append(itemDiscount);
-
-            const itemRating = this.createInfo(item, 'rating');
-            itemInfo.append(itemRating);
-
-            const itemStockQuantity = this.createInfo(item, 'stock');
-            itemInfo.append(itemStockQuantity);
-            productItem.append(itemInfo);
-
-            const itemButtons = document.createElement('div');
-            itemButtons.className = 'item-buttons';
-
-            const dropButton = document.createElement('div');
-            dropButton.className = 'drop-button';
-            dropButton.innerText = 'DROP';
-            itemButtons.append(dropButton);
-
-            const detailsButton = document.createElement('div');
-            detailsButton.className = 'details-button';
-            detailsButton.innerText = 'DATAILS';
-            itemButtons.append(detailsButton);
-            productItem.append(itemButtons);
-            this.container.append(productItem);
-        });
+            this.container.innerHTML = '';
+            this.container.appendChild(fragment);
+        }
     }
 
-    private createInfo(item: types.Data, descriptionsTitle: types.ProductInfo) {
-        const itemCategory = document.createElement('p');
+    private createInfoElement(dataItem: types.Data, descriptionsTitle: types.ProductInfo, parentItem: HTMLElement) {
+        const infoItem = document.createElement('p');
         const title = descriptionsTitle === 'discountPercentage' ? 'discount' : descriptionsTitle;
-        itemCategory.innerText = `${title}: ${item[descriptionsTitle]}`;
-        return itemCategory;
+        infoItem.innerText = `${title}: ${dataItem[descriptionsTitle]}`;
+        parentItem.append(infoItem);
     }
 
     render(): HTMLElement {
