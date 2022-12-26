@@ -1,13 +1,14 @@
 import Component from '../../templates/component';
-import * as types from '../../types';
+import { Data, IElemInfo } from '../../types';
 import data from '../../data/data';
+
 
 class Products extends Component {
     constructor(tagName: string, className: string) {
         super(tagName, className);
     }
 
-    private createHTML(data: types.Data[]) {
+    private createHTML(data: Data[]) {
         const fragment = document.createDocumentFragment();
         const productsItemTemp: HTMLTemplateElement | null = document.querySelector('#productsItemTemp');
 
@@ -27,12 +28,12 @@ class Products extends Component {
                         productItem.style.backgroundImage = `url(${item.thumbnail})`;
                         itemTitle.innerText = item.title;
 
-                        this.createInfoElement(item, 'category', itemInfo);
-                        this.createInfoElement(item, 'brand', itemInfo);
-                        this.createInfoElement(item, 'price', itemInfo);
-                        this.createInfoElement(item, 'discountPercentage', itemInfo);
-                        this.createInfoElement(item, 'rating', itemInfo);
-                        this.createInfoElement(item, 'stock', itemInfo);
+                        this.createInfoElement({ dataItem: item, descriptionsTitle: 'category', parentItem: itemInfo });
+                        this.createInfoElement({ dataItem: item, descriptionsTitle: 'brand', parentItem: itemInfo });
+                        this.createInfoElement({ dataItem: item, descriptionsTitle: 'price', parentItem: itemInfo });
+                        this.createInfoElement({ dataItem: item, descriptionsTitle: 'discountPercentage', parentItem: itemInfo });
+                        this.createInfoElement({ dataItem: item, descriptionsTitle: 'rating', parentItem: itemInfo });
+                        this.createInfoElement({ dataItem: item, descriptionsTitle: 'stock', parentItem: itemInfo });
 
                         fragment.append(productClone);
                     }
@@ -44,7 +45,7 @@ class Products extends Component {
         }
     }
 
-    private createInfoElement(dataItem: types.Data, descriptionsTitle: types.ProductInfo, parentItem: HTMLElement) {
+    private createInfoElement({ dataItem, descriptionsTitle, parentItem }: IElemInfo) {
         const infoItem = document.createElement('p');
         const title = descriptionsTitle === 'discountPercentage' ? 'discount' : descriptionsTitle;
         infoItem.innerText = `${title}: ${dataItem[descriptionsTitle]}`;
