@@ -23,14 +23,15 @@ class App {
         main.render().innerHTML = '';
         let page: Page | null = null;
 
-        if (idPage === PageIds.MainPage) {
-            page = new MainPage(idPage);
-        } else if (idPage === PageIds.CartPage) {
-            page = new CartPage(idPage);
-        } else if (idPage === PageIds.ProductDetailsPage) {
-            page = new ProductDetailsPage(idPage);
-        } else {
-            page = new ErrorPage(idPage, ErrorTypes.Error_404);
+        switch (idPage) {
+            case PageIds.MainPage:
+                page = new MainPage(idPage);
+            case PageIds.CartPage:
+                page = new CartPage(idPage);
+            case PageIds.ProductDetailsPage:
+                page = new ProductDetailsPage(idPage);
+            default:
+                page = new ErrorPage(idPage, ErrorTypes.Error_404);
         }
 
         if (page) {
