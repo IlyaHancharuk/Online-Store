@@ -25,8 +25,6 @@ class ProductDetailsPage extends Page {
     }
 
     render() {
-        const title = this.createTitle(ProductDetailsPage.textObj.mainTitle);
-        this.container.append(title);
         this.createHTML(data);
         console.log('render');
 

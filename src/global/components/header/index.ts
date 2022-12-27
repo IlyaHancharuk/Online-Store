@@ -12,11 +12,6 @@ const Buttons = [
         text: '',
         class: 'header__cart',
     },
-    {
-        id: PageIds.ProductDetailsPage,
-        text: 'Product Datails',
-        class: 'product-details',
-    },
 ];
 
 class Header extends Component {

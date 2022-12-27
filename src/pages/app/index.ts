@@ -22,6 +22,9 @@ class App {
             case PageIds.MainPage:
                 page = new MainPage(idPage);
                 break;
+            case '':
+                page = new MainPage('main-page');
+                break;
             case PageIds.CartPage:
                 page = new CartPage(idPage);
                 break;
