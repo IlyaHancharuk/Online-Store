@@ -2,7 +2,6 @@ import Component from '../../templates/component';
 import { Data, IElemInfo } from '../../types';
 import data from '../../data/data';
 
-
 class Products extends Component {
     constructor(tagName: string, className: string) {
         super(tagName, className);
@@ -26,12 +25,20 @@ class Products extends Component {
 
                     if (productItem && itemTitle && itemInfo && itemButtons && dropButton && detailsButton) {
                         productItem.style.backgroundImage = `url(${item.thumbnail})`;
+                        productItem.setAttribute('data-id', `${item.id}`);
+                        productItem.addEventListener('click', () => {
+                            window.location.hash = `product-details-page/${item.id.toString()}`;
+                        });
                         itemTitle.innerText = item.title;
 
                         this.createInfoElement({ dataItem: item, descriptionsTitle: 'category', parentItem: itemInfo });
                         this.createInfoElement({ dataItem: item, descriptionsTitle: 'brand', parentItem: itemInfo });
                         this.createInfoElement({ dataItem: item, descriptionsTitle: 'price', parentItem: itemInfo });
-                        this.createInfoElement({ dataItem: item, descriptionsTitle: 'discountPercentage', parentItem: itemInfo });
+                        this.createInfoElement({
+                            dataItem: item,
+                            descriptionsTitle: 'discountPercentage',
+                            parentItem: itemInfo,
+                        });
                         this.createInfoElement({ dataItem: item, descriptionsTitle: 'rating', parentItem: itemInfo });
                         this.createInfoElement({ dataItem: item, descriptionsTitle: 'stock', parentItem: itemInfo });
 

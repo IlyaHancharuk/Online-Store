@@ -1,5 +1,5 @@
 import Component from '../../templates/component';
-import { PageIds } from '../../../pages/app';
+import { PageIds } from '../../constants';
 
 const Buttons = [
     {

@@ -6,12 +6,7 @@ import ErrorPage, { ErrorTypes } from '../error';
 import Header from '../../global/components/header';
 import Main from '../../global/components/main';
 import Footer from '../../global/components/footer';
-
-export const enum PageIds {
-    MainPage = 'main-page',
-    CartPage = 'cart-page',
-    ProductDetailsPage = `product-details-page`,
-}
+import { PageIds } from '../../global/constants';
 
 class App {
     private static container: HTMLElement = document.body;
@@ -26,12 +21,20 @@ class App {
         switch (idPage) {
             case PageIds.MainPage:
                 page = new MainPage(idPage);
+                break;
             case PageIds.CartPage:
                 page = new CartPage(idPage);
-            case PageIds.ProductDetailsPage:
-                page = new ProductDetailsPage(idPage);
+                break;
             default:
                 page = new ErrorPage(idPage, ErrorTypes.Error_404);
+                break;
+        }
+
+        if (idPage.includes('product-details-page')) {
+            const productId = Number(idPage.slice(21));
+            console.log(productId);
+
+            page = new ProductDetailsPage(idPage, productId);
         }
 
         if (page) {
