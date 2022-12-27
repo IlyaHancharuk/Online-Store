@@ -9,8 +9,7 @@
 </head>
 
 <body>
-
-  <template id="cartListtItem">
+  <template id="cartBodyTemplate">
     <li class="cart__product-item">
       <p class="item__number"></p>
       <p class="item__photo-outer">
@@ -22,12 +21,27 @@
         <div class="item__rating"></div>
         <div class="item__discount"></div>
       </div>
-      <div class="item__amount-body"><input class="item__amount-minus" type="button" value="-"><input
-          class="item__current-amount" type="number" value="1"><input class="item__amount-plus" type="button" value="+">
+      <div class="item__amount-body">
+        <input class="item__amount-minus" type="button" value="-">
+        <input class="item__current-amount" type="number" value="1">
+        <input class="item__amount-plus" type="button" value="+">
         <p class="item__in-stock"></p>
       </div>
     </li>
   </template>
+  <template id="cartSummaryTemplate">
+    <section class="cart__total">
+      <h2 class="cart__total-head">Summary</h2>
+      <p class="cart__items-amount">Items</p>
+      <div class="cart__total-sum">Total</div>
+      <input type="text" class="cart__promo-field" placeholder="I GOT PROMO CODE!">
+      <p class="cart__promo-hint">Try "RS2022" or "Hello Kovale.V!"</p>
+      <button type="button">Proceed to checkout</button>
+    </section>
+  </template>
+
+
+
 
 </body>
 

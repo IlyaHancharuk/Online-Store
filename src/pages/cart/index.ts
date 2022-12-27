@@ -38,11 +38,15 @@ class CartPage extends Page {
             emptyCartPageText.innerText = 'The cart is empty yet ¯\\_( ◡ ₒ ◡ )_/¯';
             cartMain.append(emptyCartPageText);
         } else {
-            const fullCartPageBody = this.createElement('div', 'cart__body');
-            cartMain.append(fullCartPageBody);
+            const cartLeftBody = this.createElement('section', 'cart__left-body');
+            cartMain.append(cartLeftBody);
+
+            const cartLeftHeader = this.createElement('h2', 'cart__left-header');
+            cartLeftHeader.textContent = 'Shopping cart';
+            cartLeftBody.append(cartLeftHeader);
 
             const cartList = this.createElement('ul', 'cart__list');
-            fullCartPageBody.append(cartList);
+            cartLeftBody.append(cartList);
 
             // TODO элементы списка (товары корзины) создать и вставить алгоритмом
             // пока что добавим 2 элемента
@@ -54,7 +58,7 @@ class CartPage extends Page {
                 const testButton = this.createElement('input', 'test-button');
                 testButton.setAttribute('type', 'button');
                 testButton.setAttribute('value', 'Add to cart');
-                fullCartPageBody.append(testButton);
+                cartMain.append(testButton);
                 testButton.addEventListener('click', () => {
                     const id = prompt('input id to add', '1');
                     data.forEach((item) => {
@@ -74,26 +78,19 @@ class CartPage extends Page {
         const productArr = data.filter((dataItem) => dataItem.id == itemId);
         const product = productArr[0];
 
-        let cartList: HTMLElement | undefined;
-        if (!cartList) {
-            cartList = this.createElement('ul', 'cart__list');
-        }
-
         const fragment = document.createDocumentFragment();
-        const cartTemplate: HTMLTemplateElement | null = document.querySelector('#cartListtItem');
-        const productClone: HTMLElement | null = <HTMLElement>cartTemplate?.content.cloneNode(true);
-        // !ебучий ts недоверчивый. то object is probably null, то еще чего. Заебался я переписывать элегантные решения, прибегая к некрасивым проверкам. Козел ТС
-        // !The left-hand side of an assignment expression may not be an optional property access. --- сука
-        productClone!.querySelector('.item__number')!.textContent = '2';
-        productClone?.querySelector('.item__photo-inner')?.setAttribute('src', `${product.thumbnail}`);
-        productClone!.querySelector('.item__title')!.textContent = product.title;
-        // встал вопрос! следующая строка работает без косых квычек. Строка за ней - нет! ПАЧИМУ?
-        productClone!.querySelector('.item__descr')!.textContent = product.description;
-        productClone!.querySelector('.item__rating')!.textContent = `Rating: ${product.rating}`;
-        productClone!.querySelector('.item__discount')!.textContent = `Discount: ${product.discountPercentage}%`;
-        productClone!.querySelector('.item__in-stock')!.textContent = `Stock: ${product.stock}`;
+        const cartTemplate: HTMLTemplateElement | null = document.querySelector('#cartBodyTemplate');
+        const cartClone: HTMLElement | null = <HTMLElement>cartTemplate?.content.cloneNode(true);
 
-        fragment.append(productClone);
+        cartClone.querySelector('.item__number')!.textContent = '2';
+        cartClone.querySelector('.item__photo-inner')?.setAttribute('src', `${product.thumbnail}`);
+        cartClone.querySelector('.item__title')!.textContent = product.title;
+        cartClone.querySelector('.item__descr')!.textContent = product.description;
+        cartClone.querySelector('.item__rating')!.textContent = `Rating: ${product.rating}`;
+        cartClone.querySelector('.item__discount')!.textContent = `Discount: ${product.discountPercentage}%`;
+        cartClone.querySelector('.item__in-stock')!.textContent = `Stock: ${product.stock}`;
+
+        fragment.append(cartClone);
 
         if (parentNode) {
             parentNode.append(fragment);
