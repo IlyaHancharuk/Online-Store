@@ -14,9 +14,10 @@ export type Data = {
 
 export interface IElemInfo {
     dataItem: Data;
-    descriptionsTitle: ProductInfo;
-    parentItem: HTMLElement;
-
+    descriptionsTitle: ProductInfoForMainPage | ProductInfoForProductPage;
+    parentElem: HTMLElement;
 }
 
-export type ProductInfo = 'category' | 'brand' | 'price' | 'discountPercentage' | 'rating' | 'stock';
+export type ProductInfoForMainPage = 'category' | 'brand' | 'price' | 'discountPercentage' | 'rating' | 'stock';
+
+export type ProductInfoForProductPage = 'description' | 'discountPercentage' | 'rating' | 'stock' | 'brand' | 'category';

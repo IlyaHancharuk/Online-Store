@@ -35,8 +35,6 @@ class App {
 
         if (idPage.includes('product-details-page')) {
             const productId = Number(idPage.slice(21));
-            console.log(productId);
-
             page = new ProductDetailsPage(idPage, productId);
         }
 

@@ -31,16 +31,16 @@ class Products extends Component {
                         });
                         itemTitle.innerText = item.title;
 
-                        this.createInfoElement({ dataItem: item, descriptionsTitle: 'category', parentItem: itemInfo });
-                        this.createInfoElement({ dataItem: item, descriptionsTitle: 'brand', parentItem: itemInfo });
-                        this.createInfoElement({ dataItem: item, descriptionsTitle: 'price', parentItem: itemInfo });
+                        this.createInfoElement({ dataItem: item, descriptionsTitle: 'category', parentElem: itemInfo });
+                        this.createInfoElement({ dataItem: item, descriptionsTitle: 'brand', parentElem: itemInfo });
+                        this.createInfoElement({ dataItem: item, descriptionsTitle: 'price', parentElem: itemInfo });
                         this.createInfoElement({
                             dataItem: item,
                             descriptionsTitle: 'discountPercentage',
-                            parentItem: itemInfo,
+                            parentElem: itemInfo,
                         });
-                        this.createInfoElement({ dataItem: item, descriptionsTitle: 'rating', parentItem: itemInfo });
-                        this.createInfoElement({ dataItem: item, descriptionsTitle: 'stock', parentItem: itemInfo });
+                        this.createInfoElement({ dataItem: item, descriptionsTitle: 'rating', parentElem: itemInfo });
+                        this.createInfoElement({ dataItem: item, descriptionsTitle: 'stock', parentElem: itemInfo });
 
                         fragment.append(productClone);
                     }
@@ -52,11 +52,11 @@ class Products extends Component {
         }
     }
 
-    private createInfoElement({ dataItem, descriptionsTitle, parentItem }: IElemInfo) {
+    private createInfoElement({ dataItem, descriptionsTitle, parentElem }: IElemInfo) {
         const infoItem = document.createElement('p');
         const title = descriptionsTitle === 'discountPercentage' ? 'discount' : descriptionsTitle;
         infoItem.innerText = `${title}: ${dataItem[descriptionsTitle]}`;
-        parentItem.append(infoItem);
+        parentElem.append(infoItem);
     }
 
     render(): HTMLElement {
