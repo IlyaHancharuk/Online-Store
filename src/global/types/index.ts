@@ -20,4 +20,10 @@ export interface IElemInfo {
 
 export type ProductInfoForMainPage = 'category' | 'brand' | 'price' | 'discountPercentage' | 'rating' | 'stock';
 
-export type ProductInfoForProductPage = 'description' | 'discountPercentage' | 'rating' | 'stock' | 'brand' | 'category';
+export type ProductInfoForProductPage =
+    | 'description'
+    | 'discountPercentage'
+    | 'rating'
+    | 'stock'
+    | 'brand'
+    | 'category';

@@ -1,6 +1,5 @@
-// Definition modules for importing png|svg|jpg|gif
 declare module '*.png' {
-    const content: any;
+    const content: unknown;
     export default content;
 }
 declare module '*.svg' {
