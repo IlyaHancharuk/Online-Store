@@ -18,6 +18,8 @@ class App {
         main.render().innerHTML = '';
         let page: Page | null = null;
 
+        if (window.location.hash !== '') idPage = window.location.hash.slice(1);
+
         switch (idPage) {
             case PageIds.MainPage:
                 page = new MainPage(idPage);
@@ -61,6 +63,7 @@ class App {
         App.container.append(this.header.render());
         App.container.append(this.main.render());
         App.container.append(this.footer.render());
+        console.log(window.location.hash);
         App.renderNewPage('main-page', this.main);
         this.enableRouteChange();
     }
