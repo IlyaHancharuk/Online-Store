@@ -21,12 +21,13 @@ class ProductDetailsPage extends Page {
 
     createHTML(data: Data[]) {
         if (this.productId) {
+            const index = this.productId - 1;
+            const product = data[index];
+
             const fragment = document.createDocumentFragment();
             const productDetailsTemp: HTMLTemplateElement | null = document.querySelector('#productDetailsTemp');
 
             if (productDetailsTemp) {
-                const index = this.productId - 1;
-                const product = data[index];
                 const productClone: HTMLElement = <HTMLElement>productDetailsTemp.content.cloneNode(true);
 
                 if (productClone) {
@@ -43,11 +44,15 @@ class ProductDetailsPage extends Page {
                         this.addPhotos(product, grandPhoto, slides);
                         this.addInfo(product, productInfo);
                         price.innerText = product.price.toString();
+                        buyButton.addEventListener('click', () => {
+                            window.location.hash = '#cart-page';
+                        });
 
                         fragment.append(productClone);
                     }
                 }
                 this.container.innerHTML = '';
+                this.createBreadcrumb(product);
                 this.container.appendChild(fragment);
             }
         }
@@ -56,14 +61,25 @@ class ProductDetailsPage extends Page {
     private addPhotos(dataItem: Data, grandProtoElem: HTMLImageElement, parentElem: HTMLElement) {
         const data = dataItem.images;
         grandProtoElem.src = data[0];
+
+        const sizes: string[] = [];
+
         data.forEach((url) => {
             const img = document.createElement('img');
-            img.alt = 'slide';
-            img.src = url;
-            img.addEventListener('click', () => {
-                grandProtoElem.src = url;
-            });
-            parentElem.append(img);
+
+            const req = new XMLHttpRequest();
+            req.open('GET', url, false);
+            req.send();
+            const imgSize = req.getResponseHeader('content-length');
+
+            if (typeof imgSize === 'string' && !sizes.includes(imgSize)) {
+                sizes.push(imgSize);
+
+                img.alt = 'slide';
+                img.src = url;
+                img.addEventListener('click', () => (grandProtoElem.src = url));
+                parentElem.append(img);
+            }
         });
     }
 
@@ -83,6 +99,27 @@ class ProductDetailsPage extends Page {
 
             parentElem.append(infoItem);
         }
+    }
+
+    private createBreadcrumb(dataItem: Data) {
+        const breadcrumb = document.createElement('div');
+        breadcrumb.className = 'breadcrumb';
+
+        const storeLink = document.createElement('a');
+        storeLink.innerText = 'STORE';
+        storeLink.href = '#main-page';
+        breadcrumb.append(storeLink);
+
+        breadcrumb.append('>>');
+        breadcrumb.append((document.createElement('a').innerText = dataItem.category.toUpperCase()));
+
+        breadcrumb.append('>>');
+        breadcrumb.append((document.createElement('a').innerText = dataItem.brand.toUpperCase()));
+
+        breadcrumb.append('>>');
+        breadcrumb.append((document.createElement('a').innerText = dataItem.title));
+
+        this.container.append(breadcrumb);
     }
 
     render() {
