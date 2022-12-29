@@ -13,3 +13,8 @@ export type Data = {
 };
 
 export type ProductInfo = 'category' | 'brand' | 'price' | 'discountPercentage' | 'rating' | 'stock';
+
+export type localStorageData = {
+    id: number | string;
+    amount: number | string;
+};

@@ -1,24 +1,17 @@
 import Page from '../../global/templates/page';
 import data from '../../global/data/data';
-import { Data } from '../../global/types/index';
-class CartPage extends Page {
-    // !
-    // !
-    // !    это все херня. Нужно парсить из localStorage инфу и работать с ней.
-    // !    Начиная с главной страницы
-    // !
-    // static textObj = {
-    //     mainTitle: 'Cart',
-    // };
+import { localStorageData } from '../../global/types/index';
 
-    // constructor(id: string) {
-    //     super(id);
-    // }
+const localStorageCartData: localStorageData[] = [];
+class CartPage extends Page {
+    constructor(id: string) {
+        super(id);
+    }
 
     // ? при нажатии на "добавить в корзину" на основной странице,
     // !надо добавлять в localStorage инфу. А после с нее парсить
     // или добавлять ID товара и количесво? в localStorage.
-    // а при загрузке корзнины парсить с локалстоража инфу
+    // а при загрузке корзнины парсить с localStorage инфу
 
     private createCartBodyHTML(): void {
         const cartMain = this.createElement('div', 'cart');
@@ -73,6 +66,15 @@ class CartPage extends Page {
         }
     }
 
+    private logLocalStorage(ID: number | string, AMOUNT: number | string) {
+        const prod: localStorageData = {
+            id: ID,
+            amount: AMOUNT,
+        };
+        localStorageCartData.push(prod);
+        console.log(localStorageCartData);
+    }
+
     private addItemViaTemplate(itemId: number, parentNode?: HTMLElement): void {
         // find item via itemId
         const productArr = data.filter((dataItem) => dataItem.id == itemId);
@@ -101,11 +103,9 @@ class CartPage extends Page {
     }
 
     render() {
-        // const title = this.createTitle(CartPage.textObj.mainTitle);
-        // this.container.append(title);
+        this.logLocalStorage(2, 2);
         this.createCartBodyHTML();
         return this.container;
     }
 }
-
 export default CartPage;
