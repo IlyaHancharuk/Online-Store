@@ -15,7 +15,7 @@ class cartInfo {
             amount: '',
         };
         newCartItem.id = newId;
-        newCartItem.amount = newAmount; 
+        newCartItem.amount = newAmount;
         this.localCartList.push(newCartItem);
     }
 }
