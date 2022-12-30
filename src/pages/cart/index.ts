@@ -1,6 +1,7 @@
 import Page from '../../global/templates/page';
 import data from '../../global/data/data';
 import { localStorageData } from '../../global/types/index';
+import cartInfo from '../../global/components/cartInfo';
 
 const localStorageCartData: localStorageData[] = [];
 class CartPage extends Page {
@@ -66,16 +67,7 @@ class CartPage extends Page {
         }
     }
 
-    private logLocalStorage(ID: number | string, AMOUNT: number | string) {
-        const prod: localStorageData = {
-            id: ID,
-            amount: AMOUNT,
-        };
-        localStorageCartData.push(prod);
-        console.log(localStorageCartData);
-    }
-
-    private addItemViaTemplate(itemId: number, parentNode?: HTMLElement): void {
+    private addItemViaTemplate(itemId: number, parentNode?: HTMLElement, itemAmount?: number): void {
         // find item via itemId
         const productArr = data.filter((dataItem) => dataItem.id == itemId);
         const product = productArr[0];
@@ -91,6 +83,8 @@ class CartPage extends Page {
         cartClone.querySelector('.item__rating')!.textContent = `Rating: ${product.rating}`;
         cartClone.querySelector('.item__discount')!.textContent = `Discount: ${product.discountPercentage}%`;
         cartClone.querySelector('.item__in-stock')!.textContent = `Stock: ${product.stock}`;
+        // todo количество. Добавь парсинг по количеству. А то добавлять будет по 1 штуке, вместе item.amount
+        // cartClone.querySelector('.item__current-amount')!.value = itemAmount;
 
         fragment.append(cartClone);
 
@@ -102,9 +96,32 @@ class CartPage extends Page {
         }
     }
 
+    // ? тащим метод класса из другого класса. хохох
+    private cartInf: cartInfo = new cartInfo(2, 3);
+    addToCart(newItemId: string, newItemAmount: string): void {
+        this.cartInf.addToCart(newItemId, newItemAmount);
+    }
+
+    // пока не понял, почему я прописал 2 товара внизу, а идет только второй
+    // ! можно положить приложение, если вбить this.addToCart('1111', '6');
+    // мб нид убрать как-то parendnode в параметрах метода addItemViaTemplate
+    private addItemsfromLocalStorage(): void {
+        const localData = JSON.parse(localStorage['RS-store-data']);
+        localData.forEach((el: localStorageData) => {
+            console.log(localData, 'dada');
+            this.addItemViaTemplate(+el.id);
+        });
+        return;
+    }
+
     render() {
-        this.logLocalStorage(2, 2);
+        // добавляем в корзину товар с id 1 в кол-ве 6 шт
+        this.addToCart('1', '6');
+        // и еще раз это же действие. проверяй localStorage;
+        this.addToCart('11', '6');
+
         this.createCartBodyHTML();
+        this.addItemsfromLocalStorage();
         return this.container;
     }
 }

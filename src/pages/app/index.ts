@@ -7,6 +7,7 @@ import Header from '../../global/components/header';
 import Main from '../../global/components/main';
 import Footer from '../../global/components/footer';
 
+import cartInfo from '../../global/components/cartInfo';
 export const enum PageIds {
     MainPage = 'main-page',
     CartPage = 'cart-page',
@@ -53,6 +54,7 @@ class App {
     }
 
     run() {
+        cartInfo.toString();
         App.container.append(this.header.render());
         App.container.append(this.main.render());
         App.container.append(this.footer.render());
