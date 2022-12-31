@@ -17,6 +17,7 @@ class Products extends Component {
     }
 
     private createHTML(data: Data[]) {
+
         const fragment = document.createDocumentFragment();
         const productsItemTemp: HTMLTemplateElement | null = document.querySelector('#productsItemTemp');
 
@@ -39,6 +40,7 @@ class Products extends Component {
                         });
                         itemTitle.innerText = item.title;
                         this.addInfo(item, itemInfo);
+
                         fragment.append(productClone);
                     }
                 }
