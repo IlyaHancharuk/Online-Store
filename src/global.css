@@ -23,7 +23,7 @@
   font-size: 28px;
   line-height: 38px;
   color: white;
-  background-image: url("./global/assets/logo.svg");
+  background-image: url("./assets/logo.svg");
   background-repeat: no-repeat;
   background-size: 38px;
 }
@@ -50,7 +50,7 @@
 }
 
 .header__cart {
-  background: url("./global/assets/cart.svg") no-repeat center;
+  background: url("./assets/cart.svg") no-repeat center;
   height: 40px;
   width: 40px;
   border-radius: 50%;
