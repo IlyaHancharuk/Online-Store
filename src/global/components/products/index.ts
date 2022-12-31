@@ -1,67 +1,72 @@
 import Component from '../../templates/component';
-import * as types from '../../types';
+import { Data, ProductInfoForMainPage } from '../../types';
 import data from '../../data/data';
 
 class Products extends Component {
+    static ProductDatailsData = {
+        discountPercentage: 'Discount:',
+        stock: 'Stock:',
+        rating: 'Rating:',
+        brand: 'Brand:',
+        category: 'Category:',
+        price: 'Price:',
+    };
+
     constructor(tagName: string, className: string) {
         super(tagName, className);
     }
 
-    private createHTML(data: types.Data[]) {
-        data.forEach((item) => {
-            const productItem = document.createElement('div');
-            productItem.className = 'product-item';
-            productItem.style.backgroundImage = `url(${item.thumbnail})`;
+    private createHTML(data: Data[]) {
 
-            const itemTitle = document.createElement('h3');
-            itemTitle.className = 'item-title';
-            itemTitle.innerText = item.title;
-            productItem.append(itemTitle);
+        const fragment = document.createDocumentFragment();
+        const productsItemTemp: HTMLTemplateElement | null = document.querySelector('#productsItemTemp');
 
-            const itemInfo = document.createElement('div');
-            itemInfo.className = 'item-info';
+        if (productsItemTemp) {
+            data.forEach((item) => {
+                const productClone: HTMLElement = <HTMLElement>productsItemTemp.content.cloneNode(true);
 
-            const itemCategory = this.createInfo(item, 'category');
-            itemInfo.append(itemCategory);
+                if (productClone) {
+                    const productItem = productClone.querySelector<HTMLElement>('.products__item');
+                    const itemTitle = productClone.querySelector<HTMLElement>('.item__title');
+                    const itemInfo = productClone.querySelector<HTMLElement>('.item__info');
+                    const itemButtons = productClone.querySelector<HTMLElement>('.item__buttons');
+                    const dropButton = productClone.querySelector<HTMLElement>('.drop-button');
+                    const detailsButton = productClone.querySelector<HTMLElement>('.details-button');
 
-            const itemBrand = this.createInfo(item, 'brand');
-            itemInfo.append(itemBrand);
+                    if (productItem && itemTitle && itemInfo && itemButtons && dropButton && detailsButton) {
+                        productItem.style.backgroundImage = `url(${item.thumbnail})`;
+                        productItem.addEventListener('click', () => {
+                            window.location.hash = `product-details-page/${item.id.toString()}`;
+                        });
+                        itemTitle.innerText = item.title;
+                        this.addInfo(item, itemInfo);
 
-            const itemPrice = this.createInfo(item, 'price');
-            itemInfo.append(itemPrice);
+                        fragment.append(productClone);
+                    }
+                }
+            });
 
-            const itemDiscount = this.createInfo(item, 'discountPercentage');
-            itemInfo.append(itemDiscount);
-
-            const itemRating = this.createInfo(item, 'rating');
-            itemInfo.append(itemRating);
-
-            const itemStockQuantity = this.createInfo(item, 'stock');
-            itemInfo.append(itemStockQuantity);
-            productItem.append(itemInfo);
-
-            const itemButtons = document.createElement('div');
-            itemButtons.className = 'item-buttons';
-
-            const dropButton = document.createElement('div');
-            dropButton.className = 'drop-button';
-            dropButton.innerText = 'DROP';
-            itemButtons.append(dropButton);
-
-            const detailsButton = document.createElement('div');
-            detailsButton.className = 'details-button';
-            detailsButton.innerText = 'DATAILS';
-            itemButtons.append(detailsButton);
-            productItem.append(itemButtons);
-            this.container.append(productItem);
-        });
+            this.container.innerHTML = '';
+            this.container.appendChild(fragment);
+        }
     }
 
-    private createInfo(item: types.Data, descriptionsTitle: types.ProductInfo) {
-        const itemCategory = document.createElement('p');
-        const title = descriptionsTitle === 'discountPercentage' ? 'discount' : descriptionsTitle;
-        itemCategory.innerText = `${title}: ${item[descriptionsTitle]}`;
-        return itemCategory;
+    private addInfo(dataItem: Data, parentElem: HTMLElement) {
+        for (const prop in Products.ProductDatailsData) {
+            const key = prop as ProductInfoForMainPage;
+            const infoItem = document.createElement('div');
+            infoItem.className = 'info__item';
+
+            const title = document.createElement('h3');
+            title.innerText = Products.ProductDatailsData[key];
+            infoItem.append(title);
+
+            const text = document.createElement('p');
+            text.innerText = dataItem[key].toString();
+            infoItem.append(text);
+
+            parentElem.append(infoItem);
+        }
     }
 
     render(): HTMLElement {

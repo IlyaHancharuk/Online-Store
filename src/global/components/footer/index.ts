@@ -1,4 +1,7 @@
 import Component from '../../templates/component';
+import redIcon from '../../../assets/git-red.svg';
+import blueIcon from '../../../assets/git-blue.svg';
+import rsIcon from '../../../assets/rs_school_js.svg';
 
 interface footerHTMLTypes {
     tag: string;
@@ -13,7 +16,7 @@ const footerElements: footerHTMLTypes[] = [
         tag: 'a',
         class: 'footer__ilya',
         innerText: 'IlyaHancharuk',
-        backgroundImage: '/git-red.svg',
+        backgroundImage: `${redIcon}`,
         href: 'https://github.com/IlyaHancharuk',
     },
     {
@@ -25,14 +28,14 @@ const footerElements: footerHTMLTypes[] = [
         tag: 'a',
         class: 'footer__lights0n',
         innerText: 'Lights0n',
-        backgroundImage: './src/git-blue.svg',
+        backgroundImage: `${blueIcon}`,
         href: 'https://github.com/Lights0n',
     },
     {
         tag: 'a',
         class: 'footer__rs-school',
         innerText: 'Rs-shools',
-        backgroundImage: './src/rs_school_js.svg',
+        backgroundImage: `${rsIcon}`,
         href: 'https://rs.school/js/',
     },
 ];

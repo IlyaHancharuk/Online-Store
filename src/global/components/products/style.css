@@ -4,7 +4,7 @@
     gap: 10px;
 }
 
-.product-item {
+.products__item {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: right top;
@@ -12,13 +12,13 @@
     border: 1px solid black;
 }
 
-.item-info {
+.item__info {
     border: 1px solid black;
     width: 50%;
     background-color: rgba(68, 68, 68, 0.7);
 }
 
-.item-buttons {
+.item__buttons {
     display: flex;
     flex-direction: row;
     justify-content: space-around;

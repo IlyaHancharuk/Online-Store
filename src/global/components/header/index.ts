@@ -1,5 +1,5 @@
 import Component from '../../templates/component';
-import { PageIds } from '../../../pages/app';
+import { PageIds } from '../../constants';
 
 const Buttons = [
     {
@@ -11,11 +11,6 @@ const Buttons = [
         id: PageIds.CartPage,
         text: '',
         class: 'header__cart',
-    },
-    {
-        id: PageIds.ProductDetailsPage,
-        text: 'Product Datails',
-        class: 'product-details',
     },
 ];
 

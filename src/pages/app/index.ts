@@ -6,13 +6,8 @@ import ErrorPage, { ErrorTypes } from '../error';
 import Header from '../../global/components/header';
 import Main from '../../global/components/main';
 import Footer from '../../global/components/footer';
-
 import cartInfo from '../../global/components/cartInfo';
-export const enum PageIds {
-    MainPage = 'main-page',
-    CartPage = 'cart-page',
-    ProductDetailsPage = `product-details-page`,
-}
+import { PageIds } from '../../global/constants';
 
 class App {
     private static container: HTMLElement = document.body;
@@ -24,14 +19,26 @@ class App {
         main.render().innerHTML = '';
         let page: Page | null = null;
 
-        if (idPage === PageIds.MainPage) {
-            page = new MainPage(idPage);
-        } else if (idPage === PageIds.CartPage) {
-            page = new CartPage(idPage);
-        } else if (idPage === PageIds.ProductDetailsPage) {
-            page = new ProductDetailsPage(idPage);
-        } else {
-            page = new ErrorPage(idPage, ErrorTypes.Error_404);
+        if (window.location.hash !== '') idPage = window.location.hash.slice(1);
+
+        switch (idPage) {
+            case PageIds.MainPage:
+                page = new MainPage(idPage);
+                break;
+            case '':
+                page = new MainPage('main-page');
+                break;
+            case PageIds.CartPage:
+                page = new CartPage(idPage);
+                break;
+            default:
+                page = new ErrorPage(idPage, ErrorTypes.Error_404);
+                break;
+        }
+
+        if (idPage.includes('product-details-page')) {
+            const productId = Number(idPage.slice(21));
+            page = new ProductDetailsPage(idPage, productId);
         }
 
         if (page) {
