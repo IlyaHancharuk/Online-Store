@@ -13,11 +13,54 @@
       <h3 class="item__title"></h3>
       <div class="item__info"></div>
       <div class="item__buttons">
-          <div class="drop-button">Drop</div>
-          <div class="details-button">Details</div>
+        <div class="drop-button">Drop</div>
+        <div class="details-button">Details</div>
       </div>
     </div>
-
   </template>
+
+  <template id="productDetailsTemp">
+    <div class="product">
+      <div class="product__title">
+        <h1></h1>
+      </div>
+      <div class="product__data">
+        <div class="product__photos">
+          <div class="slides"></div>
+          <div class="grand-photo">
+            <img alt="grand-photo">
+          </div>
+        </div>
+        <div class="product__info info"></div>
+        <div class="add-to-cart">
+          <div class="price"></div>
+          <div class="cart-buttons">
+            <div class="drop-button">DROP FROM CART</div>
+            <div class="buy-button">BUY NOW</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="productFiltersTemp">
+    <div class="filters">
+      <div class="filters__buttons">
+        <button class="reset-button button">Reset Filters</button>
+        <button class="copy-button button">Copy Link</button>
+      </div>
+      <div class="filter__container filter-by-category">
+        <h3>Category</h3>
+        <div class="filter-list"></div>
+      </div>
+      <div class="filter__container filter-by-brand">
+        <h3>Brand</h3>
+        <div class="filter-list"></div>
+      </div>
+      <div class="price-range"></div>
+      <div class="stock-range"></div>
+    </div>
+  </template>
+
 </body>
 </html>

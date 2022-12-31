@@ -12,4 +12,18 @@ export type Data = {
     images: string[];
 };
 
-export type ProductInfo = 'category' | 'brand' | 'price' | 'discountPercentage' | 'rating' | 'stock';
+export interface IElemInfo {
+    dataItem: Data;
+    descriptionsTitle: ProductInfoForMainPage | ProductInfoForProductPage;
+    parentElem: HTMLElement;
+}
+
+export type ProductInfoForMainPage = 'category' | 'brand' | 'price' | 'discountPercentage' | 'rating' | 'stock';
+
+export type ProductInfoForProductPage =
+    | 'description'
+    | 'discountPercentage'
+    | 'rating'
+    | 'stock'
+    | 'brand'
+    | 'category';

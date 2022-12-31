@@ -1,13 +1,23 @@
 import Component from '../../templates/component';
-import * as types from '../../types';
+import { Data, ProductInfoForMainPage } from '../../types';
 import data from '../../data/data';
 
 class Products extends Component {
+    static ProductDatailsData = {
+        discountPercentage: 'Discount:',
+        stock: 'Stock:',
+        rating: 'Rating:',
+        brand: 'Brand:',
+        category: 'Category:',
+        price: 'Price:',
+    };
+
     constructor(tagName: string, className: string) {
         super(tagName, className);
     }
 
-    private createHTML(data: types.Data[]) {
+    private createHTML(data: Data[]) {
+
         const fragment = document.createDocumentFragment();
         const productsItemTemp: HTMLTemplateElement | null = document.querySelector('#productsItemTemp');
 
@@ -25,14 +35,11 @@ class Products extends Component {
 
                     if (productItem && itemTitle && itemInfo && itemButtons && dropButton && detailsButton) {
                         productItem.style.backgroundImage = `url(${item.thumbnail})`;
+                        productItem.addEventListener('click', () => {
+                            window.location.hash = `product-details-page/${item.id.toString()}`;
+                        });
                         itemTitle.innerText = item.title;
-
-                        this.createInfoElement(item, 'category', itemInfo);
-                        this.createInfoElement(item, 'brand', itemInfo);
-                        this.createInfoElement(item, 'price', itemInfo);
-                        this.createInfoElement(item, 'discountPercentage', itemInfo);
-                        this.createInfoElement(item, 'rating', itemInfo);
-                        this.createInfoElement(item, 'stock', itemInfo);
+                        this.addInfo(item, itemInfo);
 
                         fragment.append(productClone);
                     }
@@ -44,11 +51,22 @@ class Products extends Component {
         }
     }
 
-    private createInfoElement(dataItem: types.Data, descriptionsTitle: types.ProductInfo, parentItem: HTMLElement) {
-        const infoItem = document.createElement('p');
-        const title = descriptionsTitle === 'discountPercentage' ? 'discount' : descriptionsTitle;
-        infoItem.innerText = `${title}: ${dataItem[descriptionsTitle]}`;
-        parentItem.append(infoItem);
+    private addInfo(dataItem: Data, parentElem: HTMLElement) {
+        for (const prop in Products.ProductDatailsData) {
+            const key = prop as ProductInfoForMainPage;
+            const infoItem = document.createElement('div');
+            infoItem.className = 'info__item';
+
+            const title = document.createElement('h3');
+            title.innerText = Products.ProductDatailsData[key];
+            infoItem.append(title);
+
+            const text = document.createElement('p');
+            text.innerText = dataItem[key].toString();
+            infoItem.append(text);
+
+            parentElem.append(infoItem);
+        }
     }
 
     render(): HTMLElement {
