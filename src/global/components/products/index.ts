@@ -193,8 +193,10 @@ class Products extends Component {
         });
 
         const productsItems = document.querySelector<HTMLElement>('.products__items');
+        const stat = document.querySelector<HTMLElement>('.stat');
 
-        if (productsItems) {
+        if (productsItems && stat) {
+            stat.innerText = `Found: ${filterData.length}`
             productsItems.remove();
             const newProductsItems = this.createProductsHTML(filterData);
             if (newProductsItems) this.container.append(newProductsItems);
