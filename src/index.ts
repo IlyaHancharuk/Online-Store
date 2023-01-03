@@ -1,4 +1,4 @@
-import './global.css';
+import './global.scss';
 import './global/components/products/style.css';
 import App from './pages/app';
 

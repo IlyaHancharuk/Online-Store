@@ -116,9 +116,10 @@ class CartPage extends Page {
 
     render() {
         // добавляем в корзину товар с id 1 в кол-ве 6 шт
-        this.addToCart('1', '6');
+        this.addToCart('1', '2');
         // и еще раз это же действие. проверяй localStorage;
-        this.addToCart('11', '6');
+        this.addToCart('11', '1');
+        this.addToCart('12', '4');
 
         this.createCartBodyHTML();
         this.addItemsfromLocalStorage();

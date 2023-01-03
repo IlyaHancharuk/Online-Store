@@ -1,8 +1,3 @@
-$orange_line: url("../../assets/orange-line.png");
-$orange_wing: url("../../assets/pngwing.png");
-$orange_wing2: url("../../assets/pngwing2.png");
-$orange_wing3: url("../../assets/pngwing3.png");
-$orange_hair: url("../../assets/pngwing-hair2.png");
 .test-button {
   position: absolute;
   cursor: pointer;
@@ -24,12 +19,6 @@ $orange_hair: url("../../assets/pngwing-hair2.png");
   flex-direction: column;
   row-gap: 10px;
   padding: 10px 0;
-  //   background-image: $orange_wing;
-  //   background-image: $orange_line;
-  //   background-image: $orange_hair;
-  //   background-size: cover;
-  //   background-position: center;
-  //   background-repeat: no-repeat;
 }
 
 .cart__product-item {
@@ -66,7 +55,6 @@ $orange_hair: url("../../assets/pngwing-hair2.png");
   color: black;
   font-size: 1.5rem;
   padding: 0px 0px 5px 0px;
-  // text-decoration: underline;
 
   cursor: pointer;
 
