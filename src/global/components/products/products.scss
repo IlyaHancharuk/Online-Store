@@ -1,4 +1,84 @@
-.products {
+$mainColor: #0096e6;
+
+.products__sort {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.sort-bar select {
+    outline: 0;
+    padding: 0 1em;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 1rem;
+    color: #616161;
+    border: 1px solid $mainColor;
+    text-align: center;
+    -webkit-border-radius: 1rem;
+    -moz-border-radius: 1rem;
+    -ms-border-radius: 1rem;
+    -o-border-radius: 1rem;
+}
+
+.search-bar input {
+    width: 100%;
+    border: 1px solid $mainColor;
+    color: $mainColor;
+    border-radius: 2rem;
+    padding: 0.2rem;
+    outline: none;
+    font-size: 80%;
+    text-align: center;
+}
+
+.view-mode {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: $mainColor;
+}
+
+.big-mode,
+.small-mode {
+    border: 1px solid $mainColor;
+    height: 2rem;
+    width: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 0.3rem;
+    justify-content: center;
+    align-items: center;
+    padding: 2%;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.big-mode div,
+.small-mode div {
+    white-space: nowrap;
+    margin: 2%;
+    font-size: 50%;
+    border-radius: 100%;
+    overflow: hidden;
+    background: $mainColor;
+    -webkit-user-select: none;
+    user-select: none
+}
+
+.big-mode div {
+    width: 21%;
+    height: 22%;
+}
+
+.small-mode div {
+    width: 12%;
+    height: 13%;
+}
+
+.products__items {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;

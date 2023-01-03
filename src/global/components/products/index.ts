@@ -1,6 +1,7 @@
 import Component from '../../templates/component';
 import { Data, ProductInfoForMainPage } from '../../types';
 import data from '../../data/data';
+import { SortOptions } from '../../constants';
 
 class Products extends Component {
     static ProductDatailsData = {
@@ -17,10 +18,72 @@ class Products extends Component {
     }
 
     private createHTML(data: Data[]) {
+        const sortHTML = this.createSortHTML(data);
+        const productsHTML = this.createProductsHTML(data);
+
+        if (sortHTML && productsHTML) {
+            this.container.innerHTML = '';
+            this.container.appendChild(sortHTML);
+            this.container.append(productsHTML);
+        }
+    }
+
+    private createSortHTML(data: Data[]) {
+        const fragment = document.createDocumentFragment();
+        const productsSortTemp: HTMLTemplateElement | null = document.querySelector('#productsSortTemp');
+
+        if (productsSortTemp) {
+            const productClone: HTMLElement = <HTMLElement>productsSortTemp.content.cloneNode(true);
+            if (productClone) {
+                const sortBar = productClone.querySelector<HTMLElement>('.sort-bar');
+                const stat = productClone.querySelector<HTMLElement>('.stat');
+                const searchBar = productClone.querySelector<HTMLElement>('.search-bar');
+                const viewMode = productClone.querySelector<HTMLElement>('.view-mode');
+
+                if (sortBar && stat && searchBar && viewMode) {
+                    const LOG = this.addSortOptions(sortBar);
+                    console.log(LOG);
+                    stat.innerText = `Found: ${data.length}`;
+
+                    const searchInput = document.createElement('input');
+                    searchInput.type = 'search';
+                    searchInput.placeholder = 'Search product';
+                    searchBar.append(searchInput);
+
+                    const bigMode = document.createElement('div');
+                    bigMode.className = 'big-mode active-mode';
+                    for (let i = 0; i < 16; i += 1) {
+                        const point = document.createElement('div');
+                        point.innerText = '.';
+                        bigMode.append(point);
+                    }
+
+                    const smallMode = document.createElement('div');
+                    smallMode.className = 'small-mode';
+                    for (let i = 0; i < 36; i += 1) {
+                        const point = document.createElement('div');
+                        point.innerText = '.';
+                        smallMode.append(point);
+                    }
+
+                    viewMode.append(bigMode);
+                    viewMode.append(smallMode);
+
+                    fragment.append(productClone);
+                }
+            }
+            return fragment;
+        }
+    }
+
+    private createProductsHTML(data: Data[]) {
         const fragment = document.createDocumentFragment();
         const productsItemTemp: HTMLTemplateElement | null = document.querySelector('#productsItemTemp');
 
         if (productsItemTemp) {
+            const productsItems = document.createElement('div');
+            productsItems.className = 'products__items';
+
             data.forEach((item) => {
                 const productClone: HTMLElement = <HTMLElement>productsItemTemp.content.cloneNode(true);
 
@@ -44,9 +107,8 @@ class Products extends Component {
                     }
                 }
             });
-
-            this.container.innerHTML = '';
-            this.container.appendChild(fragment);
+            productsItems.appendChild(fragment);
+            return productsItems;
         }
     }
 
@@ -65,6 +127,59 @@ class Products extends Component {
             infoItem.append(text);
 
             parentElem.append(infoItem);
+        }
+    }
+
+    private addSortOptions(container: HTMLElement) {
+        const select = document.createElement('select');
+        select.options[0] = new Option('Sort options:', 'sort-title');
+        select.options[0].disabled = true;
+        select.options[0].selected = true;
+        select.options[1] = new Option('Default', SortOptions.default);
+        select.options[2] = new Option('Sort by price ASC', SortOptions.priceASC);
+        select.options[3] = new Option('Sort by price DESC', SortOptions.priceDESC);
+        select.options[4] = new Option('Sort by rating ASC', SortOptions.ratingASC);
+        select.options[5] = new Option('Sort by rating DESC', SortOptions.ratingDESC);
+
+        select.onchange = () => {
+            switch (select.value) {
+                case SortOptions.default:
+                    this.sorting(data, 'id');
+                    break;
+                case SortOptions.priceASC:
+                    this.sorting(data, 'price', 'ASC');
+                    break;
+                case SortOptions.priceDESC:
+                    this.sorting(data, 'price', 'DESC');
+                    break;
+                case SortOptions.ratingASC:
+                    this.sorting(data, 'rating', 'ASC');
+                    break;
+                case SortOptions.ratingDESC:
+                    this.sorting(data, 'rating', 'DESC');
+                    break;
+            }
+        };
+
+        container.append(select);
+    }
+
+    private sorting(data: Data[], option: 'id' | 'price' | 'rating', mod?: 'ASC' | 'DESC') {
+        const productsItems = document.querySelector<HTMLElement>('.products__items');
+        let sortData: Data[] = [];
+
+        if (mod === 'ASC') {
+            sortData = data.sort((a, b) => a[option] - b[option]);
+        } else if (mod === 'DESC') {
+            sortData = data.sort((a, b) => b[option] - a[option]);
+        } else {
+            sortData = data.sort((a, b) => a[option] - b[option]);
+        }
+
+        if (productsItems) {
+            productsItems.remove();
+            const newProductsItems = this.createProductsHTML(sortData);
+            if (newProductsItems) this.container.append(newProductsItems);
         }
     }
 
