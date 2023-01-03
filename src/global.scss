@@ -1,6 +1,7 @@
 @import "global/components/header/header.scss";
 @import "global/components/main/main.scss";
 @import "global/components/footer/footer.scss";
+@import "global/components/products/products.scss";
 
 @import url("https://fonts.googleapis.com/css?family=Rubik:regular&display=swap&subset=cyrillic-ext");
 
@@ -47,4 +48,26 @@ body {
   font-size: 16px;
   color: #616161;
   scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0096e6;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
 }
