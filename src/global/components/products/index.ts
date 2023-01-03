@@ -41,13 +41,15 @@ class Products extends Component {
                 const viewMode = productClone.querySelector<HTMLElement>('.view-mode');
 
                 if (sortBar && stat && searchBar && viewMode) {
-                    const LOG = this.addSortOptions(sortBar);
-                    console.log(LOG);
+                    this.addSortOptions(sortBar);
                     stat.innerText = `Found: ${data.length}`;
 
                     const searchInput = document.createElement('input');
-                    searchInput.type = 'search';
+                    searchInput.type = 'text';
                     searchInput.placeholder = 'Search product';
+                    searchInput.addEventListener('keyup', () => {
+                        this.filterBySearch(data, searchInput);
+                    });
                     searchBar.append(searchInput);
 
                     const bigMode = document.createElement('div');
@@ -179,6 +181,22 @@ class Products extends Component {
         if (productsItems) {
             productsItems.remove();
             const newProductsItems = this.createProductsHTML(sortData);
+            if (newProductsItems) this.container.append(newProductsItems);
+        }
+    }
+
+    private filterBySearch(data: Data[], input: HTMLInputElement) {
+        const keyword = input.value.toLowerCase();
+        const filterData: Data[] = data.filter((item) => {
+            const title = item.title.toLowerCase();
+            return title.indexOf(keyword) > -1;
+        });
+
+        const productsItems = document.querySelector<HTMLElement>('.products__items');
+
+        if (productsItems) {
+            productsItems.remove();
+            const newProductsItems = this.createProductsHTML(filterData);
             if (newProductsItems) this.container.append(newProductsItems);
         }
     }
