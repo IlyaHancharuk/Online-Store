@@ -47,13 +47,15 @@ class CartPage extends Page {
                 const id = prompt('input id to add', '1');
                 data.forEach((item) => {
                     if (item.id === Number(id)) {
-                        this.addItemViaTemplate(Number(id), 1);
+                        // this.addItemViaTemplate(Number(id), 1);
+                        this.addToCart(`${Number(id)}`, '1');
+                        this.addItemsfromLocalStorage();
                         return;
                     }
                 });
             });
         }
-        // }
+        return;
     }
 
     private sayCartIsEmpty(): void {
@@ -91,28 +93,15 @@ class CartPage extends Page {
             itemStock.textContent = `Stock: ${product.stock}`;
             itemHowMany.value = `${itemAmount}`;
         }
-        // todo количество. Добавь парсинг по количеству. А то добавлять будет по 1 штуке, вместе item.amount
-        // cartClone.querySelector('.item__current-amount')!.value = itemAmount;
 
         fragment.append(cartClone);
-        const main: HTMLElement | null = document.getElementById('cart-page');
-        // ! почем ты не видишь то, что я создал уже??
-        console.log(main, 'main???');
-        if (main) {
-            const cartList: HTMLElement | null = main.querySelector('.cart__list');
-            console.log(cartList, 'wat?');
-            if (cartList) {
-                cartList.append(fragment);
-            }
-        }
 
-        /*  if (parentNode) {
-             parentNode.append(fragment);
-         } else {
-             // this.container.innerHTML = '';
-             this.container.appendChild(fragment);
-         } */
-        // this.container.appendChild(fragment);
+        // добавляем фрагмент в список
+        const cartList: HTMLElement | null = this.container.querySelector('.cart__list');
+        if (cartList) {
+            cartList.append(fragment);
+            this.container.append(cartList);
+        }
     }
 
     // ? тащим метод класса из другого класса. хохох
@@ -121,17 +110,20 @@ class CartPage extends Page {
         this.cartInf.addToCart(newItemId, newItemAmount);
     }
 
-    // пока не понял, почему я прописал 2 товара внизу, а идет только второй
     // ! можно положить приложение, если вбить this.addToCart('1111', '6');
     private addItemsfromLocalStorage(): void {
+        // clear list and renew it;
+        const cartList: HTMLElement | null = this.container.querySelector('.cart__list');
+        if (cartList) {
+            cartList.innerHTML = '';
+        }
+
         if (!localStorage['RS-store-data']) {
             this.sayCartIsEmpty();
             return;
         } else {
             const localData = JSON.parse(localStorage['RS-store-data']);
             localData.forEach((el: localStorageData) => {
-                console.log(localData, 'dada');
-                console.log(+el.id);
                 this.addItemViaTemplate(+el.id, +el.amount);
             });
             return;
@@ -140,10 +132,10 @@ class CartPage extends Page {
 
     render() {
         this.createCartBodyHTML();
-        this.addToCart('1', '2');
+        // this.addToCart('1', '22');
         // и еще раз это же действие. проверяй localStorage;
-        this.addToCart('11', '1');
-        // this.addToCart('12', '4');
+        // this.addToCart('12', '3');
+        // this.addToCart('12', '3');
         this.addItemsfromLocalStorage();
         return this.container;
     }
