@@ -19,24 +19,12 @@ $borderColor: #0096e6;
   height: fit-content;
 }
 
-
-
 .filters__buttons {
   display: flex;
   align-items: center;
   justify-content: space-around;
   margin-bottom: 2%;
   border: 1px solid $borderColor;
-}
-
-.button {
-  background-color: $borderColor;
-  border: 1px solid $borderColor;
-  border-radius: 0.3rem;
-  padding-left: 2%;
-  padding-right: 2%;
-  font-size: 110%;
-  cursor: pointer;
 }
 
 .filter__container {

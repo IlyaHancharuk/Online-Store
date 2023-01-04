@@ -100,19 +100,50 @@ $mainColor: #0096e6;
     display: flex;
     flex-direction: column;
     width: 23%;
-    /* padding-top: 20%; */
     background-position: 0 0;
     background-size: cover;
 }
 
+.item__text {
+    width: 100%;
+    height: 83%;
+    padding-bottom: 30%;
+    cursor: pointer;
+}
+
+.item__title {
+    padding: 1%;
+    font-size: 80%;
+    text-align: center;
+    color: $mainColor;
+    background-color: #272727;
+    border-bottom: 1px solid $mainColor;
+    white-space: nowrap;
+}
+
 .item__info {
-    border: 1px solid black;
-    width: 50%;
-    background-color: rgba(68, 68, 68, 0.7);
+    width: 55%;
+    color: $mainColor;
+    background-color: rgba(102, 102, 102, 0.9);
+    border-radius: 0 0 0.4rem;
+    border-bottom: 1px solid $mainColor;
+    border-right: 1px solid $mainColor;
+    padding: 1%;
+}
+
+.info__item {
+    font-size: .7rem;
+    display: flex;
+}
+
+.info__item p {
+    margin-left: 5%;
+    color: rgb(39, 39, 39);
 }
 
 .item__buttons {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    height: 15%;
 }
