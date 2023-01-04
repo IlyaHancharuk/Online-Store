@@ -1,9 +1,15 @@
 import Page from '../../global/templates/page';
 import Products from '../../global/components/products';
-import { Data } from '../../global/types';
 import data from '../../global/data/data';
 
 class MainPage extends Page {
+    static fltredCollection: Map<string, Set<string>> = new Map([
+        ['category', new Set()],
+        ['brand', new Set()],
+    ]);
+
+    static filtredData = data;
+
     constructor(id: string) {
         super(id);
     }
@@ -33,8 +39,8 @@ class MainPage extends Page {
                     priceRange &&
                     stockRange
                 ) {
-                    this.createFilterList(data, 'category', filterListByCategoty);
-                    this.createFilterList(data, 'brand', filterListByBrand);
+                    this.createFilterList('category', filterListByCategoty);
+                    this.createFilterList('brand', filterListByBrand);
 
                     fragment.append(productClone);
                 }
@@ -47,7 +53,7 @@ class MainPage extends Page {
         }
     }
 
-    private createFilterList(data: Data[], filter: 'category' | 'brand', parentElem: HTMLElement) {
+    private createFilterList(filter: 'category' | 'brand', parentElem: HTMLElement) {
         const filterListData: { [key: string]: number } = {};
 
         data.forEach((item) => {
@@ -62,18 +68,14 @@ class MainPage extends Page {
 
         for (const key in filterListData) {
             const checkboxLine = document.createElement('div');
-            checkboxLine.className = 'checkbox-line item-not-active';
+            checkboxLine.className = 'checkbox-line';
 
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.id = key;
-            checkbox.addEventListener('change', () => {
-                if (checkbox.checked) {
-                    console.log(`${key} CHECKED`);
-                } else {
-                    console.log(`${key} UNCHECK`);
-                }
-            });
+            checkbox.name = filter;
+
+            this.productFiltering(checkbox);
 
             checkboxLine.append(checkbox);
 
@@ -88,6 +90,35 @@ class MainPage extends Page {
 
             parentElem.append(checkboxLine);
         }
+    }
+
+    private productFiltering(checkbox: HTMLInputElement) {
+        checkbox.addEventListener('change', () => {
+            if (checkbox.checked) {
+                MainPage.fltredCollection.get(checkbox.name)?.add(checkbox.id);
+            } else {
+                MainPage.fltredCollection.get(checkbox.name)?.delete(checkbox.id);
+            }
+
+            const categories = MainPage.fltredCollection.get('category');
+            const brands = MainPage.fltredCollection.get('brand');
+            MainPage.filtredData = data;
+
+            if (categories?.size)
+                MainPage.filtredData = MainPage.filtredData.filter((el) => categories?.has(el['category']));
+            if (brands?.size) MainPage.filtredData = MainPage.filtredData.filter((el) => brands?.has(el['brand']));
+
+            const products = document.querySelector<HTMLElement>('.products');
+            const productsItems = document.querySelector<HTMLElement>('.products__items');
+            const stat = document.querySelector<HTMLElement>('.stat');
+
+            if (products && productsItems && stat) {
+                stat.innerText = `Found: ${MainPage.filtredData.length}`;
+                productsItems.remove();
+                const newProductsItems = Products.createProductsHTML(MainPage.filtredData);
+                if (newProductsItems) products.append(newProductsItems);
+            }
+        });
     }
 
     render() {

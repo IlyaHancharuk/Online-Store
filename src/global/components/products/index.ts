@@ -18,8 +18,8 @@ class Products extends Component {
     }
 
     private createHTML(data: Data[]) {
-        const sortHTML = this.createSortHTML(data);
-        const productsHTML = this.createProductsHTML(data);
+        const sortHTML = this.createSortHTML();
+        const productsHTML = Products.createProductsHTML(data);
 
         if (sortHTML && productsHTML) {
             this.container.innerHTML = '';
@@ -28,7 +28,7 @@ class Products extends Component {
         }
     }
 
-    private createSortHTML(data: Data[]) {
+    private createSortHTML() {
         const fragment = document.createDocumentFragment();
         const productsSortTemp: HTMLTemplateElement | null = document.querySelector('#productsSortTemp');
 
@@ -78,7 +78,7 @@ class Products extends Component {
         }
     }
 
-    private createProductsHTML(data: Data[]) {
+    static createProductsHTML(data: Data[]) {
         const fragment = document.createDocumentFragment();
         const productsItemTemp: HTMLTemplateElement | null = document.querySelector('#productsItemTemp');
 
@@ -103,7 +103,7 @@ class Products extends Component {
                             window.location.hash = `product-details-page/${item.id.toString()}`;
                         });
                         itemTitle.innerText = item.title;
-                        this.addInfo(item, itemInfo);
+                        Products.addInfo(item, itemInfo);
 
                         fragment.append(productClone);
                     }
@@ -114,7 +114,7 @@ class Products extends Component {
         }
     }
 
-    private addInfo(dataItem: Data, parentElem: HTMLElement) {
+    static addInfo(dataItem: Data, parentElem: HTMLElement) {
         for (const prop in Products.ProductDatailsData) {
             const key = prop as ProductInfoForMainPage;
             const infoItem = document.createElement('div');
@@ -146,19 +146,19 @@ class Products extends Component {
         select.onchange = () => {
             switch (select.value) {
                 case SortOptions.default:
-                    this.sorting(data, 'id');
+                    this.sorting('id');
                     break;
                 case SortOptions.priceASC:
-                    this.sorting(data, 'price', 'ASC');
+                    this.sorting('price', 'ASC');
                     break;
                 case SortOptions.priceDESC:
-                    this.sorting(data, 'price', 'DESC');
+                    this.sorting('price', 'DESC');
                     break;
                 case SortOptions.ratingASC:
-                    this.sorting(data, 'rating', 'ASC');
+                    this.sorting('rating', 'ASC');
                     break;
                 case SortOptions.ratingDESC:
-                    this.sorting(data, 'rating', 'DESC');
+                    this.sorting('rating', 'DESC');
                     break;
             }
         };
@@ -166,7 +166,7 @@ class Products extends Component {
         container.append(select);
     }
 
-    private sorting(data: Data[], option: 'id' | 'price' | 'rating', mod?: 'ASC' | 'DESC') {
+    private sorting(option: 'id' | 'price' | 'rating', mod?: 'ASC' | 'DESC') {
         const productsItems = document.querySelector<HTMLElement>('.products__items');
         let sortData: Data[] = [];
 
@@ -180,7 +180,7 @@ class Products extends Component {
 
         if (productsItems) {
             productsItems.remove();
-            const newProductsItems = this.createProductsHTML(sortData);
+            const newProductsItems = Products.createProductsHTML(sortData);
             if (newProductsItems) this.container.append(newProductsItems);
         }
     }
@@ -196,9 +196,9 @@ class Products extends Component {
         const stat = document.querySelector<HTMLElement>('.stat');
 
         if (productsItems && stat) {
-            stat.innerText = `Found: ${filterData.length}`
+            stat.innerText = `Found: ${filterData.length}`;
             productsItems.remove();
-            const newProductsItems = this.createProductsHTML(filterData);
+            const newProductsItems = Products.createProductsHTML(filterData);
             if (newProductsItems) this.container.append(newProductsItems);
         }
     }
