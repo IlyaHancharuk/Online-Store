@@ -91,24 +91,30 @@ class Products extends Component {
 
                 if (productClone) {
                     const productItem = productClone.querySelector<HTMLElement>('.products__item');
+                    const productText = productClone.querySelector<HTMLElement>('.item__text');
                     const itemTitle = productClone.querySelector<HTMLElement>('.item__title');
                     const itemInfo = productClone.querySelector<HTMLElement>('.item__info');
-                    const itemButtons = productClone.querySelector<HTMLElement>('.item__buttons');
                     const dropButton = productClone.querySelector<HTMLElement>('.drop-button');
                     const detailsButton = productClone.querySelector<HTMLElement>('.details-button');
 
-                    if (productItem && itemTitle && itemInfo && itemButtons && dropButton && detailsButton) {
+                    if (productItem && productText && itemTitle && itemInfo && dropButton && detailsButton) {
                         productItem.style.backgroundImage = `url(${item.thumbnail})`;
-                        productItem.addEventListener('click', () => {
+                        productText.addEventListener('click', () => {
                             window.location.hash = `product-details-page/${item.id.toString()}`;
                         });
                         itemTitle.innerText = item.title;
                         Products.addInfo(item, itemInfo);
 
+                        dropButton.addEventListener('click', () => console.log(`DROP ${item.title} to cart`));
+                        detailsButton.addEventListener('click', () => {
+                            window.location.hash = `product-details-page/${item.id.toString()}`;
+                        });
+
                         fragment.append(productClone);
                     }
                 }
             });
+
             productsItems.appendChild(fragment);
             return productsItems;
         }
