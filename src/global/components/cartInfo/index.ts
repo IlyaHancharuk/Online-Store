@@ -49,6 +49,33 @@ class cartInfo {
         localStorage['RS-store-data'] = JSON.stringify(localData);
         return;
     }
+
+    reduceItemAmount(itemId: string, howMuchToReduce = '1'): void {
+        // массив наших товаров
+        let localData: localStorageData[];
+
+        // чекаем пустой ли localStorage
+        if (localStorage['RS-store-data']) {
+            localData = JSON.parse(localStorage['RS-store-data']);
+            localStorage.clear();
+        } else {
+            localData = [];
+            localStorage.clear();
+        }
+
+        // ищем, есть ли такой итем уже в localStorage;
+        const alreadyInLocalData: localStorageData | undefined = localData.filter((el) => el.id === itemId)[0];
+        if (alreadyInLocalData) {
+            localData[localData.indexOf(alreadyInLocalData)].amount =
+                +localData[localData.indexOf(alreadyInLocalData)].amount - +howMuchToReduce;
+        }
+
+        if (alreadyInLocalData.amount <= 0) {
+            localData.splice(localData.indexOf(alreadyInLocalData), 1);
+        }
+        localStorage['RS-store-data'] = JSON.stringify(localData);
+        return;
+    }
 }
 
 export default cartInfo;

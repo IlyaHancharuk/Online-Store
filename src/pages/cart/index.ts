@@ -3,30 +3,15 @@ import data from '../../global/data/data';
 import { localStorageData } from '../../global/types/index';
 import cartInfo from '../../global/components/cartInfo';
 
-const localStorageCartData: localStorageData[] = [];
 class CartPage extends Page {
     constructor(id: string) {
         super(id);
     }
 
-    // ? при нажатии на "добавить в корзину" на основной странице,
-    // !надо добавлять в localStorage инфу. А после с нее парсить
-    // или добавлять ID товара и количесво? в localStorage.
-    // а при загрузке корзнины парсить с localStorage инфу
-
     private createCartBodyHTML(): void {
         const cartMain = this.createElement('div', 'cart');
         this.container.append(cartMain);
 
-        // заглушка на выбор пустой/полной корзины
-        // const cartStatus: number | string | null = prompt(
-        //     `Состояние корзины:
-        //         1 - с товаром
-        //         0 | esc c клавиатуры - пустая`,
-        //     '1'
-        // );
-        // ? если корзина пуста, то выводим сообщение, что нет ничего
-        // ? иначе, создаем структуру и заполняем
         const cartLeftBody = this.createElement('section', 'cart__left-body');
         cartMain.append(cartLeftBody);
 
@@ -55,13 +40,6 @@ class CartPage extends Page {
                 });
             });
         }
-        return;
-    }
-
-    private sayCartIsEmpty(): void {
-        const emptyCartPageText = this.createElement('p', 'cart__empty-text');
-        emptyCartPageText.innerText = 'The cart is empty yet ¯\\_( ◡ ₒ ◡ )_/¯';
-        this.container.append(emptyCartPageText);
         return;
     }
 
@@ -104,13 +82,40 @@ class CartPage extends Page {
         }
     }
 
+    private sayCartIsEmpty(): void {
+        const emptyCartPageText = this.createElement('p', 'cart__empty-text');
+        emptyCartPageText.innerText = 'The cart is empty yet ¯\\_( ◡ ₒ ◡ )_/¯';
+        this.container.append(emptyCartPageText);
+        return;
+    }
+
+    private removeSayCartIsEmpty(): void {
+        const message = this.container.querySelector('.cart__empty-text');
+        if (message) {
+            message.remove();
+        }
+        return;
+    }
+
     // ? тащим метод класса из другого класса. хохох
     private cartInf: cartInfo = new cartInfo(1, 1);
     addToCart(newItemId: string, newItemAmount: string): void {
+        // if no such ItemId in database:
+        const productArr = data.filter((dataItem) => dataItem.id == +newItemId)[0];
+        if (!productArr) {
+            console.log(`no item with id ${newItemId}`);
+            alert(`no item with id ${newItemId}`);
+            return;
+        }
+        this.removeSayCartIsEmpty();
         this.cartInf.addToCart(newItemId, newItemAmount);
+        return;
     }
 
-    // ! можно положить приложение, если вбить this.addToCart('1111', '6');
+    decreaseFromCart(itemId: string, howMuchToReduce = '1'): void {
+        this.cartInf.reduceItemAmount(itemId, howMuchToReduce);
+    }
+
     private addItemsfromLocalStorage(): void {
         // clear list and renew it;
         const cartList: HTMLElement | null = this.container.querySelector('.cart__list');
@@ -132,10 +137,13 @@ class CartPage extends Page {
 
     render() {
         this.createCartBodyHTML();
-        // this.addToCart('1', '22');
-        // и еще раз это же действие. проверяй localStorage;
-        // this.addToCart('12', '3');
-        // this.addToCart('12', '3');
+        // !Чисти localStorage чтобы при обновах старого не висело
+        // добавить по стандарту 24 предмета
+        // удалить 1 (без 2 аргумента по стандарту)
+        // удалить 20 из них
+        this.addToCart('20', '24');
+        this.decreaseFromCart('20');
+        this.decreaseFromCart('20', '20');
         this.addItemsfromLocalStorage();
         return this.container;
     }
