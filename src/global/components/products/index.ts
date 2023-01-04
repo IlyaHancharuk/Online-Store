@@ -5,12 +5,12 @@ import { SortOptions } from '../../constants';
 
 class Products extends Component {
     static ProductDatailsData = {
+        category: 'Category:',
+        brand: 'Brand:',
+        price: 'Price:',
+        rating: 'Rating:',
         discountPercentage: 'Discount:',
         stock: 'Stock:',
-        rating: 'Rating:',
-        brand: 'Brand:',
-        category: 'Category:',
-        price: 'Price:',
     };
 
     constructor(tagName: string, className: string) {
