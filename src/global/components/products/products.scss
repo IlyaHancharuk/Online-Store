@@ -78,18 +78,31 @@ $mainColor: #0096e6;
     height: 13%;
 }
 
+.products {
+    width: 74%;
+    border: 1px solid $mainColor;
+    border-radius: 0.7rem;
+    overflow: hidden;
+}
+
 .products__items {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    padding: .5%;
 }
 
 .products__item {
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: right top;
+    position: relative;
+    margin: 1%;
+    border: 1px solid $mainColor;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
     width: 23%;
-    border: 1px solid black;
+    /* padding-top: 20%; */
+    background-position: 0 0;
+    background-size: cover;
 }
 
 .item__info {
