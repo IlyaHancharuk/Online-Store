@@ -19,6 +19,7 @@ class Products extends Component {
 
     private createHTML(data: Data[]) {
         const sortHTML = this.createSortHTML();
+        data.sort((a, b) => a.id - b.id);
         const productsHTML = Products.createProductsHTML(data);
 
         if (sortHTML && productsHTML) {

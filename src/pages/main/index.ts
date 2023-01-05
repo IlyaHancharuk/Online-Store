@@ -13,8 +13,8 @@ class MainPage extends Page {
         stock: { from: 0, to: 100 },
     };
 
-    static filtredByCheckboxesData = data;
-    static filtredBySlidersData = data;
+    static filtredByCheckboxesData = data.sort((a, b) => a.id - b.id);
+    static filtredBySlidersData = data.sort((a, b) => a.id - b.id);
 
     constructor(id: string) {
         super(id);
@@ -56,6 +56,11 @@ class MainPage extends Page {
                     sliderByPrice &&
                     sliderByStock
                 ) {
+                    resetButton.onclick = () => {
+                        this.cleanFilters();
+                        this.createHTML();
+                    };
+
                     this.createFilterList('category', filterListByCategoty);
                     this.createFilterList('brand', filterListByBrand);
 
@@ -80,13 +85,13 @@ class MainPage extends Page {
         }
 
         if (products && stat) {
-            stat.innerText = `Found: ${MainPage.filtredByCheckboxesData.length}`;
+            const resultFiltredData = MainPage.filtredByCheckboxesData
+                .filter((el) => MainPage.filtredBySlidersData.includes(el))
+                .sort((a, b) => a.id - b.id);
+
+            stat.innerText = `Found: ${resultFiltredData.length}`;
 
             if (productsItems) productsItems.remove();
-
-            const resultFiltredData = MainPage.filtredByCheckboxesData.filter((el) =>
-                MainPage.filtredBySlidersData.includes(el)
-            );
 
             if (resultFiltredData.length !== 0) {
                 const newProductsItems = Products.createProductsHTML(resultFiltredData);
@@ -303,6 +308,13 @@ class MainPage extends Page {
             .filter((el) => +el.stock >= stockData.from && +el.stock <= stockData.to);
 
         this.changeProductsHTML();
+    }
+
+    private cleanFilters() {
+        MainPage.fltredCollection.get('category')?.clear();
+        MainPage.fltredCollection.get('brand')?.clear();
+        MainPage.filtredByCheckboxesData = data;
+        MainPage.filtredBySlidersData = data;
     }
 
     render() {
