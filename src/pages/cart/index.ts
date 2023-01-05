@@ -26,15 +26,16 @@ class CartPage extends Page {
             navTotalSumm.textContent = `Cart total: €${currentTotal}`;
         }
     }
-    //  this.refreshTotal();
-
     private createCartBodyHTML(): void {
         // header
+        if (document.querySelector('.header__total')) {
+            document.querySelector('.header__total')?.remove();
+        }
         const navTotalSumm = document.createElement('div');
         navTotalSumm.className = 'header__total';
         navTotalSumm.textContent = `Cart total: €`;
         const header = document.querySelector('.nav__body');
-        header?.append(navTotalSumm) ?? console.log('there is no HEADER');
+        header?.append(navTotalSumm);
 
         const cartMain = this.createElement('div', 'cart');
         this.container.append(cartMain);
@@ -46,9 +47,35 @@ class CartPage extends Page {
         cartLeftHeader.textContent = 'Shopping cart';
         cartLeftBody.append(cartLeftHeader);
 
-        const cartList = this.createElement('ul', 'cart__list');
+        const cartList = this.createElement('ol', 'cart__list');
         cartLeftBody.append(cartList);
 
+        // pages block
+        if (document.querySelector('.cart__pages')) {
+            document.querySelector('.cart__pages')?.remove();
+        }
+        const pagesCounterBody = this.createElement('div', 'cart__pages');
+        const pagesPages = this.createElement('div', 'cart__pages-pages');
+        pagesPages.textContent = 'Page';
+        const pagesLeftArrow = this.createElement('input', 'cart__pages-left');
+        pagesLeftArrow.setAttribute('type', 'button');
+        pagesLeftArrow.classList.add('crt-btn');
+        const pagesCirrentPage = this.createElement('span', 'cart__current-page');
+        pagesCirrentPage.textContent = '1';
+        const pagesdevider = this.createElement('span', 'cart__devider');
+        pagesdevider.textContent = '/';
+        const pagesMaxPage = this.createElement('span', 'cart__max-page');
+        pagesMaxPage.textContent = '1';
+        const pagesRightArrow = this.createElement('input', 'cart__pages-right');
+        pagesRightArrow.setAttribute('type', 'button');
+        pagesRightArrow.classList.add('crt-btn');
+        pagesCounterBody.append(pagesPages);
+        pagesCounterBody.append(pagesLeftArrow);
+        pagesCounterBody.append(pagesCirrentPage);
+        pagesCounterBody.append(pagesdevider);
+        pagesCounterBody.append(pagesMaxPage);
+        pagesCounterBody.append(pagesRightArrow);
+        cartLeftBody.append(pagesCounterBody);
         // test button to add product via ID
         {
             const testButton = this.createElement('input', 'test-button');
@@ -131,6 +158,7 @@ class CartPage extends Page {
         const itemDescr = cartClone.querySelector('.item__descr');
         const itemRating = cartClone.querySelector('.item__rating');
         const itemDiscount = cartClone.querySelector('.item__discount');
+        const itemPrice = cartClone.querySelector('.item__price');
         const itemStock = cartClone.querySelector('.item__in-stock');
         const itemPlus = cartClone.querySelector('.item__amount-plus');
         const itemMinus = cartClone.querySelector('.item__amount-minus');
@@ -143,17 +171,26 @@ class CartPage extends Page {
             itemDescr &&
             itemRating &&
             itemDiscount &&
+            itemPrice &&
             itemStock &&
             itemMinus &&
             itemHowMany &&
             itemPlus
         ) {
-            itemNum.textContent = '2';
+            // по стандарту один, а если есть localStorage, то ищем из localStorage.indexOf и тык
+            itemNum.textContent = `1`;
+            if (localStorage['RS-store-data']) {
+                const LStrg = JSON.parse(localStorage['RS-store-data']);
+                const blabla = LStrg.filter((el: localStorageData) => +el.id === itemId)[0];
+                const itemListIndex = LStrg.indexOf(blabla);
+                itemNum.textContent = `${itemListIndex + 1}`;
+            }
             itemPhoto.setAttribute('src', `${product.thumbnail}`);
             itemTitle.textContent = product.title;
             itemDescr.textContent = product.description;
             itemRating.textContent = `Rating: ${product.rating}`;
             itemDiscount.textContent = `Discount: ${product.discountPercentage}%`;
+            itemPrice.textContent = `€${product.price}`;
             itemStock.textContent = `Stock: ${product.stock}`;
             itemHowMany.value = `${itemAmount}`;
 
