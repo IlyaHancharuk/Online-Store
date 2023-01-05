@@ -2,6 +2,7 @@
 @import "global/components/main/main.scss";
 @import "global/components/footer/footer.scss";
 @import "global/components/products/products.scss";
+@import "pages/main/main.scss";
 
 @import url("https://fonts.googleapis.com/css?family=Rubik:regular&display=swap&subset=cyrillic-ext");
 
@@ -78,6 +79,5 @@ body {
   border-radius: 0.3rem;
   padding-left: 2%;
   padding-right: 2%;
-  font-size: 110%;
   cursor: pointer;
 }
