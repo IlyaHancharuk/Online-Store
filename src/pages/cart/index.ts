@@ -1,11 +1,24 @@
 import Page from '../../global/templates/page';
 import data from '../../global/data/data';
 import { localStorageData } from '../../global/types/index';
+import { Data } from '../../global/types/index';
 import cartInfo from '../../global/components/cartInfo';
 
 class CartPage extends Page {
     constructor(id: string) {
         super(id);
+    }
+
+    private findViaId(itemId: number): Data {
+        return <Data>(<unknown>data.filter((el) => el.id === itemId)[0]);
+    }
+
+    private getTotalSum(): number {
+        const localData: localStorageData[] = JSON.parse(localStorage['RS-store-data']);
+        return localData.reduce((acc, el) => {
+            console.log(this.findViaId(+el.id));
+            return acc + +this.findViaId(+el.id).price * +el.amount;
+        }, 0);
     }
 
     private createCartBodyHTML(): void {
@@ -42,8 +55,45 @@ class CartPage extends Page {
         }
         return;
     }
-    private removeFromList(listItem: HTMLElement): void {
-        // const elem = this.container.querySelector()
+
+    private refreshCartSummary(): void {
+        if (!localStorage['RS-store-data']) {
+            return;
+        }
+        const localData: localStorageData[] = JSON.parse(localStorage['RS-store-data']);
+
+        //
+        const totalProductsAmount = localData.reduce((acc, el) => {
+            return acc + +el.amount;
+        }, 0);
+
+        const fragment = document.createDocumentFragment();
+        const cartSumTemplate: HTMLTemplateElement | null = document.querySelector('#cartSummaryTemplate');
+        const cartSumClone: HTMLElement | null = <HTMLElement>cartSumTemplate?.content.cloneNode(true);
+
+        //
+        const cartAmount = cartSumClone.querySelector('.cart__products-amount');
+        const cartTotalSum = cartSumClone.querySelector('.cart__total-sum');
+        const cartPromo = cartSumClone.querySelector('.cart__promo-field');
+        const cartCheckout = cartSumClone.querySelector('.cart__checkout');
+
+        if (cartAmount && cartTotalSum && cartPromo && cartCheckout) {
+            cartAmount.textContent = `Items: ${totalProductsAmount}`;
+            cartTotalSum.textContent = `Total: €${this.getTotalSum()}`;
+        }
+
+        fragment.append(cartSumClone);
+
+        // remove old
+        const oldSummary: HTMLElement | null = this.container.querySelector('.cart__total');
+        oldSummary?.remove();
+
+        // add new
+        const cartSumBody: HTMLElement | null = this.container.querySelector('.cart');
+        if (cartSumBody) {
+            cartSumBody.append(fragment);
+            this.container.append(cartSumBody);
+        }
     }
 
     private addItemViaTemplate(itemId: number, itemAmount: number): void {
@@ -96,6 +146,7 @@ class CartPage extends Page {
                 itemHowMany.value = `${+itemHowMany.value - 1}`;
                 this.decreaseFromCart(`${product.id}`, '1');
                 // чекаем, последний ли элемент был.
+
                 this.sayCartIsEmpty();
             });
             itemPlus.addEventListener('click', () => {
@@ -115,10 +166,7 @@ class CartPage extends Page {
 
         // добавляем фрагмент в список
         const cartList: HTMLElement | null = this.container.querySelector('.cart__list');
-        if (cartList) {
-            cartList.append(fragment);
-            this.container.append(cartList);
-        }
+        cartList?.append(fragment);
     }
 
     // ! можно переписать под чуть красивее. Но кукуха пока не варит. Работает превосходно
@@ -138,6 +186,13 @@ class CartPage extends Page {
             return;
         }
     }
+    private removeSayCartIsEmpty(): void {
+        const message = this.container.querySelector('.cart__empty-text');
+        if (message) {
+            message.remove();
+        }
+        return;
+    }
 
     // ? тащим метод класса из другого класса. хохох
     private cartInf: cartInfo = new cartInfo(1, 1);
@@ -151,24 +206,19 @@ class CartPage extends Page {
         }
         this.removeSayCartIsEmpty();
         this.cartInf.addToCart(newItemId, newItemAmount);
+        this.refreshCartSummary();
         return;
     }
 
     decreaseFromCart(itemId: string, howMuchToReduce = '1'): string {
         this.cartInf.reduceItemAmount(itemId, howMuchToReduce);
+        this.refreshCartSummary();
         return '1';
-    }
-
-    private removeSayCartIsEmpty(): void {
-        const message = this.container.querySelector('.cart__empty-text');
-        if (message) {
-            message.remove();
-        }
-        return;
     }
 
     private addItemsfromLocalStorage(): void {
         // clear list and renew it;
+        this.refreshCartSummary();
         const cartList: HTMLElement | null = this.container.querySelector('.cart__list');
         if (cartList) {
             cartList.innerHTML = '';
@@ -193,6 +243,7 @@ class CartPage extends Page {
         // добавить по стандарту 24 предмета
         // удалить 1 (без 2 аргумента по стандарту)
         // удалить 20 из них
+
         /*  this.addToCart('3', '24');
          this.decreaseFromCart('3');
          this.decreaseFromCart('3', '20'); */

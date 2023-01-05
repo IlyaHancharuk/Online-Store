@@ -49,7 +49,8 @@ class cartInfo {
         localStorage['RS-store-data'] = JSON.stringify(localData);
         return;
     }
-
+    // уменьшить кол-во тоара на 1
+    // ? howMuchToReduce = '-1', то кол-во товара += 1
     reduceItemAmount(itemId: string, howMuchToReduce = '1'): void {
         // массив наших товаров
         let localData: localStorageData[];
