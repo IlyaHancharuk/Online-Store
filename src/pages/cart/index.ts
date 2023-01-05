@@ -13,15 +13,29 @@ class CartPage extends Page {
         return <Data>(<unknown>data.filter((el) => el.id === itemId)[0]);
     }
 
-    private getTotalSum(): number {
+    public getTotalSum(): number {
         const localData: localStorageData[] = JSON.parse(localStorage['RS-store-data']);
         return localData.reduce((acc, el) => {
-            console.log(this.findViaId(+el.id));
             return acc + +this.findViaId(+el.id).price * +el.amount;
         }, 0);
     }
 
+    public refreshHeaderTotal(currentTotal = '0,00'): void {
+        const navTotalSumm = document.querySelector('.header__total');
+        if (navTotalSumm) {
+            navTotalSumm.textContent = `Cart total: €${currentTotal}`;
+        }
+    }
+    //  this.refreshTotal();
+
     private createCartBodyHTML(): void {
+        // header
+        const navTotalSumm = document.createElement('div');
+        navTotalSumm.className = 'header__total';
+        navTotalSumm.textContent = `Cart total: €`;
+        const header = document.querySelector('.nav__body');
+        header?.append(navTotalSumm) ?? console.log('there is no HEADER');
+
         const cartMain = this.createElement('div', 'cart');
         this.container.append(cartMain);
 
@@ -45,7 +59,6 @@ class CartPage extends Page {
                 const id = prompt('input id to add', '1');
                 data.forEach((item) => {
                     if (item.id === Number(id)) {
-                        // this.addItemViaTemplate(Number(id), 1);
                         this.addToCart(`${Number(id)}`, '1');
                         this.addItemsfromLocalStorage();
                         return;
@@ -72,14 +85,18 @@ class CartPage extends Page {
         const cartSumClone: HTMLElement | null = <HTMLElement>cartSumTemplate?.content.cloneNode(true);
 
         //
+
         const cartAmount = cartSumClone.querySelector('.cart__products-amount');
         const cartTotalSum = cartSumClone.querySelector('.cart__total-sum');
         const cartPromo = cartSumClone.querySelector('.cart__promo-field');
         const cartCheckout = cartSumClone.querySelector('.cart__checkout');
-
+        const carttotal = this.container.querySelector('.header__total');
         if (cartAmount && cartTotalSum && cartPromo && cartCheckout) {
             cartAmount.textContent = `Items: ${totalProductsAmount}`;
             cartTotalSum.textContent = `Total: €${this.getTotalSum()}`;
+        }
+        if (carttotal) {
+            carttotal.textContent = `Cart total: €${this.getTotalSum()}`;
         }
 
         fragment.append(cartSumClone);
@@ -94,10 +111,13 @@ class CartPage extends Page {
             cartSumBody.append(fragment);
             this.container.append(cartSumBody);
         }
+        //change header total
+        this.refreshHeaderTotal(this.getTotalSum().toString());
     }
 
     private addItemViaTemplate(itemId: number, itemAmount: number): void {
         // find item via itemId
+        let currentAmount = itemAmount;
         const productArr = data.filter((dataItem) => dataItem.id == itemId);
         const product = productArr[0];
 
@@ -136,15 +156,37 @@ class CartPage extends Page {
             itemDiscount.textContent = `Discount: ${product.discountPercentage}%`;
             itemStock.textContent = `Stock: ${product.stock}`;
             itemHowMany.value = `${itemAmount}`;
-            // пока не робит. Но робит иначе
+
             itemHowMany.max = `${product.stock}`;
+            // акуенно интересная но сложно написанная мною ф-ция. Надо научиться делать проще
+            itemHowMany.addEventListener('change', (): void => {
+                console.log(itemHowMany.value);
+                console.log(currentAmount, 'cur before');
+                if (+itemHowMany.value === 0) {
+                    itemHowMany.value = '1';
+                }
+                if (+itemHowMany.value > product.stock) {
+                    this.decreaseFromCart(`${product.id}`, `${+currentAmount + -product.stock}`);
+                    itemHowMany.value = `${product.stock}`;
+                    currentAmount = product.stock;
+                    return;
+                }
+                this.decreaseFromCart(`${product.id}`, `${+currentAmount + -itemHowMany.value}`);
+                currentAmount = +itemHowMany.value;
+
+                this.sayCartIsEmpty();
+                this.refreshCartSummary();
+            });
             // делаем кнопки + и - рабочими
             itemMinus.addEventListener('click', (): void => {
                 if (+itemHowMany.value - 1 <= 0) {
                     itemNum.parentElement?.remove();
                 }
                 itemHowMany.value = `${+itemHowMany.value - 1}`;
+
                 this.decreaseFromCart(`${product.id}`, '1');
+                currentAmount = +itemHowMany.value;
+                console.log(currentAmount, 'was -');
                 // чекаем, последний ли элемент был.
 
                 this.sayCartIsEmpty();
@@ -152,12 +194,16 @@ class CartPage extends Page {
             itemPlus.addEventListener('click', () => {
                 if (+itemHowMany.value >= product.stock) {
                     itemHowMany.value = `${+itemHowMany.value}`;
+
                     this.decreaseFromCart(`${product.id}`, '0');
+
                     return;
                 }
                 // просто вызываем с минусом. Функция уменьшения почитает красиво
                 itemHowMany.value = `${+itemHowMany.value + 1}`;
                 this.decreaseFromCart(`${product.id}`, '-1');
+                currentAmount = +itemHowMany.value;
+                console.log(currentAmount, 'was +');
                 return;
             });
         }
