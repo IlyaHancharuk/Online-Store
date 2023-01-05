@@ -1,9 +1,12 @@
 $mainColor: #0096e6;
 
 .products__sort {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-around;
+    padding: .5% 0;
+    background: rgba(76,74,65,.4);
 }
 
 .sort-bar select {
@@ -19,6 +22,11 @@ $mainColor: #0096e6;
     -moz-border-radius: 1rem;
     -ms-border-radius: 1rem;
     -o-border-radius: 1rem;
+}
+
+.stat {
+    width: 20%;
+    text-align: center;
 }
 
 .search-bar input {
@@ -83,6 +91,7 @@ $mainColor: #0096e6;
     border: 1px solid $mainColor;
     border-radius: 0.7rem;
     overflow: hidden;
+    background: rgba(24, 26, 28, 0.3);
 }
 
 .products__items {

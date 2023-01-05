@@ -4,6 +4,7 @@ $borderColor: #0096e6;
     width: 25%;
     background: rgba(24, 26, 28, 0.3);
     border: 1px solid $borderColor;
+    border-radius: 0.5rem;
     padding: .5%;
     height: -moz-fit-content;
     height: fit-content;
@@ -14,7 +15,6 @@ $borderColor: #0096e6;
     align-items: center;
     justify-content: space-around;
     margin-bottom: 2%;
-    border: 1px solid $borderColor;
 }
 
 .filter__container {
@@ -22,10 +22,13 @@ $borderColor: #0096e6;
     margin-bottom: 5%;
     display: block;
     border: 1px solid $borderColor;
+    border-radius: 0.5rem;
+    background: rgba(76,74,65,.4);
 }
 
 .filter__container h3 {
     text-align: center;
+    background-color: #181a1c;
     border-bottom: 1px solid $borderColor;
 }
 
@@ -60,15 +63,36 @@ $borderColor: #0096e6;
 
 
 .slider__container {
+    border: 1px solid $borderColor;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin-bottom: 5%;
     display: flex;
     flex-direction: column;
-    width: 90%;
-    margin: 2% auto;
+    background: rgba(76,74,65,.4);
+}
+
+.slider__title {
+    text-align: center;
+    background-color: #181a1c;
+    border-bottom: 1px solid $borderColor;
 }
 
 .slider__control {
     position: relative;
     min-height: 50px;
+}
+
+.slider__value {
+    margin: 5% 0;
+    padding: 0 5%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.slider__value span {
+    width: 15%;
 }
 
 .slider__control input[type=range]::-webkit-slider-thumb {
