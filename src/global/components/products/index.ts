@@ -17,7 +17,6 @@ class Products extends Component {
     }
 
     private createHTML(data: Data[]) {
-
         const fragment = document.createDocumentFragment();
         const productsItemTemp: HTMLTemplateElement | null = document.querySelector('#productsItemTemp');
 

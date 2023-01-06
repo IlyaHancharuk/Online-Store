@@ -7,6 +7,12 @@ const Buttons = [
         text: 'Online Store',
         class: 'header__online-store',
     },
+    // {
+    //     id: PageIds.CartPage,
+    //     text: `#`,
+    //     class: 'header__total',
+    // },
+
     {
         id: PageIds.CartPage,
         text: '',
