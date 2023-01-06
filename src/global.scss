@@ -1,11 +1,15 @@
 @import "global/components/header/header.scss";
 @import "global/components/main/main.scss";
+
+@import "pages/cart/cart-styles.scss";
+
 @import "global/components/footer/footer.scss";
 @import "global/components/products/products.scss";
 @import "pages/main/main.scss";
 @import "pages/product-details/product-details.scss";
 
 @import url("https://fonts.googleapis.com/css?family=Rubik:regular&display=swap&subset=cyrillic-ext");
+
 
 *,
 *::before,

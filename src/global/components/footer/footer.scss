@@ -10,15 +10,13 @@
 
   & > * {
     width: 150px;
-    // display: inline-flex;
     text-align: center;
-    // display: block;
-    // align-self: center;
   }
 }
 
 .footer__ilya {
 }
+
 .footer__year {
   font-size: 1.2rem;
   width: auto;
@@ -29,6 +27,7 @@
   color: transparent;
   cursor: default;
 }
+
 .footer__rs-school {
   display: none;
 }

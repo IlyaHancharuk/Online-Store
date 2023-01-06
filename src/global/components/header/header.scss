@@ -1,5 +1,5 @@
-$cart: url("./cart.svg");
-$main_logo: url("./logo.svg");
+$cart: url("./assets/cart.svg");
+$main_logo: url("./assets/logo.svg");
 
 .header {
   padding: 20px 0;
@@ -13,6 +13,7 @@ $main_logo: url("./logo.svg");
 }
 
 .header__online-store {
+  order: 0;
   padding-left: 40px;
   font-weight: 700;
   font-size: 28px;
@@ -44,6 +45,7 @@ $main_logo: url("./logo.svg");
 }
 
 .header__cart {
+  order: 2;
   background: $cart no-repeat center;
   height: 40px;
   width: 40px;
@@ -56,4 +58,9 @@ $main_logo: url("./logo.svg");
     transform: translateY(-2px);
     box-shadow: 0px 0px 21px 0px rgb(255, 240, 227);
   }
+}
+
+.header__total {
+  order: 1;
+  background-color: #e64900;
 }

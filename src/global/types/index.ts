@@ -27,3 +27,16 @@ export type ProductInfoForProductPage =
     | 'stock'
     | 'brand'
     | 'category';
+
+export type localStorageData = {
+    id: number | string;
+    amount: number | string;
+};
+
+export interface footerHTMLTypes {
+    tag: string;
+    innerText?: string;
+    class?: string;
+    backgroundImage?: string;
+    href?: string;
+}

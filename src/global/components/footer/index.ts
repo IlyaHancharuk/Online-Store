@@ -2,17 +2,9 @@ import Component from '../../templates/component';
 import redIcon from '../../../assets/git-red.svg';
 import blueIcon from '../../../assets/git-blue.svg';
 import rsIcon from '../../../assets/rs_school_js.svg';
-// import "../../../../"
-// { [tag?: string, innerText?: string, href?: string] }
-interface blabla {
-    tag: string;
-    innerText?: string;
-    class?: string;
-    backgroundImage?: string;
-    href?: string;
-}
+import { footerHTMLTypes } from '../../types';
 
-const footerElements: blabla[] = [
+const footerElements: footerHTMLTypes[] = [
     {
         tag: 'a',
         class: 'footer__ilya',

@@ -6,6 +6,7 @@ import ErrorPage, { ErrorTypes } from '../error';
 import Header from '../../global/components/header';
 import Main from '../../global/components/main';
 import Footer from '../../global/components/footer';
+import cartInfo from '../../global/components/cartInfo';
 import { PageIds } from '../../global/constants';
 
 class App {
@@ -55,15 +56,18 @@ class App {
 
     constructor() {
         this.header = new Header('header', 'header');
-        this.main = new Main('main', 'app');
+        this.main = new Main('main', 'main');
         this.footer = new Footer('footer', 'footer');
     }
 
     run() {
+        cartInfo.toString();
         App.container.append(this.header.render());
         App.container.append(this.main.render());
         App.container.append(this.footer.render());
-        App.renderNewPage('main-page', this.main);
+        // сразу корзину мне открыть
+        // App.renderNewPage('main-page', this.main);
+        App.renderNewPage('cart-page', this.main);
         this.enableRouteChange();
     }
 }
