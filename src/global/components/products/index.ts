@@ -2,6 +2,7 @@ import Component from '../../templates/component';
 import { Data, ProductInfoForMainPage } from '../../types';
 import data from '../../data/data';
 import { SortOptions } from '../../constants';
+import MainPage from '../../../pages/main';
 
 class Products extends Component {
     static ProductDatailsData = {
@@ -20,7 +21,7 @@ class Products extends Component {
     private createHTML(data: Data[]) {
         const sortHTML = this.createSortHTML();
         data.sort((a, b) => a.id - b.id);
-        const productsHTML = Products.createProductsHTML(data);
+        const productsHTML = this.createProductsHTML(data);
 
         if (sortHTML && productsHTML) {
             this.container.innerHTML = '';
@@ -49,7 +50,7 @@ class Products extends Component {
                     searchInput.type = 'text';
                     searchInput.placeholder = 'Search product';
                     searchInput.addEventListener('keyup', () => {
-                        this.filterBySearch(data, searchInput);
+                        MainPage.productsFilteringUsingSearch(data);
                     });
                     searchBar.append(searchInput);
 
@@ -79,7 +80,7 @@ class Products extends Component {
         }
     }
 
-    static createProductsHTML(data: Data[]) {
+    public createProductsHTML(data: Data[]) {
         const fragment = document.createDocumentFragment();
         const productsItemTemp: HTMLTemplateElement | null = document.querySelector('#productsItemTemp');
 
@@ -104,7 +105,7 @@ class Products extends Component {
                             window.location.hash = `product-details-page/${item.id.toString()}`;
                         });
                         itemTitle.innerText = item.title;
-                        Products.addInfo(item, itemInfo);
+                        this.addInfo(item, itemInfo);
 
                         dropButton.addEventListener('click', () => console.log(`DROP ${item.title} to cart`));
                         detailsButton.addEventListener('click', () => {
@@ -121,7 +122,7 @@ class Products extends Component {
         }
     }
 
-    static addInfo(dataItem: Data, parentElem: HTMLElement) {
+    private addInfo(dataItem: Data, parentElem: HTMLElement) {
         for (const prop in Products.ProductDatailsData) {
             const key = prop as ProductInfoForMainPage;
             const infoItem = document.createElement('div');
@@ -153,61 +154,24 @@ class Products extends Component {
         select.onchange = () => {
             switch (select.value) {
                 case SortOptions.default:
-                    this.sorting('id');
+                    MainPage.productsSorting('id');
                     break;
                 case SortOptions.priceASC:
-                    this.sorting('price', 'ASC');
+                    MainPage.productsSorting('price', 'ASC');
                     break;
                 case SortOptions.priceDESC:
-                    this.sorting('price', 'DESC');
+                    MainPage.productsSorting('price', 'DESC');
                     break;
                 case SortOptions.ratingASC:
-                    this.sorting('rating', 'ASC');
+                    MainPage.productsSorting('rating', 'ASC');
                     break;
                 case SortOptions.ratingDESC:
-                    this.sorting('rating', 'DESC');
+                    MainPage.productsSorting('rating', 'DESC');
                     break;
             }
         };
 
         container.append(select);
-    }
-
-    private sorting(option: 'id' | 'price' | 'rating', mod?: 'ASC' | 'DESC') {
-        const productsItems = document.querySelector<HTMLElement>('.products__items');
-        let sortData: Data[] = [];
-
-        if (mod === 'ASC') {
-            sortData = data.sort((a, b) => a[option] - b[option]);
-        } else if (mod === 'DESC') {
-            sortData = data.sort((a, b) => b[option] - a[option]);
-        } else {
-            sortData = data.sort((a, b) => a[option] - b[option]);
-        }
-
-        if (productsItems) {
-            productsItems.remove();
-            const newProductsItems = Products.createProductsHTML(sortData);
-            if (newProductsItems) this.container.append(newProductsItems);
-        }
-    }
-
-    private filterBySearch(data: Data[], input: HTMLInputElement) {
-        const keyword = input.value.toLowerCase();
-        const filterData: Data[] = data.filter((item) => {
-            const title = item.title.toLowerCase();
-            return title.indexOf(keyword) > -1;
-        });
-
-        const productsItems = document.querySelector<HTMLElement>('.products__items');
-        const stat = document.querySelector<HTMLElement>('.stat');
-
-        if (productsItems && stat) {
-            stat.innerText = `Found: ${filterData.length}`;
-            productsItems.remove();
-            const newProductsItems = Products.createProductsHTML(filterData);
-            if (newProductsItems) this.container.append(newProductsItems);
-        }
     }
 
     render(): HTMLElement {

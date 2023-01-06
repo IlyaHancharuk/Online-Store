@@ -1,8 +1,11 @@
 import Page from '../../global/templates/page';
 import Products from '../../global/components/products';
 import data from '../../global/data/data';
+import { Data } from '../../global/types';
 
 class MainPage extends Page {
+    static products = new Products('div', 'products');
+
     static fltredCollection: Map<string, Set<string>> = new Map([
         ['category', new Set()],
         ['brand', new Set()],
@@ -13,8 +16,11 @@ class MainPage extends Page {
         stock: { from: 0, to: 100 },
     };
 
-    static filtredByCheckboxesData = data.sort((a, b) => a.id - b.id);
-    static filtredBySlidersData = data.sort((a, b) => a.id - b.id);
+    static filtredByCheckboxesData = data;
+    static filtredBySlidersData = data;
+    static filtredBySearchData = data;
+    static sortedData = data;
+    static resultFiltringData = data;
 
     constructor(id: string) {
         super(id);
@@ -26,8 +32,7 @@ class MainPage extends Page {
         if (filtersHTML) {
             this.container.innerHTML = '';
             this.container.appendChild(filtersHTML);
-            const products = new Products('div', 'products');
-            this.container.append(products.render());
+            this.container.append(MainPage.products.render());
         }
     }
 
@@ -74,7 +79,7 @@ class MainPage extends Page {
         }
     }
 
-    private changeProductsHTML() {
+    static changeProductsHTML() {
         const products = document.querySelector<HTMLElement>('.products');
         const productsItems = document.querySelector<HTMLElement>('.products__items');
         const stat = document.querySelector<HTMLElement>('.stat');
@@ -85,16 +90,13 @@ class MainPage extends Page {
         }
 
         if (products && stat) {
-            const resultFiltredData = MainPage.filtredByCheckboxesData
-                .filter((el) => MainPage.filtredBySlidersData.includes(el))
-                .sort((a, b) => a.id - b.id);
-
-            stat.innerText = `Found: ${resultFiltredData.length}`;
+            const finalData = MainPage.productFiltering();
+            stat.innerText = `Found: ${finalData.length}`;
 
             if (productsItems) productsItems.remove();
 
-            if (resultFiltredData.length !== 0) {
-                const newProductsItems = Products.createProductsHTML(resultFiltredData);
+            if (finalData.length !== 0) {
+                const newProductsItems = MainPage.products.createProductsHTML(finalData);
 
                 if (newProductsItems) products.append(newProductsItems);
             } else {
@@ -156,6 +158,7 @@ class MainPage extends Page {
             const categories = MainPage.fltredCollection.get('category');
             const brands = MainPage.fltredCollection.get('brand');
             MainPage.filtredByCheckboxesData = data;
+            MainPage.resultFiltringData = data;
 
             if (categories?.size)
                 MainPage.filtredByCheckboxesData = MainPage.filtredByCheckboxesData.filter((el) =>
@@ -166,7 +169,7 @@ class MainPage extends Page {
                     brands?.has(el['brand'])
                 );
 
-            this.changeProductsHTML();
+            MainPage.changeProductsHTML();
         });
     }
 
@@ -307,7 +310,55 @@ class MainPage extends Page {
             .filter((el) => +el.price >= priceData.from && +el.price <= priceData.to)
             .filter((el) => +el.stock >= stockData.from && +el.stock <= stockData.to);
 
-        this.changeProductsHTML();
+        MainPage.changeProductsHTML();
+    }
+
+    static productFiltering() {
+        MainPage.resultFiltringData = MainPage.sortedData
+            .filter((el) => MainPage.filtredByCheckboxesData.includes(el))
+            .filter((el) => MainPage.filtredBySlidersData.includes(el))
+            .filter((el) => MainPage.filtredBySearchData.includes(el));
+
+        return MainPage.resultFiltringData;
+    }
+
+    static productsFilteringUsingSearch(data: Data[]) {
+        const searchInput = document.querySelector<HTMLInputElement>('.search-bar input');
+        if (searchInput) {
+            const keyword = searchInput.value.toLowerCase();
+            MainPage.filtredBySearchData = data.filter((item) => {
+                const title = item.title.toLowerCase();
+                const desc = item.description.toLowerCase();
+                const brand = item.brand.toLowerCase();
+                const category = item.category.toLowerCase();
+                const price = item.price.toString().toLowerCase();
+                const stock = item.stock.toString().toLowerCase();
+                const discount = item.discountPercentage.toString().toLowerCase();
+                const rating = item.rating.toString().toLowerCase();
+
+                if (title.indexOf(keyword) > -1) return true;
+                if (desc.indexOf(keyword) > -1) return true;
+                if (brand.indexOf(keyword) > -1) return true;
+                if (category.indexOf(keyword) > -1) return true;
+                if (price.indexOf(keyword) > -1) return true;
+                if (stock.indexOf(keyword) > -1) return true;
+                if (discount.indexOf(keyword) > -1) return true;
+                if (rating.indexOf(keyword) > -1) return true;
+                return false;
+            });
+
+            MainPage.changeProductsHTML();
+        }
+    }
+
+    static productsSorting(option: 'id' | 'price' | 'rating', mod?: 'ASC' | 'DESC') {
+        if (mod === 'DESC') {
+            MainPage.sortedData.sort((a, b) => b[option] - a[option]);
+        } else {
+            MainPage.sortedData.sort((a, b) => a[option] - b[option]);
+        }
+
+        MainPage.changeProductsHTML();
     }
 
     private cleanFilters() {
@@ -315,6 +366,9 @@ class MainPage extends Page {
         MainPage.fltredCollection.get('brand')?.clear();
         MainPage.filtredByCheckboxesData = data;
         MainPage.filtredBySlidersData = data;
+        MainPage.filtredBySearchData = data;
+        MainPage.sortedData = data;
+        MainPage.resultFiltringData = data;
     }
 
     render() {
