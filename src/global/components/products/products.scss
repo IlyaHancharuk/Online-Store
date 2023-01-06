@@ -47,8 +47,8 @@ $mainColor: #0096e6;
     color: $mainColor;
 }
 
-.big-mode,
-.small-mode {
+.grid-mode-btn,
+.list-mode-btn {
     border: 1px solid $mainColor;
     height: 2rem;
     width: 2rem;
@@ -64,26 +64,28 @@ $mainColor: #0096e6;
     user-select: none;
 }
 
-.big-mode div,
-.small-mode div {
+.grid-mode-btn div,
+.list-mode-btn div {
     white-space: nowrap;
     margin: 2%;
     font-size: 50%;
-    border-radius: 100%;
     overflow: hidden;
     background: $mainColor;
     -webkit-user-select: none;
-    user-select: none
+    user-select: none;
 }
 
-.big-mode div {
+.grid-mode-btn div {
     width: 21%;
     height: 22%;
+    border-radius: 100%;
+
 }
 
-.small-mode div {
-    width: 12%;
-    height: 13%;
+.list-mode-btn div {
+    width: 92%;
+    height: 22%;
+    border-radius: 5px;
 }
 
 .products {
@@ -95,9 +97,14 @@ $mainColor: #0096e6;
 }
 
 .products__items {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, 24%);
+    justify-content: space-around;
     padding: .5%;
+}
+
+.list-mode {
+    grid-template-columns: 1fr;
 }
 
 .products__item {
@@ -108,10 +115,10 @@ $mainColor: #0096e6;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    width: 23%;
     background-position: 0 0;
     background-size: cover;
 }
+
 
 .item__text {
     width: 100%;

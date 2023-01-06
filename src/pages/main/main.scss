@@ -1,5 +1,11 @@
 $borderColor: #0096e6;
 
+#emptiesProducts {
+    margin-top: 20%;
+    text-align: center;
+    font-size: 3rem;
+}
+
 .filters {
     width: 25%;
     background: rgba(24, 26, 28, 0.3);
@@ -81,6 +87,7 @@ $borderColor: #0096e6;
 .slider__control {
     position: relative;
     min-height: 50px;
+    padding-bottom: 5%;
 }
 
 .slider__value {

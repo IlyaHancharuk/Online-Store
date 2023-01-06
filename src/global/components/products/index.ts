@@ -54,24 +54,34 @@ class Products extends Component {
                     });
                     searchBar.append(searchInput);
 
-                    const bigMode = document.createElement('div');
-                    bigMode.className = 'big-mode active-mode';
+                    const gridModeBtn = document.createElement('div');
+                    gridModeBtn.className = 'grid-mode-btn active-mode';
                     for (let i = 0; i < 16; i += 1) {
                         const point = document.createElement('div');
                         point.innerText = '.';
-                        bigMode.append(point);
+                        gridModeBtn.append(point);
                     }
+                    gridModeBtn.onclick = () => {
+                        if (document.querySelector('.products__items')?.classList.contains('list-mode')) {
+                            document.querySelector('.products__items')?.classList.remove('list-mode');
+                        }
+                    };
 
-                    const smallMode = document.createElement('div');
-                    smallMode.className = 'small-mode';
-                    for (let i = 0; i < 36; i += 1) {
+                    const listModeBtn = document.createElement('div');
+                    listModeBtn.className = 'list-mode-btn';
+                    for (let i = 0; i < 4; i += 1) {
                         const point = document.createElement('div');
                         point.innerText = '.';
-                        smallMode.append(point);
+                        listModeBtn.append(point);
                     }
+                    listModeBtn.onclick = () => {
+                        if (!document.querySelector('.products__items')?.classList.contains('list-mode')) {
+                            document.querySelector('.products__items')?.classList.add('list-mode');
+                        }
+                    };
 
-                    viewMode.append(bigMode);
-                    viewMode.append(smallMode);
+                    viewMode.append(gridModeBtn);
+                    viewMode.append(listModeBtn);
 
                     fragment.append(productClone);
                 }
