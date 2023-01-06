@@ -111,19 +111,26 @@ class ProductDetailsPage extends Page {
         breadcrumb.append(storeLink);
 
         breadcrumb.append('>>');
-        breadcrumb.append((document.createElement('a').innerText = dataItem.category.toUpperCase()));
+        const spanCategory = document.createElement('span');
+        spanCategory.innerText = dataItem.category.toUpperCase();
+        breadcrumb.append(spanCategory);
 
         breadcrumb.append('>>');
-        breadcrumb.append((document.createElement('a').innerText = dataItem.brand.toUpperCase()));
+        const spanBrand = document.createElement('span');
+        spanBrand.innerText = dataItem.brand.toUpperCase();
+        breadcrumb.append(spanBrand);
 
         breadcrumb.append('>>');
-        breadcrumb.append((document.createElement('a').innerText = dataItem.title));
+        const spanTitle = document.createElement('span');
+        spanTitle.innerText = dataItem.title;
+        breadcrumb.append(spanTitle);
 
         this.container.append(breadcrumb);
     }
 
     render() {
         this.createHTML(data);
+        this.container.className = 'product__container';
         return this.container;
     }
 }

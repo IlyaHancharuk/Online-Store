@@ -145,16 +145,26 @@ $mainColor: #0096e6;
     border-bottom: 1px solid $mainColor;
     border-right: 1px solid $mainColor;
     padding: 1%;
-}
 
-.info__item {
-    font-size: .7rem;
-    display: flex;
-}
+    .info__item {
+        font-size: .7rem;
+        display: flex;
 
-.info__item p {
-    margin-left: 5%;
-    color: rgb(39, 39, 39);
+        P {
+            margin-left: 5%;
+            color: rgb(39, 39, 39);
+        }
+    }
+
+    .info__item:nth-child(3)::after {
+        content: "$";
+        color: rgb(39, 39, 39);
+    }
+
+    .info__item:nth-child(5)::after {
+        content: "%";
+        color: rgb(39, 39, 39);
+    }
 }
 
 .item__buttons {
