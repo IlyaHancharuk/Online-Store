@@ -1,3 +1,11 @@
-.main {
+$borderColor: #0096e6;
+
+.app {
   flex: 1 1 auto;
+}
+
+#main-page {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }

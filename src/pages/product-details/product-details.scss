@@ -1,0 +1,131 @@
+$mainColor: #0096e6;
+
+.product__container {
+    margin: 0 auto;
+    width: 80%;
+    min-height: 85vh;
+}
+
+.breadcrumb {
+    margin: 2% auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+
+    a,
+    span {
+        color: $mainColor;
+    }
+}
+
+.product {
+    width: 100%;
+    border: 2px solid $mainColor;
+    border-radius: 1rem;
+    background: rgba(24,26,28,.5);
+    overflow: hidden;
+}
+
+.product__title {
+    width: 100%;
+    text-align: center;
+    background: #181a1c;
+    border-bottom: 1px solid $mainColor;
+
+    h1 {
+        font-size: 150%;
+        padding: .5%;
+    }
+}
+
+.product__data {
+    display: flex;
+    width: 100%;
+    padding: .5%;
+}
+
+.product__photos {
+    width: 40%;
+    display: flex;
+}
+
+.slides {
+    width: 25%;
+
+    img {
+        width: 80%;
+        border: 1px solid $mainColor;
+        border-radius: 0.5rem;
+        cursor: pointer;
+    }
+}
+
+.grand-photo {
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        max-height: 40vh;
+        width: auto;
+        max-width: 100%;
+        border: 1px solid $mainColor;
+        border-radius: 0.5rem;
+    }
+}
+
+.product__info {
+    width: 40%;
+
+    .info__item {
+        margin: 1% auto;
+        border: 1px solid $mainColor;
+        border-radius: 0.3rem;
+        overflow: hidden;
+        text-align: center;
+    
+        h3 {
+            text-align: center;
+            background-color: #181a1c;
+            padding: .7%;
+        }
+    
+        p {
+            padding: .7%;
+        }
+    }
+}
+
+.add-to-cart {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5%;
+    text-align: center;
+}
+
+.price {
+    width: 90%;
+    font-size: 200%;
+    text-shadow: 0 0 10px rgb(184 24 24), 0 0 20px red, 0 0 30px red, 0 0 40px red;
+}
+
+.price::after {
+    content: "$";
+}
+
+.cart-buttons {
+    width: 90%;
+
+    .drop-button {
+        width: 100%;
+    }
+
+    .buy-button {
+        width: 100%;
+    }
+}

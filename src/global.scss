@@ -4,6 +4,9 @@
 @import "pages/cart/cart-styles.scss";
 
 @import "global/components/footer/footer.scss";
+@import "global/components/products/products.scss";
+@import "pages/main/main.scss";
+@import "pages/product-details/product-details.scss";
 
 @import url("https://fonts.googleapis.com/css?family=Rubik:regular&display=swap&subset=cyrillic-ext");
 
@@ -51,4 +54,35 @@ body {
   font-size: 16px;
   color: #616161;
   scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0096e6;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+
+.button {
+  background-color: $borderColor;
+  border: 1px solid $borderColor;
+  border-radius: 0.3rem;
+  padding: 2%;
+  margin: 2%;
+  cursor: pointer;
 }
