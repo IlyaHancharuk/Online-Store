@@ -279,6 +279,7 @@ class CartPage extends Page {
 
     // ? тащим метод класса из другого класса. хохох
     private cartInf: cartInfo = new cartInfo(1, 1);
+    // метод добавляет элемент по айди, и колво = 1
     addToCart(newItemId: string, newItemAmount: string): void {
         // if no such ItemId in database:
         const productArr = data.filter((dataItem) => dataItem.id == +newItemId)[0];
