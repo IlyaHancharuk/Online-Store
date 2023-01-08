@@ -12,14 +12,14 @@ class CartPage extends Page {
     // ? тащим метод класса из другого класса. хохох
     private cartInf: cartInfo = new cartInfo(1, 1);
 
-    private findViaId(itemId: number): Data {
+    static findViaId(itemId: number): Data {
         return <Data>(<unknown>data.filter((el) => el.id === itemId)[0]);
     }
 
-    public getTotalSum(): number {
+    static getTotalSum(): number {
         const localData: localStorageData[] = JSON.parse(localStorage['RS-store-data']);
         return localData.reduce((acc, el) => {
-            return acc + +this.findViaId(+el.id).price * +el.amount;
+            return acc + +CartPage.findViaId(+el.id).price * +el.amount;
         }, 0);
     }
 
@@ -30,16 +30,6 @@ class CartPage extends Page {
         }
     }
     private createCartBodyHTML(): void {
-        // header
-        if (document.querySelector('.header__total')) {
-            document.querySelector('.header__total')?.remove();
-        }
-        const navTotalSumm = document.createElement('div');
-        navTotalSumm.className = 'header__total';
-        navTotalSumm.textContent = `Cart total: €`;
-        const header = document.querySelector('.nav__body');
-        header?.append(navTotalSumm);
-
         const cartMain = this.createElement('div', 'cart');
         this.container.append(cartMain);
 
@@ -172,22 +162,22 @@ class CartPage extends Page {
         return;
     }
 
-    private refreshCartSummary(): void {
-        if (!localStorage['RS-store-data']) {
-            return;
-        }
+    static getTotalItems(): string {
+        if (!localStorage['RS-store-data']) return '';
         const localData: localStorageData[] = JSON.parse(localStorage['RS-store-data']);
 
-        //
         const totalProductsAmount = localData.reduce((acc, el) => {
             return acc + +el.amount;
         }, 0);
+        return totalProductsAmount.toString();
+    }
+    private refreshCartSummary(): void {
+        // ! мб раскоммнтить
+        // if (!localStorage['RS-store-data']) return;
 
         const fragment = document.createDocumentFragment();
         const cartSumTemplate: HTMLTemplateElement | null = document.querySelector('#cartSummaryTemplate');
         const cartSumClone: HTMLElement | null = <HTMLElement>cartSumTemplate?.content.cloneNode(true);
-
-        //
 
         const cartAmount = cartSumClone.querySelector('.cart__products-amount');
         const cartTotalSum = cartSumClone.querySelector('.cart__total-sum');
@@ -195,8 +185,8 @@ class CartPage extends Page {
         const cartCheckout = cartSumClone.querySelector('.cart__checkout');
         const carttotal = this.container.querySelector('.header__total');
         if (cartAmount && cartTotalSum && cartPromo && cartCheckout) {
-            cartAmount.textContent = `Items: ${totalProductsAmount}`;
-            cartTotalSum.textContent = `Total: €${this.getTotalSum()}`;
+            cartAmount.textContent = `Items: ${CartPage.getTotalItems()}`;
+            cartTotalSum.textContent = `Total: €${CartPage.getTotalSum()}`;
 
             cartCheckout.addEventListener('click', () => {
                 const popupBody = document.querySelector('.cart-pup__outer');
@@ -204,7 +194,7 @@ class CartPage extends Page {
             });
         }
         if (carttotal) {
-            carttotal.textContent = `Cart total: €${this.getTotalSum()}`;
+            carttotal.textContent = `Cart total: €${CartPage.getTotalSum()}`;
         }
 
         fragment.append(cartSumClone);
@@ -220,7 +210,7 @@ class CartPage extends Page {
             this.container.append(cartSumBody);
         }
         //change header total
-        this.refreshHeaderTotal(this.getTotalSum().toString());
+        this.refreshHeaderTotal(CartPage.getTotalSum().toString());
     }
     public openCartPopup(): void {
         console.log('');

@@ -27,13 +27,23 @@ class Header extends Component {
         const cart = document.createElement('a');
         cart.href = `#${PageIds.CartPage}`;
         cart.className = 'header__cart';
+
+        const totalAmount = document.createElement('span');
+        totalAmount.className = 'header__total-amount';
+        totalAmount.textContent = '';
+        cart.append(totalAmount);
+
         headerItems.append(cart);
 
         this.container.append(headerItems);
     }
 
     static getTotalSum(): number {
+        if (!localStorage['RS-store-data']) {
+            return 0;
+        }
         const localData: localStorageData[] = JSON.parse(localStorage['RS-store-data']);
+
         return localData.reduce((acc, el) => {
             return acc + +this.findViaId(+el.id).price * +el.amount;
         }, 0);

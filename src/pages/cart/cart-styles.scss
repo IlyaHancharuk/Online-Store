@@ -255,6 +255,7 @@
     background-color: rgba(95, 158, 160, 0.543);
   }
   &__outer.closed {
+    display: none;
     height: 0;
     width: 0;
     visibility: hidden;
