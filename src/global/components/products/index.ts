@@ -115,7 +115,12 @@ class Products extends Component {
                     const detailsButton = productClone.querySelector<HTMLElement>('.details-button');
 
                     if (productItem && productText && itemTitle && itemInfo && dropButton && detailsButton) {
-                        productItem.style.backgroundImage = `url(${item.thumbnail})`;
+                        const img = new Image();
+                        img.src = item.thumbnail;
+                        img.onload = () => {
+                            productItem.style.backgroundImage = `url(${item.thumbnail})`;
+                        };
+
                         productText.addEventListener('click', () => {
                             window.location.hash = `product-details-page/${item.id.toString()}`;
                         });
