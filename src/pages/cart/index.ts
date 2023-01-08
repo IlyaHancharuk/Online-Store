@@ -9,6 +9,9 @@ class CartPage extends Page {
         super(id);
     }
 
+    // ? тащим метод класса из другого класса. хохох
+    private cartInf: cartInfo = new cartInfo(1, 1);
+
     private findViaId(itemId: number): Data {
         return <Data>(<unknown>data.filter((el) => el.id === itemId)[0]);
     }
@@ -93,6 +96,79 @@ class CartPage extends Page {
                 });
             });
         }
+
+        // popup adding
+        const fragment2 = document.createDocumentFragment();
+        const popupTemplate: HTMLTemplateElement | null = document.querySelector('#cartPopup');
+        const popupClone: HTMLElement | null = <HTMLElement>popupTemplate?.content.cloneNode(true);
+
+        const cardNumber: HTMLInputElement | null = popupClone.querySelector('.card__number');
+        const cardData: HTMLInputElement | null = popupClone.querySelector('.card__data');
+        const cardCvv: HTMLInputElement | null = popupClone.querySelector('.card__cvv');
+        const cardLogo: HTMLInputElement | null = popupClone.querySelector('.card__logo');
+
+        const digg = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+        if (cardNumber && cardData && cardCvv && cardLogo) {
+            cardNumber.addEventListener('input', () => {
+                if (!digg.includes(+cardNumber.value[cardNumber.value.length - 1])) {
+                    cardNumber.value = cardNumber.value.slice(0, cardNumber.value.length - 1);
+                }
+                if (cardNumber.value.length > 16) {
+                    cardNumber.value = cardNumber.value.slice(0, 16);
+                }
+
+                if (cardNumber.value[0] === '3') {
+                    cardLogo.className = 'card__logo  amex-card';
+                } else if (cardNumber.value[0] === '4') {
+                    cardLogo.className = 'card__logo  visa-card';
+                } else if (cardNumber.value[0] === '5') {
+                    cardLogo.className = 'card__logo  ms-card';
+                } else {
+                    cardLogo.className = 'card__logo';
+                }
+            });
+
+            cardData.addEventListener('input', () => {
+                if (!digg.includes(+cardData.value[cardData.value.length - 1])) {
+                    cardData.value = cardData.value.slice(0, cardData.value.length - 1);
+                    // console.log(cardData.value.slice(0, cardData.value.length));
+                }
+                if (cardData.value.length > 5) {
+                    cardData.value = cardData.value.slice(0, 5);
+                }
+                if (cardData.value.length >= 2) {
+                    const data = [...cardData.value].filter((el) => digg.includes(+el));
+                    const head = data.slice(0, 2);
+                    const tail = data.slice(2, 4);
+                    if (+head[0] > 1) {
+                        head[0] = '1';
+                    }
+                    if (head[0] == '1' && +head[1] > 2) {
+                        head[1] = '2';
+                    }
+                    const center = ['/'];
+                    const all = head.concat(center, tail);
+                    cardData.value = all.join('');
+                    if (data.length === 1) {
+                        cardData.value = data.join('');
+                    }
+                }
+            });
+
+            cardCvv.addEventListener('input', () => {
+                if (!digg.includes(+cardCvv.value[cardCvv.value.length - 1])) {
+                    cardCvv.value = cardCvv.value.slice(0, cardCvv.value.length - 1);
+                }
+                if (cardCvv.value.length > 3) {
+                    cardCvv.value = cardCvv.value.slice(0, 3);
+                }
+            });
+        }
+
+        fragment2.append(popupClone);
+        const boddy = document.body;
+        boddy?.append(fragment2);
+
         return;
     }
 
@@ -121,6 +197,11 @@ class CartPage extends Page {
         if (cartAmount && cartTotalSum && cartPromo && cartCheckout) {
             cartAmount.textContent = `Items: ${totalProductsAmount}`;
             cartTotalSum.textContent = `Total: €${this.getTotalSum()}`;
+
+            cartCheckout.addEventListener('click', () => {
+                const popupBody = document.querySelector('.cart-pup__outer');
+                popupBody?.classList.remove('closed');
+            });
         }
         if (carttotal) {
             carttotal.textContent = `Cart total: €${this.getTotalSum()}`;
@@ -140,6 +221,10 @@ class CartPage extends Page {
         }
         //change header total
         this.refreshHeaderTotal(this.getTotalSum().toString());
+    }
+    public openCartPopup(): void {
+        console.log('');
+        return;
     }
 
     private addItemViaTemplate(itemId: number, itemAmount: number): void {
@@ -277,8 +362,6 @@ class CartPage extends Page {
         return;
     }
 
-    // ? тащим метод класса из другого класса. хохох
-    private cartInf: cartInfo = new cartInfo(1, 1);
     addToCart(newItemId: string, newItemAmount: string): void {
         // if no such ItemId in database:
         const productArr = data.filter((dataItem) => dataItem.id == +newItemId)[0];

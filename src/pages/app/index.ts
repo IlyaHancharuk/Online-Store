@@ -65,7 +65,6 @@ class App {
         App.container.append(this.header.render());
         App.container.append(this.main.render());
         App.container.append(this.footer.render());
-        // сразу корзину мне открыть
         // App.renderNewPage('main-page', this.main);
         App.renderNewPage('cart-page', this.main);
         this.enableRouteChange();
