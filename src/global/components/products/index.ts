@@ -4,6 +4,7 @@ import data from '../../data/data';
 import { SortOptions } from '../../constants';
 import MainPage from '../../../pages/main';
 import cartInfo from '../cartInfo';
+import Header from '../header';
 
 class Products extends Component {
     private cartInfo: cartInfo;
@@ -138,6 +139,12 @@ class Products extends Component {
                             } else {
                                 this.cartInfo.addToCart(itemId, '1');
                                 dropButton.innerText = 'Drop from cart';
+                            }
+
+                            const sum = Header.getTotalSum();
+                            const total = document.querySelector<HTMLElement>('.header__total');
+                            if (total) {
+                                total.innerText = `Cart total: €${sum}`;
                             }
                         });
 

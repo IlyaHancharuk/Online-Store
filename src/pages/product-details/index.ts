@@ -2,6 +2,7 @@ import Page from '../../global/templates/page';
 import { Data, localStorageData, ProductInfoForProductPage } from '../../global/types';
 import data from '../../global/data/data';
 import cartInfo from '../../global/components/cartInfo';
+import Header from '../../global/components/header';
 
 class ProductDetailsPage extends Page {
     private productId: number | undefined;
@@ -65,6 +66,12 @@ class ProductDetailsPage extends Page {
                             } else {
                                 this.cartInfo.addToCart(itemId, '1');
                                 dropButton.innerText = 'DROP FROM CART';
+                            }
+
+                            const sum = Header.getTotalSum();
+                            const total = document.querySelector<HTMLElement>('.header__total');
+                            if (total) {
+                                total.innerText = `Cart total: €${sum}`;
                             }
                         });
 
