@@ -41,9 +41,7 @@ class Header extends Component {
     }
 
     static getTotalSum(): number {
-        if (!localStorage['RS-store-data']) {
-            return 0;
-        }
+        if (!localStorage['RS-store-data']) return 0;
         const localData: localStorageData[] = JSON.parse(localStorage['RS-store-data']);
 
         return localData.reduce((acc, el) => {

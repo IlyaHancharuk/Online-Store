@@ -115,7 +115,16 @@ class Products extends Component {
                     const detailsButton = productClone.querySelector<HTMLElement>('.details-button');
 
                     if (productItem && productText && itemTitle && itemInfo && dropButton && detailsButton) {
-                        productItem.style.backgroundImage = `url(${item.thumbnail})`;
+                        const itemImage = document.createElement('div');
+                        itemImage.className = 'item__image';
+                        const img = new Image();
+                        img.loading = 'lazy';
+                        img.style.position = 'absolute';
+                        img.src = item.thumbnail;
+                        img.alt = `${item.title} image`;
+                        itemImage.append(img);
+                        productItem.append(itemImage);
+
                         productText.addEventListener('click', () => {
                             window.location.hash = `product-details-page/${item.id.toString()}`;
                         });
