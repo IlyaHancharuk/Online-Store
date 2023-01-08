@@ -27,6 +27,9 @@
   // background: cyan;
   display: flex;
 }
+.cart__left-body {
+  flex: 1 1 auto;
+}
 .cart__body {
   position: relative;
 }
@@ -149,11 +152,15 @@
 // pages
 
 .cart__pages {
+  display: block;
   text-align: center;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+}
+.cart__pages.closed {
+  display: none;
 }
 .cart__pages-pages {
   font-size: 1.2rem;
@@ -264,6 +271,7 @@
   }
 
   &__body {
+    position: relative;
     max-width: 600px;
     max-height: 900px;
     padding: 30px 20px;
@@ -271,6 +279,18 @@
 
     margin: auto;
     margin-top: 200px;
+  }
+  &__closeBTN {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+    &:hover {
+      transform: scale(1.2);
+      color: black;
+    }
   }
 
   &__title {

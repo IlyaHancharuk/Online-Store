@@ -2,6 +2,7 @@ import Component from '../../templates/component';
 import { PageIds } from '../../constants';
 import { Data, localStorageData } from '../../types';
 import data from '../../data/data';
+import CartPage from '../../../pages/cart';
 
 class Header extends Component {
     constructor(tagName: string, className: string) {
@@ -30,7 +31,8 @@ class Header extends Component {
 
         const totalAmount = document.createElement('span');
         totalAmount.className = 'header__total-amount';
-        totalAmount.textContent = '';
+        totalAmount.textContent = `${CartPage.refreshCartIcontotal()}`;
+
         cart.append(totalAmount);
 
         headerItems.append(cart);

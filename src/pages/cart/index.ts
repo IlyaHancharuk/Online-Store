@@ -17,6 +17,7 @@ class CartPage extends Page {
     }
 
     static getTotalSum(): number {
+        if (!localStorage['RS-store-data']) return 0;
         const localData: localStorageData[] = JSON.parse(localStorage['RS-store-data']);
         return localData.reduce((acc, el) => {
             return acc + +CartPage.findViaId(+el.id).price * +el.amount;
@@ -88,17 +89,22 @@ class CartPage extends Page {
         }
 
         // popup adding
+
         const fragment2 = document.createDocumentFragment();
         const popupTemplate: HTMLTemplateElement | null = document.querySelector('#cartPopup');
         const popupClone: HTMLElement | null = <HTMLElement>popupTemplate?.content.cloneNode(true);
 
+        const popupCross: HTMLInputElement | null = popupClone.querySelector('.cart-pup__closeBTN');
         const cardNumber: HTMLInputElement | null = popupClone.querySelector('.card__number');
         const cardData: HTMLInputElement | null = popupClone.querySelector('.card__data');
         const cardCvv: HTMLInputElement | null = popupClone.querySelector('.card__cvv');
         const cardLogo: HTMLInputElement | null = popupClone.querySelector('.card__logo');
 
         const digg = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-        if (cardNumber && cardData && cardCvv && cardLogo) {
+        if (cardNumber && cardData && cardCvv && cardLogo && popupCross) {
+            popupCross.addEventListener('click', () => {
+                CartPage.closePopup();
+            });
             cardNumber.addEventListener('input', () => {
                 if (!digg.includes(+cardNumber.value[cardNumber.value.length - 1])) {
                     cardNumber.value = cardNumber.value.slice(0, cardNumber.value.length - 1);
@@ -161,9 +167,34 @@ class CartPage extends Page {
 
         return;
     }
+    // проще было оставить нолик висеть. Но это некрасиво! Вызывай эту ф-цию при клике по кнопке добавить в корзину!
+    static refreshCartIcontotal(): string {
+        const cartIconTotal = document.querySelector('.header__total-amount');
+        if (cartIconTotal) {
+            if (+CartPage.getTotalItems() === 0) {
+                cartIconTotal.textContent = ``;
+                return '';
+            } else {
+                cartIconTotal.textContent = `${CartPage.getTotalItems()}`;
+            }
+        }
+        if (+CartPage.getTotalItems() === 0) {
+            return '';
+        }
+        return CartPage.getTotalItems();
+    }
 
+    static closePopup(): void {
+        const popupBody = document.querySelector('.cart-pup__outer');
+        popupBody?.classList.add('closed');
+    }
+    static openPopup(): void {
+        const popupBody = document.querySelector('.cart-pup__outer');
+        popupBody?.classList.remove('closed');
+    }
     static getTotalItems(): string {
         if (!localStorage['RS-store-data']) return '';
+
         const localData: localStorageData[] = JSON.parse(localStorage['RS-store-data']);
 
         const totalProductsAmount = localData.reduce((acc, el) => {
@@ -172,14 +203,12 @@ class CartPage extends Page {
         return totalProductsAmount.toString();
     }
     private refreshCartSummary(): void {
-        // ! мб раскоммнтить
-        // if (!localStorage['RS-store-data']) return;
-
         const fragment = document.createDocumentFragment();
         const cartSumTemplate: HTMLTemplateElement | null = document.querySelector('#cartSummaryTemplate');
         const cartSumClone: HTMLElement | null = <HTMLElement>cartSumTemplate?.content.cloneNode(true);
 
         const cartAmount = cartSumClone.querySelector('.cart__products-amount');
+        const cartOuter = document.querySelector('.cart-pup__outer');
         const cartTotalSum = cartSumClone.querySelector('.cart__total-sum');
         const cartPromo = cartSumClone.querySelector('.cart__promo-field');
         const cartCheckout = cartSumClone.querySelector('.cart__checkout');
@@ -189,8 +218,7 @@ class CartPage extends Page {
             cartTotalSum.textContent = `Total: €${CartPage.getTotalSum()}`;
 
             cartCheckout.addEventListener('click', () => {
-                const popupBody = document.querySelector('.cart-pup__outer');
-                popupBody?.classList.remove('closed');
+                CartPage.openPopup();
             });
         }
         if (carttotal) {
@@ -211,6 +239,23 @@ class CartPage extends Page {
         }
         //change header total
         this.refreshHeaderTotal(CartPage.getTotalSum().toString());
+
+        // add total to cart icon (header)
+        CartPage.refreshCartIcontotal();
+        // close when click out of the popup
+        cartOuter?.addEventListener('mouseup', (event) => {
+            console.log('clicj');
+            const target = event.target as HTMLElement;
+            if (event.target as Element) {
+                const lal = target.closest('.cart-pup__body');
+                if (!lal) {
+                    CartPage.closePopup();
+                }
+            }
+        });
+
+        const pages: HTMLElement | null = this.container.querySelector('.cart__pages');
+        pages?.classList.remove('closed');
     }
     public openCartPopup(): void {
         console.log('');
@@ -336,11 +381,20 @@ class CartPage extends Page {
                 const emptyCartPageText = this.createElement('p', 'cart__empty-text');
                 emptyCartPageText.innerText = 'The cart is empty yet ¯\\_( ◡ ₒ ◡ )_/¯';
                 this.container.append(emptyCartPageText);
+                const oldSummary: HTMLElement | null = this.container.querySelector('.cart__total');
+                oldSummary?.remove();
+                const pages: HTMLElement | null = this.container.querySelector('.cart__pages');
+                pages?.classList.add('closed');
             }
         } else {
             const emptyCartPageText = this.createElement('p', 'cart__empty-text');
             emptyCartPageText.innerText = 'The cart is empty yet ¯\\_( ◡ ₒ ◡ )_/¯';
             this.container.append(emptyCartPageText);
+            const oldSummary: HTMLElement | null = this.container.querySelector('.cart__total');
+            oldSummary?.remove();
+            const pages: HTMLElement | null = this.container.querySelector('.cart__pages');
+            pages?.classList.add('closed');
+
             return;
         }
     }
