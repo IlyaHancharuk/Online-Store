@@ -1,9 +1,12 @@
 import Page from '../../global/templates/page';
-import { Data, ProductInfoForProductPage } from '../../global/types';
+import { Data, localStorageData, ProductInfoForProductPage } from '../../global/types';
 import data from '../../global/data/data';
+import cartInfo from '../../global/components/cartInfo';
+import Header from '../../global/components/header';
 
 class ProductDetailsPage extends Page {
-    productId: number | undefined;
+    private productId: number | undefined;
+    private cartInfo: cartInfo;
 
     static ProductDatailsData = {
         description: 'Description:',
@@ -17,6 +20,7 @@ class ProductDetailsPage extends Page {
     constructor(id: string, productId: number | undefined) {
         super(id);
         this.productId = productId;
+        this.cartInfo = new cartInfo(1, 1);
     }
 
     createHTML(data: Data[]) {
@@ -44,7 +48,38 @@ class ProductDetailsPage extends Page {
                         this.addPhotos(product, grandPhoto, slides);
                         this.addInfo(product, productInfo);
                         price.innerText = product.price.toString();
+
+                        const itemId = product.id.toString();
+
+                        if (this.checkInLocalStorage(itemId)) {
+                            dropButton.innerText = 'DROP FROM CART';
+                        } else {
+                            dropButton.innerText = 'ADD TO CART';
+                        }
+
+                        dropButton.addEventListener('click', () => {
+                            if (this.checkInLocalStorage(itemId)) {
+                                while (this.checkInLocalStorage(itemId)) {
+                                    this.cartInfo.reduceItemAmount(itemId);
+                                }
+                                dropButton.innerText = 'ADD TO CART';
+                            } else {
+                                this.cartInfo.addToCart(itemId, '1');
+                                dropButton.innerText = 'DROP FROM CART';
+                            }
+
+                            const sum = Header.getTotalSum();
+                            const total = document.querySelector<HTMLElement>('.header__total');
+                            if (total) {
+                                total.innerText = `Cart total: €${sum}`;
+                            }
+                        });
+
+                        buyButton.innerText = 'BUY NOW';
                         buyButton.addEventListener('click', () => {
+                            if (!this.checkInLocalStorage(itemId)) {
+                                this.cartInfo.addToCart(itemId, '1');
+                            }
                             window.location.hash = '#cart-page';
                         });
 
@@ -126,6 +161,21 @@ class ProductDetailsPage extends Page {
         breadcrumb.append(spanTitle);
 
         this.container.append(breadcrumb);
+    }
+
+    private checkInLocalStorage(id: string) {
+        let localData: localStorageData[] = [];
+
+        if (localStorage['RS-store-data']) {
+            localData = JSON.parse(localStorage['RS-store-data']);
+        }
+
+        const alreadyInLocalData: localStorageData = localData.filter((el) => el.id === id)[0];
+        if (alreadyInLocalData) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     render() {

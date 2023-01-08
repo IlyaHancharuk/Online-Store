@@ -1,10 +1,14 @@
 import Component from '../../templates/component';
-import { Data, ProductInfoForMainPage } from '../../types';
+import { Data, localStorageData, ProductInfoForMainPage } from '../../types';
 import data from '../../data/data';
 import { SortOptions } from '../../constants';
 import MainPage from '../../../pages/main';
+import cartInfo from '../cartInfo';
+import Header from '../header';
 
 class Products extends Component {
+    private cartInfo: cartInfo;
+
     static ProductDatailsData = {
         category: 'Category:',
         brand: 'Brand:',
@@ -16,6 +20,7 @@ class Products extends Component {
 
     constructor(tagName: string, className: string) {
         super(tagName, className);
+        this.cartInfo = new cartInfo(1, 1);
     }
 
     private createHTML(data: Data[]) {
@@ -117,7 +122,33 @@ class Products extends Component {
                         itemTitle.innerText = item.title;
                         this.addInfo(item, itemInfo);
 
-                        dropButton.addEventListener('click', () => console.log(`DROP ${item.title} to cart`));
+                        const itemId = item.id.toString();
+
+                        if (this.checkInLocalStorage(itemId)) {
+                            dropButton.innerText = 'Drop from cart';
+                        } else {
+                            dropButton.innerText = 'Add to cart';
+                        }
+
+                        dropButton.addEventListener('click', () => {
+                            if (this.checkInLocalStorage(itemId)) {
+                                while (this.checkInLocalStorage(itemId)) {
+                                    this.cartInfo.reduceItemAmount(itemId);
+                                }
+                                dropButton.innerText = 'Add to cart';
+                            } else {
+                                this.cartInfo.addToCart(itemId, '1');
+                                dropButton.innerText = 'Drop from cart';
+                            }
+
+                            const sum = Header.getTotalSum();
+                            const total = document.querySelector<HTMLElement>('.header__total');
+                            if (total) {
+                                total.innerText = `Cart total: €${sum}`;
+                            }
+                        });
+
+                        detailsButton.innerText = 'Details';
                         detailsButton.addEventListener('click', () => {
                             window.location.hash = `product-details-page/${item.id.toString()}`;
                         });
@@ -182,6 +213,21 @@ class Products extends Component {
         };
 
         container.append(select);
+    }
+
+    private checkInLocalStorage(id: string) {
+        let localData: localStorageData[] = [];
+
+        if (localStorage['RS-store-data']) {
+            localData = JSON.parse(localStorage['RS-store-data']);
+        }
+
+        const alreadyInLocalData: localStorageData = localData.filter((el) => el.id === id)[0];
+        if (alreadyInLocalData) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     render(): HTMLElement {
