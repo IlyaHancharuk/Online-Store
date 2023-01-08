@@ -2,6 +2,7 @@ import Component from '../../templates/component';
 import { PageIds } from '../../constants';
 import { Data, localStorageData } from '../../types';
 import data from '../../data/data';
+import CartPage from '../../../pages/cart';
 
 class Header extends Component {
     constructor(tagName: string, className: string) {
@@ -27,6 +28,13 @@ class Header extends Component {
         const cart = document.createElement('a');
         cart.href = `#${PageIds.CartPage}`;
         cart.className = 'header__cart';
+
+        const totalAmount = document.createElement('span');
+        totalAmount.className = 'header__total-amount';
+        totalAmount.textContent = `${CartPage.refreshCartIcontotal()}`;
+
+        cart.append(totalAmount);
+
         headerItems.append(cart);
 
         this.container.append(headerItems);
@@ -35,6 +43,7 @@ class Header extends Component {
     static getTotalSum(): number {
         if (!localStorage['RS-store-data']) return 0;
         const localData: localStorageData[] = JSON.parse(localStorage['RS-store-data']);
+
         return localData.reduce((acc, el) => {
             return acc + +this.findViaId(+el.id).price * +el.amount;
         }, 0);

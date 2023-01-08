@@ -38,8 +38,51 @@
       <p class="cart__products-amount">Products: %N%</p>
       <div class="cart__total-sum">Total %N%</div>
       <input type="text" class="cart__promo-field" placeholder="I GOT PROMO CODE!">
-      <p class="cart__promo-hint">Try "RS2022" or "Hello Kovale.V!"</p>
+      <p class="cart__promo-hint">Try"RS2022" or"Hello Kovale.V!"</p>
       <button type="button" class="cart__checkout">Proceed to checkout</button>
+    </section>
+  </template>
+
+  <template id="cartPopup">
+    <section class="cart-pup__outer closed">
+      <div class="cart-pup__body">
+        <span class="cart-pup__closeBTN">X</span>
+        <h2 class="cart-pup__title">Personal details</h2>
+
+        <form class="cart-pup__form">
+          <input type="text" class="cart-pup__f-name" placeholder="First and Last name" minlength="7"
+            pattern="[a-z|A-Z]{3,}\s[a-z|A-Z]{3,}" value="www www" title="It should contain First and Last name
+            each of 3+ letter length" required>
+
+          <input type="text" class="cart-pup__country" value="www www" placeholder="Cointy/Region" required>
+          <input type="text" class="cart-pup__address" placeholder="Full address" pattern="\w{5,}\s\w{5,}\s\w{5,}"
+            value="wwwww wwwww wwwww" required>
+          <input type="tel" class="cart-pup__l-name" placeholder="Mobile phone" value="+1234567980"
+            pattern="^\+[0-9]{9,}$" minlength="10" title="Format: '+' *at least 9 digits*" required>
+          <input type="email" class="cart-pup__l-name" placeholder="Email" minlength="4" value="ss@mail.ru" required>
+
+          <label for="add-inf" class="cart-pup__add-inf-lab">Additional information</label>
+          <textarea name="add-inf" class="input-text" id="add-inf" placeholder="Notes about your order etc." rows="2"
+            cols="25"></textarea>
+
+          <div class="card__body">
+            <h3 class="card__title">Card information</h3>
+            <div class="card__number-outer">
+              <div class="card__logo"></div>
+              <input type="text" class="card__number" placeholder="xxxx xxxx xxxx xxxx" value="4444444444444444"
+                maxlength="16" pattern="[0-9]{16}" required>
+            </div>
+            <div class="card__bottom"> <input type="text" class="card__data" value="11/11" placeholder="Expiration date"
+                pattern="[0-9]{2}/[0-9]{2}" required>
+              <input class="card__cvv" placeholder="CVV" pattern="[0-9]{3}" required>
+            </div>
+
+          </div>
+
+          <button class="cart-pup__button">Confirm</button>
+        </form>
+
+      </div>
     </section>
   </template>
 

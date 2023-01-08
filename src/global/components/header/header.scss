@@ -45,6 +45,7 @@ $main_logo: url("./assets/logo.svg");
 }
 
 .header__cart {
+  position: relative;
   order: 2;
   background: $cart no-repeat center;
   height: 40px;
@@ -63,4 +64,22 @@ $main_logo: url("./assets/logo.svg");
 .header__total {
   order: 1;
   background-color: #e64900;
+}
+
+.header__total-amount {
+  position: absolute;
+  display: inline-block;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  padding: 0px 5px;
+  color: black;
+  background-color: #ffbd39;
+  vertical-align: middle;
+  font-size: 1.1rem;
+  text-align: center;
+  border-radius: 50%;
+  // border: 2px solid rgb(0, 0, 0);
+  box-shadow: 0px 0px 14px 2px rgb(255 240 227);
+
+  top: -4px;
+  right: -5px;
 }
