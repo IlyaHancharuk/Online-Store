@@ -37,7 +37,16 @@
       <h2 class="cart__total-head">Summary</h2>
       <p class="cart__products-amount">Products: %N%</p>
       <div class="cart__total-sum">Total %N%</div>
-      <input type="text" class="cart__promo-field" placeholder="I GOT PROMO CODE!">
+      <div class="cart__total-discount-sum hidden"></div>
+      <form class="cart__promo-form">
+        <input type="search" class="cart__promo-field" placeholder="I GOT PROMO CODE!">
+        <input type="submit" value="Add code" class="cart__promo-submit">
+      </form>
+      <ul class="cart__promo-list">
+        <p class="cart__promo-legend">Activated promocodes:</p>
+        <li class="cart__promo-code"></li>
+        <!-- <li class="cart__promo-code">123</li> -->
+      </ul>
       <p class="cart__promo-hint">Try"RS2022" or"Hello Kovale.V!"</p>
       <button type="button" class="cart__checkout">Proceed to checkout</button>
     </section>
@@ -46,6 +55,8 @@
   <template id="cartPopup">
     <section class="cart-pup__outer closed">
       <div class="cart-pup__body">
+        <div class="cart-pup__redirect hidden">your order accepted succesfully. you will redirect on the start page in 3
+          seconds</div>
         <span class="cart-pup__closeBTN">X</span>
         <h2 class="cart-pup__title">Personal details</h2>
 
@@ -57,9 +68,9 @@
           <input type="text" class="cart-pup__country" value="www www" placeholder="Cointy/Region" required>
           <input type="text" class="cart-pup__address" placeholder="Full address" pattern="\w{5,}\s\w{5,}\s\w{5,}"
             value="wwwww wwwww wwwww" required>
-          <input type="tel" class="cart-pup__l-name" placeholder="Mobile phone" value="+1234567980"
+          <input type="tel" class="cart-pup__phone-num" placeholder="Mobile phone" value="+1234567980"
             pattern="^\+[0-9]{9,}$" minlength="10" title="Format: '+' *at least 9 digits*" required>
-          <input type="email" class="cart-pup__l-name" placeholder="Email" minlength="4" value="ss@mail.ru" required>
+          <input type="email" class="cart-pup__email" placeholder="Email" minlength="4" value="ss@mail.ru" required>
 
           <label for="add-inf" class="cart-pup__add-inf-lab">Additional information</label>
           <textarea name="add-inf" class="input-text" id="add-inf" placeholder="Notes about your order etc." rows="2"

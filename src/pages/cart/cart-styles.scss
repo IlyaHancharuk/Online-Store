@@ -27,6 +27,10 @@
   // background: cyan;
   display: flex;
 }
+.cart__empty-text {
+  text-align: center;
+  font-size: 1.3rem;
+}
 .cart__left-body {
   flex: 1 1 auto;
 }
@@ -213,7 +217,13 @@
   &__total-sum {
     padding: 0px 0px 12px 0px;
   }
+  &__total-sum.crossed {
+    text-decoration: line-through;
+  }
 
+  &__promo-form {
+    display: flex;
+  }
   &__promo-field {
     padding: 15px 7px 15px 0px;
     text-align: center;
@@ -225,6 +235,41 @@
     &::placeholder {
       color: rgba(255, 217, 0, 0.68);
       font-size: 1rem;
+    }
+  }
+  &__promo-code {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: gold;
+    border-radius: 12px 0px 0px 12px;
+    color: #cd2d00;
+
+    gap: 5px;
+  }
+  &__promo-name {
+    padding: 7px;
+    font-style: italic;
+  }
+  &__promo-discount {
+    margin-left: auto;
+    padding-right: 10px;
+    color: white;
+    background-color: #cd2d00;
+  }
+  &__promo-cross {
+    background-color: transparent;
+
+    padding: 7px;
+    color: red;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+
+    &:hover {
+      transform: scale(1.1);
+      transform: rotate(90deg);
     }
   }
 
@@ -279,6 +324,26 @@
 
     margin: auto;
     margin-top: 200px;
+  }
+  &__redirect {
+    visibility: visible;
+    padding: 100px;
+    text-align: center;
+    background-color: #cd4800;
+    color: whitesmoke;
+    font-size: 1.3rem;
+    opacity: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 5;
+  }
+  &__redirect.hidden {
+    visibility: hidden;
+    opacity: 0;
+    z-index: 0;
   }
   &__closeBTN {
     position: absolute;

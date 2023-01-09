@@ -1,3 +1,4 @@
+$mainPink: #ff9999;
 .footer {
 }
 .footer__body {
@@ -6,8 +7,8 @@
   align-items: center;
 
   padding: 20px 0;
-  background-color: rgba(255, 0, 0, 0.45);
-
+  // background-color: rgba(255, 0, 0, 0.45);
+  background-color: $mainPink;
   & > * {
     width: 150px;
     text-align: center;

@@ -5,6 +5,7 @@ import { Data } from '../../global/types/index';
 import cartInfo from '../../global/components/cartInfo';
 
 class CartPage extends Page {
+    static container: HTMLElement;
     constructor(id: string) {
         super(id);
     }
@@ -29,6 +30,15 @@ class CartPage extends Page {
         if (navTotalSumm) {
             navTotalSumm.textContent = `Cart total: €${currentTotal}`;
         }
+    }
+    private cleanCart(): void {
+        const localData: localStorageData[] = JSON.parse(localStorage['RS-store-data']);
+        localData.map((el) => {
+            if (el.id) {
+                console.log(el, 'очищен');
+                this.decreaseFromCart(`${el.id}`, `${el.amount}`);
+            }
+        });
     }
     private createCartBodyHTML(): void {
         const cartMain = this.createElement('div', 'cart');
@@ -70,38 +80,36 @@ class CartPage extends Page {
         pagesCounterBody.append(pagesMaxPage);
         pagesCounterBody.append(pagesRightArrow);
         cartLeftBody.append(pagesCounterBody);
-        // test button to add product via ID
-        {
-            const testButton = this.createElement('input', 'test-button');
-            testButton.setAttribute('type', 'button');
-            testButton.setAttribute('value', 'Add to cart');
-            cartMain.append(testButton);
-            testButton.addEventListener('click', () => {
-                const id = prompt('input id to add', '1');
-                data.forEach((item) => {
-                    if (item.id === Number(id)) {
-                        this.addToCart(`${Number(id)}`, '1');
-                        this.addItemsfromLocalStorage();
-                        return;
-                    }
-                });
-            });
-        }
 
         // popup adding
-
         const fragment2 = document.createDocumentFragment();
         const popupTemplate: HTMLTemplateElement | null = document.querySelector('#cartPopup');
         const popupClone: HTMLElement | null = <HTMLElement>popupTemplate?.content.cloneNode(true);
 
+        const popupBody: HTMLInputElement | null = popupClone.querySelector('.cart-pup__body');
+        const popupRedirect: HTMLInputElement | null = popupClone.querySelector('.cart-pup__redirect');
         const popupCross: HTMLInputElement | null = popupClone.querySelector('.cart-pup__closeBTN');
+        const popupPhoneNum: HTMLInputElement | null = popupClone.querySelector('.cart-pup__phone-num');
+        const popupEmail: HTMLInputElement | null = popupClone.querySelector('.cart-pup__email');
         const cardNumber: HTMLInputElement | null = popupClone.querySelector('.card__number');
         const cardData: HTMLInputElement | null = popupClone.querySelector('.card__data');
         const cardCvv: HTMLInputElement | null = popupClone.querySelector('.card__cvv');
         const cardLogo: HTMLInputElement | null = popupClone.querySelector('.card__logo');
+        const popupButton: HTMLInputElement | null = popupClone.querySelector('.cart-pup__button');
 
         const digg = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-        if (cardNumber && cardData && cardCvv && cardLogo && popupCross) {
+        if (
+            popupBody &&
+            cardNumber &&
+            cardData &&
+            cardCvv &&
+            cardLogo &&
+            popupCross &&
+            popupButton &&
+            popupPhoneNum &&
+            popupEmail &&
+            popupRedirect
+        ) {
             popupCross.addEventListener('click', () => {
                 CartPage.closePopup();
             });
@@ -127,7 +135,6 @@ class CartPage extends Page {
             cardData.addEventListener('input', () => {
                 if (!digg.includes(+cardData.value[cardData.value.length - 1])) {
                     cardData.value = cardData.value.slice(0, cardData.value.length - 1);
-                    // console.log(cardData.value.slice(0, cardData.value.length));
                 }
                 if (cardData.value.length > 5) {
                     cardData.value = cardData.value.slice(0, 5);
@@ -159,12 +166,31 @@ class CartPage extends Page {
                     cardCvv.value = cardCvv.value.slice(0, 3);
                 }
             });
+            popupButton.addEventListener('click', () => {
+                if (
+                    cardNumber.checkValidity() &&
+                    cardData.checkValidity() &&
+                    cardCvv.checkValidity() &&
+                    popupPhoneNum.checkValidity() &&
+                    popupEmail.checkValidity()
+                ) {
+                    popupRedirect.classList.remove('hidden');
+                    setTimeout(() => {
+                        this.cleanCart();
+                        window.location.hash = 'main-page';
+                        CartPage.closePopup();
+                        popupRedirect.classList.add('hidden');
+                    }, 3000);
+                }
+            });
         }
 
         fragment2.append(popupClone);
         const boddy = document.body;
         boddy?.append(fragment2);
-
+        // this.sayCartIsEmpty();
+        this.refreshCartSummary();
+        this.refreshPromocodeInf();
         return;
     }
     // проще было оставить нолик висеть. Но это некрасиво! Вызывай эту ф-цию при клике по кнопке добавить в корзину!
@@ -194,13 +220,169 @@ class CartPage extends Page {
     }
     static getTotalItems(): string {
         if (!localStorage['RS-store-data']) return '';
-
         const localData: localStorageData[] = JSON.parse(localStorage['RS-store-data']);
-
         const totalProductsAmount = localData.reduce((acc, el) => {
             return acc + +el.amount;
         }, 0);
         return totalProductsAmount.toString();
+    }
+    private alertPromocodeState(messageType: string): void {
+        const cartPromoField: HTMLInputElement | null = document.querySelector('.cart__promo-field');
+        if (cartPromoField) {
+            if (messageType === 'exist') {
+                cartPromoField.value = 'Already activated :]';
+                cartPromoField.style.color = 'green';
+                setTimeout(() => {
+                    cartPromoField.style.color = '';
+                    cartPromoField.value = '';
+                }, 1000);
+                return;
+            }
+            if (messageType === 'wrong') {
+                cartPromoField.value = 'Invalid code :C';
+                cartPromoField.style.color = 'red';
+                setTimeout(() => {
+                    cartPromoField.style.color = '';
+                    cartPromoField.value = '';
+                }, 1000);
+                return;
+            }
+            if (messageType === 'new') {
+                cartPromoField.value = 'Yeah! Its good!';
+                cartPromoField.style.color = 'pink';
+                setTimeout(() => {
+                    cartPromoField.style.color = '';
+                    cartPromoField.value = '';
+                }, 1000);
+                return;
+            }
+        }
+    }
+
+    // public createPriseWithDiscount(): void {
+    //     if (!localStorage['RS-store-promo']) {
+    //         return;
+    //     }
+    //     const promoDOMList: HTMLElement | null = this.container.querySelector('.cart__promo-list');
+    //     const currentPromoList = JSON.parse(localStorage['RS-store-promo']);
+
+    // }
+
+    public refreshPromocodeInf(): void {
+        if (!localStorage['RS-store-promo']) {
+            return;
+        }
+        const promoDOMList: HTMLElement | null = this.container.querySelector('.cart__promo-list');
+        const currentPromoList = JSON.parse(localStorage['RS-store-promo']);
+
+        if (promoDOMList) {
+            while (promoDOMList.childElementCount > 1) {
+                promoDOMList?.lastElementChild?.remove();
+            }
+        }
+
+        if (promoDOMList) {
+            currentPromoList.map((el: string) => {
+                const promoListItem = document.createElement('li');
+                const promoListItemText = document.createElement('p');
+                promoListItemText.classList.add('cart__promo-name');
+                const promoListItemDiscount = document.createElement('span');
+                promoListItemDiscount.classList.add('cart__promo-discount');
+                promoListItemDiscount.textContent = '-10%';
+                const promoListItemCross = document.createElement('span');
+                promoListItemCross.classList.add('cart__promo-cross');
+                promoListItemCross.textContent = 'x';
+                promoListItem.append(promoListItemText);
+                promoListItem.append(promoListItemDiscount);
+                promoListItem.append(promoListItemCross);
+
+                promoListItem.classList.add('cart__promo-code');
+                promoListItemText.textContent = `${el}`;
+                promoDOMList.append(promoListItem);
+
+                promoListItemCross.addEventListener('click', () => {
+                    this.removePromocode(el);
+                });
+                return;
+            });
+            // если коды есть, то
+            if (currentPromoList.length !== 0) {
+                console.log('working');
+                const summaryPrice = this.container.querySelector('.cart__total-sum');
+                console.log(summaryPrice, 'here?');
+                summaryPrice?.classList.add('crossed');
+                const summaryPricewithDiscount = this.container.querySelector('.cart__total-discount-sum');
+                if (summaryPricewithDiscount) {
+                    summaryPricewithDiscount.textContent = `Total: €${Math.ceil(
+                        Math.ceil(CartPage.getTotalSum() * (1 - currentPromoList.length * 0.1))
+                    )}`;
+                }
+            } else {
+                const summaryPrice = this.container.querySelector('.cart__total-sum');
+                summaryPrice?.classList.remove('crossed');
+                const summaryPricewithDiscount = this.container.querySelector('.cart__total-discount-sum');
+                if (summaryPricewithDiscount) {
+                    summaryPricewithDiscount.textContent = ``;
+                }
+            }
+
+            // add new TOTAL sum (total block)
+        } else {
+            console.log('не грузит, и почему?');
+            return;
+        }
+    }
+
+    private removePromocode(promocode: string): void {
+        if (!localStorage['RS-store-promo'] || localStorage['RS-store-promo'] === '[]') {
+            return;
+        }
+        const currentPromoList = JSON.parse(localStorage['RS-store-promo']);
+        const newPromocodeList = currentPromoList.filter((el: string) => el !== promocode);
+        localStorage['RS-store-promo'] = JSON.stringify(newPromocodeList);
+        this.refreshPromocodeInf();
+        return;
+    }
+
+    private checkPromocodeValidity(promocode: string): boolean {
+        const promoList = ['RS2022', 'Hello Kovale.V!', 'admin'];
+        const cartPromoField: HTMLInputElement | null = document.querySelector('.cart__promo-field');
+        if (cartPromoField) {
+            //    если нету совсем промокодов
+            if (!localStorage['RS-store-promo'] && promoList.includes(promocode)) {
+                const currentPromoList: string[] = [];
+                currentPromoList.push(promocode);
+                localStorage.setItem('RS-store-promo', JSON.stringify(currentPromoList));
+                this.alertPromocodeState('new');
+                this.refreshPromocodeInf();
+                return true;
+                // если какие-то промо уже есть
+            } else if (localStorage['RS-store-promo']) {
+                const currentPromoList = JSON.parse(localStorage['RS-store-promo']);
+
+                // если уже есть такой промо, то светим и выходим
+                if (currentPromoList.includes(promocode)) {
+                    this.alertPromocodeState('exist');
+                    return true;
+                }
+
+                // если новый хороший промо, добавляем его
+                if (promoList.includes(promocode) && !currentPromoList.includes(promocode)) {
+                    currentPromoList.push(promocode);
+                    localStorage.setItem('RS-store-promo', JSON.stringify(currentPromoList));
+                    this.alertPromocodeState('new');
+                    this.refreshPromocodeInf();
+                    return true;
+                }
+            }
+            // если не валиден, светим и выходим (треклятые проверки убирают читаемость кода)
+            if (!promoList.includes(promocode)) {
+                this.alertPromocodeState('wrong');
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
     private refreshCartSummary(): void {
         const fragment = document.createDocumentFragment();
@@ -210,15 +392,23 @@ class CartPage extends Page {
         const cartAmount = cartSumClone.querySelector('.cart__products-amount');
         const cartOuter = document.querySelector('.cart-pup__outer');
         const cartTotalSum = cartSumClone.querySelector('.cart__total-sum');
-        const cartPromo = cartSumClone.querySelector('.cart__promo-field');
+        const cartPromoForm = cartSumClone.querySelector('.cart__promo-form');
+        const cartPromoSubmit = cartSumClone.querySelector('.cart__promo-submit');
+        const cartPromoField: HTMLInputElement | null = cartSumClone.querySelector('.cart__promo-field');
         const cartCheckout = cartSumClone.querySelector('.cart__checkout');
         const carttotal = this.container.querySelector('.header__total');
-        if (cartAmount && cartTotalSum && cartPromo && cartCheckout) {
+        if (cartAmount && cartTotalSum && cartPromoField && cartCheckout && cartPromoForm && cartPromoSubmit) {
             cartAmount.textContent = `Items: ${CartPage.getTotalItems()}`;
             cartTotalSum.textContent = `Total: €${CartPage.getTotalSum()}`;
 
             cartCheckout.addEventListener('click', () => {
                 CartPage.openPopup();
+            });
+
+            cartPromoForm.addEventListener('submit', () => {
+                this.refreshPromocodeInf();
+                this.checkPromocodeValidity(cartPromoField.value);
+                return false;
             });
         }
         if (carttotal) {
@@ -256,10 +446,7 @@ class CartPage extends Page {
 
         const pages: HTMLElement | null = this.container.querySelector('.cart__pages');
         pages?.classList.remove('closed');
-    }
-    public openCartPopup(): void {
-        console.log('');
-        return;
+        this.refreshPromocodeInf();
     }
 
     private addItemViaTemplate(itemId: number, itemAmount: number): void {
@@ -340,12 +527,8 @@ class CartPage extends Page {
                     itemNum.parentElement?.remove();
                 }
                 itemHowMany.value = `${+itemHowMany.value - 1}`;
-
                 this.decreaseFromCart(`${product.id}`, '1');
                 currentAmount = +itemHowMany.value;
-                console.log(currentAmount, 'was -');
-                // чекаем, последний ли элемент был.
-
                 this.sayCartIsEmpty();
             });
             itemPlus.addEventListener('click', () => {
@@ -360,7 +543,6 @@ class CartPage extends Page {
                 itemHowMany.value = `${+itemHowMany.value + 1}`;
                 this.decreaseFromCart(`${product.id}`, '-1');
                 currentAmount = +itemHowMany.value;
-                console.log(currentAmount, 'was +');
                 return;
             });
         }
@@ -377,7 +559,7 @@ class CartPage extends Page {
         if (localStorage['RS-store-data']) {
             const localData = JSON.parse(localStorage['RS-store-data']);
             if (localData.length === 0) {
-                localStorage.clear();
+                // localStorage.clear();
                 const emptyCartPageText = this.createElement('p', 'cart__empty-text');
                 emptyCartPageText.innerText = 'The cart is empty yet ¯\\_( ◡ ₒ ◡ )_/¯';
                 this.container.append(emptyCartPageText);
@@ -385,6 +567,8 @@ class CartPage extends Page {
                 oldSummary?.remove();
                 const pages: HTMLElement | null = this.container.querySelector('.cart__pages');
                 pages?.classList.add('closed');
+                const cartLeftHeader = this.container.querySelector('.cart__left-header');
+                cartLeftHeader?.remove();
             }
         } else {
             const emptyCartPageText = this.createElement('p', 'cart__empty-text');
@@ -394,6 +578,8 @@ class CartPage extends Page {
             oldSummary?.remove();
             const pages: HTMLElement | null = this.container.querySelector('.cart__pages');
             pages?.classList.add('closed');
+            const cartLeftHeader = this.container.querySelector('.cart__left-header');
+            cartLeftHeader?.remove();
 
             return;
         }
@@ -423,6 +609,7 @@ class CartPage extends Page {
     decreaseFromCart(itemId: string, howMuchToReduce = '1'): string {
         this.cartInf.reduceItemAmount(itemId, howMuchToReduce);
         this.refreshCartSummary();
+        this.refreshPromocodeInf();
         return '1';
     }
 
@@ -448,16 +635,6 @@ class CartPage extends Page {
 
     render() {
         this.createCartBodyHTML();
-        // !Чисти localStorage чтобы при обновах старого не висело
-
-        // добавить по стандарту 24 предмета
-        // удалить 1 (без 2 аргумента по стандарту)
-        // удалить 20 из них
-
-        /*  this.addToCart('3', '24');
-         this.decreaseFromCart('3');
-         this.decreaseFromCart('3', '20'); */
-
         this.addItemsfromLocalStorage();
         return this.container;
     }
