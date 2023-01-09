@@ -1,7 +1,5 @@
 import Component from '../../templates/component';
 import { PageIds } from '../../constants';
-import { Data, localStorageData } from '../../types';
-import data from '../../data/data';
 import CartPage from '../../../pages/cart';
 
 class Header extends Component {
@@ -21,7 +19,7 @@ class Header extends Component {
 
         const total = document.createElement('span');
         total.className = 'header__total';
-        const sum = Header.getTotalSum();
+        const sum = CartPage.getTotalSum();
         total.innerText = `Cart total: €${sum}`;
         headerItems.append(total);
 
@@ -38,19 +36,6 @@ class Header extends Component {
         headerItems.append(cart);
 
         this.container.append(headerItems);
-    }
-
-    static getTotalSum(): number {
-        if (!localStorage['RS-store-data']) return 0;
-        const localData: localStorageData[] = JSON.parse(localStorage['RS-store-data']);
-
-        return localData.reduce((acc, el) => {
-            return acc + +this.findViaId(+el.id).price * +el.amount;
-        }, 0);
-    }
-
-    static findViaId(itemId: number): Data {
-        return <Data>(<unknown>data.filter((el) => el.id === itemId)[0]);
     }
 
     render() {
