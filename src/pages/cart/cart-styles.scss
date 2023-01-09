@@ -27,6 +27,10 @@
   // background: cyan;
   display: flex;
 }
+.cart__empty-text {
+  text-align: center;
+  font-size: 1.3rem;
+}
 .cart__left-body {
   flex: 1 1 auto;
 }
@@ -279,6 +283,26 @@
 
     margin: auto;
     margin-top: 200px;
+  }
+  &__redirect {
+    visibility: visible;
+    padding: 100px;
+    text-align: center;
+    background-color: #cd4800;
+    color: whitesmoke;
+    font-size: 1.3rem;
+    opacity: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 5;
+  }
+  &__redirect.hidden {
+    visibility: hidden;
+    opacity: 0;
+    z-index: 0;
   }
   &__closeBTN {
     position: absolute;

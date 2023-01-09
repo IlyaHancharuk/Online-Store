@@ -3,6 +3,8 @@ import data from '../../global/data/data';
 import { localStorageData } from '../../global/types/index';
 import { Data } from '../../global/types/index';
 import cartInfo from '../../global/components/cartInfo';
+import Main from '../../global/components/main';
+import App from '../app';
 
 class CartPage extends Page {
     constructor(id: string) {
@@ -29,6 +31,15 @@ class CartPage extends Page {
         if (navTotalSumm) {
             navTotalSumm.textContent = `Cart total: €${currentTotal}`;
         }
+    }
+    private cleanCart(): void {
+        const localData: localStorageData[] = JSON.parse(localStorage['RS-store-data']);
+        localData.map((el) => {
+            if (el.id) {
+                console.log(el, 'очищен');
+                this.decreaseFromCart(`${el.id}`, `${el.amount}`);
+            }
+        });
     }
     private createCartBodyHTML(): void {
         const cartMain = this.createElement('div', 'cart');
@@ -70,38 +81,36 @@ class CartPage extends Page {
         pagesCounterBody.append(pagesMaxPage);
         pagesCounterBody.append(pagesRightArrow);
         cartLeftBody.append(pagesCounterBody);
-        // test button to add product via ID
-        {
-            const testButton = this.createElement('input', 'test-button');
-            testButton.setAttribute('type', 'button');
-            testButton.setAttribute('value', 'Add to cart');
-            cartMain.append(testButton);
-            testButton.addEventListener('click', () => {
-                const id = prompt('input id to add', '1');
-                data.forEach((item) => {
-                    if (item.id === Number(id)) {
-                        this.addToCart(`${Number(id)}`, '1');
-                        this.addItemsfromLocalStorage();
-                        return;
-                    }
-                });
-            });
-        }
 
         // popup adding
-
         const fragment2 = document.createDocumentFragment();
         const popupTemplate: HTMLTemplateElement | null = document.querySelector('#cartPopup');
         const popupClone: HTMLElement | null = <HTMLElement>popupTemplate?.content.cloneNode(true);
 
+        const popupBody: HTMLInputElement | null = popupClone.querySelector('.cart-pup__body');
+        const popupRedirect: HTMLInputElement | null = popupClone.querySelector('.cart-pup__redirect');
         const popupCross: HTMLInputElement | null = popupClone.querySelector('.cart-pup__closeBTN');
+        const popupPhoneNum: HTMLInputElement | null = popupClone.querySelector('.cart-pup__phone-num');
+        const popupEmail: HTMLInputElement | null = popupClone.querySelector('.cart-pup__email');
         const cardNumber: HTMLInputElement | null = popupClone.querySelector('.card__number');
         const cardData: HTMLInputElement | null = popupClone.querySelector('.card__data');
         const cardCvv: HTMLInputElement | null = popupClone.querySelector('.card__cvv');
         const cardLogo: HTMLInputElement | null = popupClone.querySelector('.card__logo');
+        const popupButton: HTMLInputElement | null = popupClone.querySelector('.cart-pup__button');
 
         const digg = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-        if (cardNumber && cardData && cardCvv && cardLogo && popupCross) {
+        if (
+            popupBody &&
+            cardNumber &&
+            cardData &&
+            cardCvv &&
+            cardLogo &&
+            popupCross &&
+            popupButton &&
+            popupPhoneNum &&
+            popupEmail &&
+            popupRedirect
+        ) {
             popupCross.addEventListener('click', () => {
                 CartPage.closePopup();
             });
@@ -157,6 +166,26 @@ class CartPage extends Page {
                 }
                 if (cardCvv.value.length > 3) {
                     cardCvv.value = cardCvv.value.slice(0, 3);
+                }
+            });
+            popupButton.addEventListener('click', () => {
+                console.log(cardNumber.checkValidity());
+                console.log(cardData.checkValidity());
+                console.log(cardCvv.checkValidity());
+                if (
+                    cardNumber.checkValidity() &&
+                    cardData.checkValidity() &&
+                    cardCvv.checkValidity() &&
+                    popupPhoneNum.checkValidity() &&
+                    popupEmail.checkValidity()
+                ) {
+                    popupRedirect.classList.remove('hidden');
+                    setTimeout(() => {
+                        this.cleanCart();
+                        window.location.hash = 'main-page';
+                        CartPage.closePopup();
+                        popupRedirect.classList.add('hidden');
+                    }, 3000);
                 }
             });
         }
@@ -340,12 +369,8 @@ class CartPage extends Page {
                     itemNum.parentElement?.remove();
                 }
                 itemHowMany.value = `${+itemHowMany.value - 1}`;
-
                 this.decreaseFromCart(`${product.id}`, '1');
                 currentAmount = +itemHowMany.value;
-                console.log(currentAmount, 'was -');
-                // чекаем, последний ли элемент был.
-
                 this.sayCartIsEmpty();
             });
             itemPlus.addEventListener('click', () => {
@@ -360,7 +385,6 @@ class CartPage extends Page {
                 itemHowMany.value = `${+itemHowMany.value + 1}`;
                 this.decreaseFromCart(`${product.id}`, '-1');
                 currentAmount = +itemHowMany.value;
-                console.log(currentAmount, 'was +');
                 return;
             });
         }
@@ -385,6 +409,8 @@ class CartPage extends Page {
                 oldSummary?.remove();
                 const pages: HTMLElement | null = this.container.querySelector('.cart__pages');
                 pages?.classList.add('closed');
+                const cartLeftHeader = this.container.querySelector('.cart__left-header');
+                cartLeftHeader?.remove();
             }
         } else {
             const emptyCartPageText = this.createElement('p', 'cart__empty-text');
@@ -394,6 +420,8 @@ class CartPage extends Page {
             oldSummary?.remove();
             const pages: HTMLElement | null = this.container.querySelector('.cart__pages');
             pages?.classList.add('closed');
+            const cartLeftHeader = this.container.querySelector('.cart__left-header');
+            cartLeftHeader?.remove();
 
             return;
         }
