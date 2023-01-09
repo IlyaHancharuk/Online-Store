@@ -217,7 +217,13 @@
   &__total-sum {
     padding: 0px 0px 12px 0px;
   }
+  &__total-sum.crossed {
+    text-decoration: line-through;
+  }
 
+  &__promo-form {
+    display: flex;
+  }
   &__promo-field {
     padding: 15px 7px 15px 0px;
     text-align: center;
@@ -229,6 +235,41 @@
     &::placeholder {
       color: rgba(255, 217, 0, 0.68);
       font-size: 1rem;
+    }
+  }
+  &__promo-code {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: gold;
+    border-radius: 12px 0px 0px 12px;
+    color: #cd2d00;
+
+    gap: 5px;
+  }
+  &__promo-name {
+    padding: 7px;
+    font-style: italic;
+  }
+  &__promo-discount {
+    margin-left: auto;
+    padding-right: 10px;
+    color: white;
+    background-color: #cd2d00;
+  }
+  &__promo-cross {
+    background-color: transparent;
+
+    padding: 7px;
+    color: red;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+
+    &:hover {
+      transform: scale(1.1);
+      transform: rotate(90deg);
     }
   }
 

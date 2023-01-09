@@ -37,7 +37,16 @@
       <h2 class="cart__total-head">Summary</h2>
       <p class="cart__products-amount">Products: %N%</p>
       <div class="cart__total-sum">Total %N%</div>
-      <input type="text" class="cart__promo-field" placeholder="I GOT PROMO CODE!">
+      <div class="cart__total-discount-sum hidden"></div>
+      <form class="cart__promo-form">
+        <input type="search" class="cart__promo-field" placeholder="I GOT PROMO CODE!">
+        <input type="submit" value="Add code" class="cart__promo-submit">
+      </form>
+      <ul class="cart__promo-list">
+        <p class="cart__promo-legend">Activated promocodes:</p>
+        <li class="cart__promo-code"></li>
+        <!-- <li class="cart__promo-code">123</li> -->
+      </ul>
       <p class="cart__promo-hint">Try"RS2022" or"Hello Kovale.V!"</p>
       <button type="button" class="cart__checkout">Proceed to checkout</button>
     </section>
