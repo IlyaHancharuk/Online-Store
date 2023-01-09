@@ -60,6 +60,8 @@ class Products extends Component {
                     searchBar.append(searchInput);
 
                     const gridModeBtn = document.createElement('div');
+                    const listModeBtn = document.createElement('div');
+
                     gridModeBtn.className = 'grid-mode-btn active-mode';
                     for (let i = 0; i < 16; i += 1) {
                         const point = document.createElement('div');
@@ -69,10 +71,11 @@ class Products extends Component {
                     gridModeBtn.onclick = () => {
                         if (document.querySelector('.products__items')?.classList.contains('list-mode')) {
                             document.querySelector('.products__items')?.classList.remove('list-mode');
+                            gridModeBtn.classList.add('active-mode');
+                            listModeBtn.classList.remove('active-mode');
                         }
                     };
 
-                    const listModeBtn = document.createElement('div');
                     listModeBtn.className = 'list-mode-btn';
                     for (let i = 0; i < 4; i += 1) {
                         const point = document.createElement('div');
@@ -82,6 +85,8 @@ class Products extends Component {
                     listModeBtn.onclick = () => {
                         if (!document.querySelector('.products__items')?.classList.contains('list-mode')) {
                             document.querySelector('.products__items')?.classList.add('list-mode');
+                            listModeBtn.classList.add('active-mode');
+                            gridModeBtn.classList.remove('active-mode');
                         }
                     };
 
@@ -119,7 +124,6 @@ class Products extends Component {
                         itemImage.className = 'item__image';
                         const img = new Image();
                         img.loading = 'lazy';
-                        img.style.position = 'absolute';
                         img.src = item.thumbnail;
                         img.alt = `${item.title} image`;
                         itemImage.append(img);
