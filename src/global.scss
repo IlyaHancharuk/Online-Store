@@ -59,6 +59,10 @@ body {
   font-size: calc(.2rem + 1vw);
   color: #616161;
   scroll-behavior: smooth;
+
+  @media screen and (min-width: 1440px) {
+    font-size: 16px;
+  }
 }
 
 ::-webkit-scrollbar {
@@ -93,7 +97,7 @@ body {
   font-size: 80%;
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s ease 0s;
+  transition: box-shadow 0.3s ease 0s;
 
   &:hover {
     box-shadow: 0px 0px 12px 0px rgb(253, 122, 8);
