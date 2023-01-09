@@ -1,7 +1,4 @@
 import Component from '../../templates/component';
-import redIcon from '../../../assets/git-red.svg';
-import blueIcon from '../../../assets/git-blue.svg';
-import rsIcon from '../../../assets/rs_school_js.svg';
 import { footerHTMLTypes } from '../../types';
 
 const footerElements: footerHTMLTypes[] = [
