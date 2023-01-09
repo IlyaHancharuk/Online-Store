@@ -45,7 +45,6 @@ class MainPage extends Page {
 
             if (productClone) {
                 const resetButton = productClone.querySelector<HTMLElement>('.reset-button');
-                const copyButton = productClone.querySelector<HTMLElement>('.copy-button');
                 const filterListByCategoty = productClone.querySelector<HTMLElement>(
                     '.filter-by-category .filter-list'
                 );
@@ -53,14 +52,7 @@ class MainPage extends Page {
                 const sliderByPrice = productClone.querySelector<HTMLElement>('.filter-by-price');
                 const sliderByStock = productClone.querySelector<HTMLElement>('.filter-by-stock');
 
-                if (
-                    resetButton &&
-                    copyButton &&
-                    filterListByCategoty &&
-                    filterListByBrand &&
-                    sliderByPrice &&
-                    sliderByStock
-                ) {
+                if (resetButton && filterListByCategoty && filterListByBrand && sliderByPrice && sliderByStock) {
                     resetButton.onclick = () => {
                         this.cleanFilters();
                         this.createHTML();
@@ -235,7 +227,7 @@ class MainPage extends Page {
         fromValue: HTMLElement,
         toValue: HTMLElement
     ) {
-        this.fillSlider(fromSlider, toSlider, '#C6C6C6', '#25daa5', toSlider);
+        this.fillSlider(fromSlider, toSlider, '#C6C6C6', '#f9b54c', toSlider);
 
         if (Number(toSlider.value) <= 0) {
             toSlider.style.zIndex = '2';
@@ -272,7 +264,7 @@ class MainPage extends Page {
     private controlSlider(fromSlider: HTMLInputElement, toSlider: HTMLInputElement, valueElem: HTMLElement) {
         const from = parseInt(fromSlider.value, 10);
         const to = parseInt(toSlider.value, 10);
-        this.fillSlider(fromSlider, toSlider, '#C6C6C6', '#25daa5', toSlider);
+        this.fillSlider(fromSlider, toSlider, '#C6C6C6', '#f9b54c', toSlider);
 
         const filter = fromSlider.name as 'price' | 'stock';
         MainPage.rangeValues[filter].from = from;

@@ -1,4 +1,5 @@
-$mainColor: #0096e6;
+$mainColor: #f9b54c;
+$secondColor: #324a5e;
 
 .product__container {
     margin: 0 auto;
@@ -7,14 +8,18 @@ $mainColor: #0096e6;
 }
 
 .breadcrumb {
-    margin: 2% auto;
+    margin: 1% auto;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     width: 100%;
+    background-color: $secondColor;
+    padding: 1% 0;
+    border: 1px solid $mainColor;
+    border-radius: 1rem;
+    color: $mainColor;
 
-    a,
-    span {
+    a,span {
         color: $mainColor;
     }
 }
@@ -29,8 +34,9 @@ $mainColor: #0096e6;
 
 .product__title {
     width: 100%;
+    color: $mainColor;
     text-align: center;
-    background: #181a1c;
+    background: #272727;
     border-bottom: 1px solid $mainColor;
 
     h1 {
@@ -87,12 +93,14 @@ $mainColor: #0096e6;
         text-align: center;
     
         h3 {
+            color: $mainColor;
             text-align: center;
-            background-color: #181a1c;
+            background-color: #272727;
             padding: .7%;
         }
     
         p {
+            color: wheat;
             padding: .7%;
         }
     }
@@ -111,21 +119,19 @@ $mainColor: #0096e6;
 .price {
     width: 90%;
     font-size: 200%;
-    text-shadow: 0 0 10px rgb(184 24 24), 0 0 20px red, 0 0 30px red, 0 0 40px red;
+    color: $mainColor;
+    text-shadow: 0 0 10px $secondColor, 0 0 20px $secondColor, 0 0 30px $secondColor, 0 0 40px $secondColor;
 }
 
 .price::after {
-    content: "$";
+    content: "€";
 }
 
 .cart-buttons {
     width: 90%;
 
-    .drop-button {
+    .button {
         width: 100%;
-    }
-
-    .buy-button {
-        width: 100%;
+        padding: 5%;
     }
 }
