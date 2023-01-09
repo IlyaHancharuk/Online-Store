@@ -73,6 +73,9 @@ class ProductDetailsPage extends Page {
                             if (total) {
                                 total.innerText = `Cart total: €${sum}`;
                             }
+
+                            const totalAmount = document.querySelector<HTMLElement>('.header__total-amount');
+                            if (totalAmount) totalAmount.textContent = `${CartPage.refreshCartIcontotal()}`;
                         });
 
                         buyButton.innerText = 'BUY NOW';
