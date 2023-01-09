@@ -40,3 +40,19 @@ export interface footerHTMLTypes {
     backgroundImage?: string;
     href?: string;
 }
+
+export interface Isettings {
+    viewMode: string;
+    sort: string;
+    fltredCollection: Map<string, Set<string>>;
+    rangeValues: {
+        price: {
+            from: number;
+            to: number;
+        };
+        stock: {
+            from: number;
+            to: number;
+        };
+    }
+}

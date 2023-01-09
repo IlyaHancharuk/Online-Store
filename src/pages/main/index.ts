@@ -1,12 +1,12 @@
 import Page from '../../global/templates/page';
 import Products from '../../global/components/products';
 import data from '../../global/data/data';
-import { Data } from '../../global/types';
+import { Data, Isettings } from '../../global/types';
 
 class MainPage extends Page {
     static products = new Products('div', 'products');
 
-    static settings = {
+    static settings: Isettings = {
         viewMode: 'grid',
         sort: 'default',
         fltredCollection: new Map([
@@ -14,16 +14,37 @@ class MainPage extends Page {
             ['brand', new Set()],
         ]),
         rangeValues: {
-            price: { from: 0, to: 100 },
-            stock: { from: 0, to: 100 },
+            price: { from: 10, to: 1749 },
+            stock: { from: 2, to: 150 },
         },
     };
 
-    getSettings() {
+    /* static getSettings() {
         if (localStorage['RS-store-settings']) {
-            MainPage.settings = JSON.parse(localStorage['RS-store-settings']);
+            const localSett = JSON.parse(localStorage['RS-store-settings']);
+            console.log(localSett);
+            MainPage.settings = {
+                ...localSett,
+                fltredCollection: new Map([
+                    ['category', new Set(localSett.fltredCollection.category)],
+                    ['brand', new Set(localSett.fltredCollection.brand)],
+                ]),
+            }
         }
     }
+
+    static setSettings() {
+        const categories = MainPage.settings.fltredCollection.get('category');
+        const brands = MainPage.settings.fltredCollection.get('brand');
+        const localSett = {
+            ...MainPage.settings,
+            fltredCollection: {
+                category: categories ? Array.from(categories) : [],
+                brand: brands ? Array.from(brands) : [],
+            },
+        }
+        localStorage['RS-store-settings'] = JSON.stringify(localSett);
+    } */
 
     static filtredByCheckboxesData = data;
     static filtredBySlidersData = data;
@@ -169,7 +190,6 @@ class MainPage extends Page {
                 MainPage.filtredByCheckboxesData = MainPage.filtredByCheckboxesData.filter((el) =>
                     brands?.has(el['brand'])
                 );
-
             MainPage.changeProductsHTML();
         });
     }
@@ -179,8 +199,8 @@ class MainPage extends Page {
         const minValue = sortByFilterData[0][filter];
         const maxValue = sortByFilterData[sortByFilterData.length - 1][filter];
 
-        MainPage.settings.rangeValues[filter].from = minValue;
-        MainPage.settings.rangeValues[filter].to = maxValue;
+        //MainPage.settings.rangeValues[filter].from = minValue;
+        //MainPage.settings.rangeValues[filter].to = maxValue;
 
         const sliderTitle = document.createElement('h3');
         sliderTitle.className = 'slider__title';
@@ -211,7 +231,7 @@ class MainPage extends Page {
         fromSlider.id = 'fromSlider';
         fromSlider.name = filter;
         fromSlider.min = `${minValue}`;
-        fromSlider.defaultValue = `${minValue}`;
+        fromSlider.defaultValue = `${MainPage.settings.rangeValues[filter].from}`;
         fromSlider.max = `${maxValue}`;
 
         const toSlider = document.createElement('input');
@@ -220,7 +240,7 @@ class MainPage extends Page {
         toSlider.name = filter;
         toSlider.min = `${minValue}`;
         toSlider.max = `${maxValue}`;
-        toSlider.defaultValue = `${maxValue}`;
+        toSlider.defaultValue = `${MainPage.settings.rangeValues[filter].to}`;
 
         this.addStylesAndListners(fromSlider, toSlider, fromValue, toValue);
 
