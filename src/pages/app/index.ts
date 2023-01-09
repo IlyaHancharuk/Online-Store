@@ -33,6 +33,9 @@ class App {
                 break;
             default:
                 page = new ErrorPage(idPage, ErrorTypes.Error_404);
+                setTimeout(() => {
+                    window.location.hash = PageIds.MainPage;
+                }, 5000);
                 break;
         }
 

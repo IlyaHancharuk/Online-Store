@@ -11,6 +11,7 @@
 @import url("https://fonts.googleapis.com/css?family=Rubik:regular&display=swap&subset=cyrillic-ext");
 
 
+$errImg: url('./assets/err_page.jpg');
 $mainPink: #ff9999;
 
 $mainColor: #f9b54c;
@@ -109,3 +110,11 @@ body {
   }
 }
 
+.error-page {
+  margin-top: 5vh;
+  font-size: 200%;
+  color: $secondColor;
+  height: 71vh;
+  text-align: center;
+  background: $errImg no-repeat 50% 8%/80vh;
+}
