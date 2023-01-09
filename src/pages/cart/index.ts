@@ -309,9 +309,7 @@ class CartPage extends Page {
             });
             // если коды есть, то
             if (currentPromoList.length !== 0) {
-                console.log('working');
                 const summaryPrice = this.container.querySelector('.cart__total-sum');
-                console.log(summaryPrice, 'here?');
                 summaryPrice?.classList.add('crossed');
                 const summaryPricewithDiscount = this.container.querySelector('.cart__total-discount-sum');
                 if (summaryPricewithDiscount) {
@@ -327,8 +325,6 @@ class CartPage extends Page {
                     summaryPricewithDiscount.textContent = ``;
                 }
             }
-
-            // add new TOTAL sum (total block)
         } else {
             console.log('не грузит, и почему?');
             return;
