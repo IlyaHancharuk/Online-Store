@@ -28,10 +28,10 @@ class cartInfo {
         // чекаем пустой ли localStorage
         if (localStorage['RS-store-data']) {
             localData = JSON.parse(localStorage['RS-store-data']);
-            localStorage.clear();
+            localStorage['RS-store-data'] = '';
         } else {
             localData = [];
-            localStorage.clear();
+            localStorage['RS-store-data'] = '';
         }
 
         // ищем, есть ли такой итем уже в localStorage;
