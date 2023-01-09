@@ -6,15 +6,24 @@ import { Data } from '../../global/types';
 class MainPage extends Page {
     static products = new Products('div', 'products');
 
-    static fltredCollection: Map<string, Set<string>> = new Map([
-        ['category', new Set()],
-        ['brand', new Set()],
-    ]);
-
-    static rangeValues = {
-        price: { from: 0, to: 100 },
-        stock: { from: 0, to: 100 },
+    static settings = {
+        viewMode: 'grid',
+        sort: 'default',
+        fltredCollection: new Map([
+            ['category', new Set()],
+            ['brand', new Set()],
+        ]),
+        rangeValues: {
+            price: { from: 0, to: 100 },
+            stock: { from: 0, to: 100 },
+        },
     };
+
+    getSettings() {
+        if (localStorage['RS-store-settings']) {
+            MainPage.settings = JSON.parse(localStorage['RS-store-settings']);
+        }
+    }
 
     static filtredByCheckboxesData = data;
     static filtredBySlidersData = data;
@@ -132,7 +141,7 @@ class MainPage extends Page {
             checkboxLine.append(label);
 
             const amountProduct = document.createElement('span');
-            amountProduct.innerText = `??/${filterListData[key]}`;
+            amountProduct.innerText = `${filterListData[key]}`;
             checkboxLine.append(amountProduct);
 
             parentElem.append(checkboxLine);
@@ -142,13 +151,13 @@ class MainPage extends Page {
     private productsFilteringUsingCheckbox(checkbox: HTMLInputElement) {
         checkbox.addEventListener('change', () => {
             if (checkbox.checked) {
-                MainPage.fltredCollection.get(checkbox.name)?.add(checkbox.id);
+                MainPage.settings.fltredCollection.get(checkbox.name)?.add(checkbox.id);
             } else {
-                MainPage.fltredCollection.get(checkbox.name)?.delete(checkbox.id);
+                MainPage.settings.fltredCollection.get(checkbox.name)?.delete(checkbox.id);
             }
 
-            const categories = MainPage.fltredCollection.get('category');
-            const brands = MainPage.fltredCollection.get('brand');
+            const categories = MainPage.settings.fltredCollection.get('category');
+            const brands = MainPage.settings.fltredCollection.get('brand');
             MainPage.filtredByCheckboxesData = data;
             MainPage.resultFiltringData = data;
 
@@ -170,8 +179,8 @@ class MainPage extends Page {
         const minValue = sortByFilterData[0][filter];
         const maxValue = sortByFilterData[sortByFilterData.length - 1][filter];
 
-        MainPage.rangeValues[filter].from = minValue;
-        MainPage.rangeValues[filter].to = maxValue;
+        MainPage.settings.rangeValues[filter].from = minValue;
+        MainPage.settings.rangeValues[filter].to = maxValue;
 
         const sliderTitle = document.createElement('h3');
         sliderTitle.className = 'slider__title';
@@ -267,8 +276,8 @@ class MainPage extends Page {
         this.fillSlider(fromSlider, toSlider, '#C6C6C6', '#f9b54c', toSlider);
 
         const filter = fromSlider.name as 'price' | 'stock';
-        MainPage.rangeValues[filter].from = from;
-        MainPage.rangeValues[filter].to = to;
+        MainPage.settings.rangeValues[filter].from = from;
+        MainPage.settings.rangeValues[filter].to = to;
 
         if (valueElem.id === 'fromValue') {
             if (from > to) {
@@ -295,8 +304,8 @@ class MainPage extends Page {
     }
 
     private productsFilteringUsingDualSliders() {
-        const priceData = MainPage.rangeValues.price;
-        const stockData = MainPage.rangeValues.stock;
+        const priceData = MainPage.settings.rangeValues.price;
+        const stockData = MainPage.settings.rangeValues.stock;
 
         MainPage.filtredBySlidersData = data
             .filter((el) => +el.price >= priceData.from && +el.price <= priceData.to)
@@ -354,8 +363,8 @@ class MainPage extends Page {
     }
 
     private cleanFilters() {
-        MainPage.fltredCollection.get('category')?.clear();
-        MainPage.fltredCollection.get('brand')?.clear();
+        MainPage.settings.fltredCollection.get('category')?.clear();
+        MainPage.settings.fltredCollection.get('brand')?.clear();
         MainPage.filtredByCheckboxesData = data;
         MainPage.filtredBySlidersData = data;
         MainPage.filtredBySearchData = data;

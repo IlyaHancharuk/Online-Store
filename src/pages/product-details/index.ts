@@ -83,6 +83,7 @@ class ProductDetailsPage extends Page {
                             if (!this.checkInLocalStorage(itemId)) {
                                 this.cartInfo.addToCart(itemId, '1');
                             }
+                            CartPage.openPopup();
                             window.location.hash = '#cart-page';
                         });
 
