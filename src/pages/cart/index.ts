@@ -48,7 +48,6 @@ class CartPage extends Page {
         cartMain.append(cartLeftBody);
 
         const cartLeftHeader = this.createElement('h2', 'cart__left-header');
-        cartLeftHeader.textContent = 'Shopping cart';
         cartLeftBody.append(cartLeftHeader);
 
         const cartList = this.createElement('ol', 'cart__list');
