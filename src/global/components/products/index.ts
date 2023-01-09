@@ -155,6 +155,9 @@ class Products extends Component {
                             if (total) {
                                 total.innerText = `Cart total: €${sum}`;
                             }
+
+                            const totalAmount = document.querySelector<HTMLElement>('.header__total-amount');
+                            if (totalAmount) totalAmount.textContent = `${CartPage.refreshCartIcontotal()}`;
                         });
 
                         detailsButton.innerText = 'Details';
