@@ -3,8 +3,6 @@ import data from '../../global/data/data';
 import { localStorageData } from '../../global/types/index';
 import { Data } from '../../global/types/index';
 import cartInfo from '../../global/components/cartInfo';
-import Main from '../../global/components/main';
-import App from '../app';
 
 class CartPage extends Page {
     static container: HTMLElement;
