@@ -1,4 +1,5 @@
-$borderColor: #0096e6;
+$mainColor: #f9b54c;
+$secondColor: #324a5e;
 
 #emptiesProducts {
     margin-top: 20%;
@@ -9,7 +10,7 @@ $borderColor: #0096e6;
 .filters {
     width: 25%;
     background: rgba(24, 26, 28, 0.3);
-    border: 1px solid $borderColor;
+    border: 1px solid $mainColor;
     border-radius: 0.5rem;
     padding: .5%;
     height: -moz-fit-content;
@@ -21,21 +22,29 @@ $borderColor: #0096e6;
     align-items: center;
     justify-content: space-around;
     margin-bottom: 2%;
+
+    .button {
+        font-size: 100%;
+        padding: 2% 10%;
+        border-radius: 0.5rem;
+    }
 }
 
 .filter__container {
     overflow: hidden;
     margin-bottom: 5%;
     display: block;
-    border: 1px solid $borderColor;
+    border: 1px solid $mainColor;
     border-radius: 0.5rem;
     background: rgba(76,74,65,.4);
 }
 
 .filter__container h3 {
+    padding: 1% 0;
+    color: $mainColor;
     text-align: center;
-    background-color: #181a1c;
-    border-bottom: 1px solid $borderColor;
+    background-color: #272727;
+    border-bottom: 1px solid $mainColor;
 }
 
 .filter-list {
@@ -49,27 +58,30 @@ $borderColor: #0096e6;
     white-space: nowrap;
     display: flex;
     align-items: center;
-}
 
-.checkbox-line input {
-    cursor: pointer;
-}
+    input {
+        cursor: pointer;
+    }
 
-.checkbox-line label {
-    overflow: hidden;
-    padding: 0.3rem;
-    cursor: pointer;
-    -webkit-user-select: none;
-    user-select: none;
-}
+    input[type="checkbox"]:checked + label {
+        color: $mainColor;
+    }
 
-.checkbox-line span {
-    margin-left: auto;
-}
+    label {
+        overflow: hidden;
+        padding: 0.3rem;
+        cursor: pointer;
+        -webkit-user-select: none;
+        user-select: none;
+    }
 
+    span {
+        margin-left: auto;
+    }
+}
 
 .slider__container {
-    border: 1px solid $borderColor;
+    border: 1px solid $mainColor;
     border-radius: 0.5rem;
     overflow: hidden;
     margin-bottom: 5%;
@@ -79,9 +91,11 @@ $borderColor: #0096e6;
 }
 
 .slider__title {
+    padding: 1% 0;
+    color: $mainColor;
+    background-color: #272727;
     text-align: center;
-    background-color: #181a1c;
-    border-bottom: 1px solid $borderColor;
+    border-bottom: 1px solid $mainColor;
 }
 
 .slider__control {
@@ -100,6 +114,7 @@ $borderColor: #0096e6;
 
 .slider__value span {
     width: 15%;
+    color: $mainColor;
 }
 
 .slider__control input[type=range]::-webkit-slider-thumb {
@@ -107,7 +122,7 @@ $borderColor: #0096e6;
     pointer-events: all;
     width: 1rem;
     height: 1rem;
-    background-color: #fff;
+    background-color: $secondColor;
     border-radius: 50%;
     box-shadow: 0 0 0 1px #C6C6C6;
     cursor: pointer;
@@ -118,14 +133,14 @@ $borderColor: #0096e6;
     pointer-events: all;
     width: 1rem;
     height: 1rem;
-    background-color: #fff;
+    background-color: $secondColor;
     border-radius: 50%;
     box-shadow: 0 0 0 1px #C6C6C6;
     cursor: pointer;
 }
 
 .slider__control input[type=range]::-webkit-slider-thumb:hover {
-    background: #f7f7f7;
+    background-color: #1d2a35;
 }
 
 .slider__control input[type=range]::-webkit-slider-thumb:active {
