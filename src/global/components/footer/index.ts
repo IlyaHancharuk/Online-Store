@@ -36,22 +36,20 @@ class Footer extends Component {
     }
 
     renderFooterButtons(): void {
-        const footerBody = document.createElement('div');
-        footerBody.classList.add('footer__body');
+        const fragment = document.createDocumentFragment();
+        const footerTemplate: HTMLTemplateElement | null = document.querySelector('#footer');
+        const footerClone: HTMLElement | null = <HTMLElement>footerTemplate?.content.cloneNode(true);
 
-        footerElements.forEach((element) => {
-            const footerItemHTML = document.createElement(element.tag);
-            footerItemHTML.classList.add(`${element.class}`);
-            if (element.href) {
-                footerItemHTML.setAttribute('href', element.href);
-                footerItemHTML.setAttribute('target', '_blank');
-            }
-            if (element.innerText) {
-                footerItemHTML.innerText = element.innerText;
-            }
-            footerBody.append(footerItemHTML);
-        });
-        this.container.append(footerBody);
+        const footerIlyaAnchor: HTMLElement | null = footerClone.querySelector('.footer__ilua_anchor');
+        const footerLights0nAnchor: HTMLElement | null = footerClone.querySelector('.footer__lights0n_anchor');
+        const footerRSAnchor: HTMLElement | null = footerClone.querySelector('.footer__lights0n_anchor');
+
+        if (footerIlyaAnchor && footerLights0nAnchor && footerRSAnchor) {
+            footerIlyaAnchor.textContent = `${footerElements[0].innerText}`;
+            footerLights0nAnchor.textContent = `${footerElements[2].innerText}`;
+        }
+        fragment.append(footerClone);
+        this.container.append(fragment);
     }
 
     render() {

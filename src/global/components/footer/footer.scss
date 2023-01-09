@@ -1,37 +1,77 @@
 $mainPink: #ff9999;
-.footer {
-}
-.footer__body {
-  justify-content: center;
-  display: flex;
-  align-items: center;
+$secondColor: #324a5e;
+$redGit: url("assets/git-red.svg");
+$blueGit: url("assets/git-blue.svg");
+$rs-logo: url("assets/rs_school_js.svg");
 
-  padding: 20px 0;
-  // background-color: rgba(255, 0, 0, 0.45);
-  background-color: $mainPink;
-  & > * {
-    width: 150px;
-    text-align: center;
-  }
+.footer-anchor {
+  color: $secondColor;
+  font-size: 1.2rem;
 }
-
-.footer__ilya {
+.footer-image {
+  display: block;
+  height: 25px;
+  width: 25px;
+  object-fit: contain;
   background-size: contain;
   background-repeat: no-repeat;
-  background-size: 50%;
 }
+.footer {
+  &__body {
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: $mainPink;
+  }
 
-.footer__year {
-  font-size: 1.2rem;
-  width: auto;
-  font-weight: bold;
-  background-image: linear-gradient(to right, #006bd7 10%, #cd2d00 60%, #51ff00 110%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  cursor: default;
-}
+  &__rs {
+    &_git-image {
+      background-image: $rs-logo;
+      display: block;
+      width: 80px;
+    }
+  }
 
-.footer__rs-school {
-  display: none;
+  &__year {
+    font-size: 1.2rem;
+    width: auto;
+    font-weight: bold;
+    background-image: linear-gradient(to right, #006bd7 10%, #cd2d00 60%, #51ff00 110%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    cursor: default;
+  }
+
+  &__authors {
+    text-align-last: left;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  &__ilua {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    &_anchor {
+    }
+
+    &_git-image {
+      background-image: $redGit;
+    }
+  }
+
+  &__lights0n {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    &_anchor {
+    }
+
+    &_git-image {
+      background-image: $blueGit;
+    }
+  }
 }
