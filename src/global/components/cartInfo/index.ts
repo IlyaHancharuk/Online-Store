@@ -75,6 +75,10 @@ class cartInfo {
             localData.splice(localData.indexOf(alreadyInLocalData), 1);
         }
         localStorage['RS-store-data'] = JSON.stringify(localData);
+
+        if (localStorage['RS-store-data'] === '[]') {
+            localStorage.removeItem('RS-store-data');
+        }
         return;
     }
 }

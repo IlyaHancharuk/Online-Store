@@ -428,7 +428,6 @@ class CartPage extends Page {
         CartPage.refreshCartIcontotal();
         // close when click out of the popup
         cartOuter?.addEventListener('mousedown', (event) => {
-            console.log('clicj');
             const target = event.target as HTMLElement;
             if (event.target as Element) {
                 const lal = target.closest('.cart-pup__body');
