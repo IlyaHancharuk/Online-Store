@@ -519,6 +519,7 @@ class CartPage extends Page {
             itemMinus.addEventListener('click', (): void => {
                 if (+itemHowMany.value - 1 <= 0) {
                     itemNum.parentElement?.remove();
+                    this.addItemsfromLocalStorage();
                 }
                 itemHowMany.value = `${+itemHowMany.value - 1}`;
                 this.decreaseFromCart(`${product.id}`, '1');
