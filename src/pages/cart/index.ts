@@ -497,8 +497,6 @@ class CartPage extends Page {
             itemHowMany.max = `${product.stock}`;
             // акуенно интересная но сложно написанная мною ф-ция. Надо научиться делать проще
             itemHowMany.addEventListener('change', (): void => {
-                console.log(itemHowMany.value);
-                console.log(currentAmount, 'cur before');
                 if (+itemHowMany.value === 0) {
                     itemHowMany.value = '1';
                 }
@@ -550,24 +548,13 @@ class CartPage extends Page {
 
     // ! можно переписать под чуть красивее. Но кукуха пока не варит. Работает превосходно
     private sayCartIsEmpty(): void {
-        if (localStorage['RS-store-data']) {
-            const localData = JSON.parse(localStorage['RS-store-data']);
-            if (localData.length === 0) {
-                localStorage.removeItem('RS-store-data');
-                const emptyCartPageText = this.createElement('p', 'cart__empty-text');
-                emptyCartPageText.innerText = 'The cart is empty yet ¯\\_( ◡ ₒ ◡ )_/¯';
-                this.container.append(emptyCartPageText);
-                const oldSummary: HTMLElement | null = this.container.querySelector('.cart__total');
-                oldSummary?.remove();
-                const pages: HTMLElement | null = this.container.querySelector('.cart__pages');
-                pages?.classList.add('closed');
-                const cartLeftHeader = this.container.querySelector('.cart__left-header');
-                cartLeftHeader?.remove();
-            }
-        } else {
+        if (!localStorage['RS-store-data']) {
+            const alredyHaveMessage: HTMLElement | null = this.container.querySelector('.cart__empty-text');
             const emptyCartPageText = this.createElement('p', 'cart__empty-text');
             emptyCartPageText.innerText = 'The cart is empty yet ¯\\_( ◡ ₒ ◡ )_/¯';
-            this.container.append(emptyCartPageText);
+            if (!alredyHaveMessage) {
+                this.container.append(emptyCartPageText);
+            }
             const oldSummary: HTMLElement | null = this.container.querySelector('.cart__total');
             oldSummary?.remove();
             const pages: HTMLElement | null = this.container.querySelector('.cart__pages');
