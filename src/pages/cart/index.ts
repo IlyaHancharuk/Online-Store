@@ -39,6 +39,14 @@ class CartPage extends Page {
                 this.decreaseFromCart(`${el.id}`, `${el.amount}`);
             }
         });
+
+        if (localStorage['RS-store-data']) {
+            localStorage.removeItem('RS-store-data');
+        }
+
+        if (localStorage['RS-store-promo']) {
+            localStorage.removeItem('RS-store-promo');
+        }
     }
     private createCartBodyHTML(): void {
         const cartMain = this.createElement('div', 'cart');
@@ -258,15 +266,6 @@ class CartPage extends Page {
         }
     }
 
-    // public createPriseWithDiscount(): void {
-    //     if (!localStorage['RS-store-promo']) {
-    //         return;
-    //     }
-    //     const promoDOMList: HTMLElement | null = this.container.querySelector('.cart__promo-list');
-    //     const currentPromoList = JSON.parse(localStorage['RS-store-promo']);
-
-    // }
-
     public refreshPromocodeInf(): void {
         if (!localStorage['RS-store-promo']) {
             return;
@@ -428,7 +427,7 @@ class CartPage extends Page {
         // add total to cart icon (header)
         CartPage.refreshCartIcontotal();
         // close when click out of the popup
-        cartOuter?.addEventListener('mouseup', (event) => {
+        cartOuter?.addEventListener('mousedown', (event) => {
             console.log('clicj');
             const target = event.target as HTMLElement;
             if (event.target as Element) {
@@ -554,7 +553,7 @@ class CartPage extends Page {
         if (localStorage['RS-store-data']) {
             const localData = JSON.parse(localStorage['RS-store-data']);
             if (localData.length === 0) {
-                // localStorage.clear();
+                localStorage.removeItem('RS-store-data');
                 const emptyCartPageText = this.createElement('p', 'cart__empty-text');
                 emptyCartPageText.innerText = 'The cart is empty yet ¯\\_( ◡ ₒ ◡ )_/¯';
                 this.container.append(emptyCartPageText);
