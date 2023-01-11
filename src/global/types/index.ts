@@ -54,5 +54,5 @@ export interface Isettings {
             from: number;
             to: number;
         };
-    }
+    };
 }
