@@ -33,15 +33,18 @@ class App {
                 break;
             default:
                 page = new ErrorPage(idPage, ErrorTypes.Error_404);
-                setTimeout(() => {
-                    window.location.hash = PageIds.MainPage;
-                }, 5000);
                 break;
         }
 
         if (idPage.includes('product-details-page')) {
             const productId = Number(idPage.slice(21));
             page = new ProductDetailsPage(idPage, productId);
+        }
+
+        if (idPage !== PageIds.MainPage && idPage !== PageIds.CartPage && !idPage.includes('product-details-page')) {
+            setTimeout(() => {
+                window.location.hash = PageIds.MainPage;
+            }, 5000);
         }
 
         if (page) {
