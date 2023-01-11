@@ -516,14 +516,14 @@ class CartPage extends Page {
             });
             // делаем кнопки + и - рабочими
             itemMinus.addEventListener('click', (): void => {
-                if (+itemHowMany.value - 1 <= 0) {
-                    itemNum.parentElement?.remove();
-                    this.addItemsfromLocalStorage();
-                }
                 itemHowMany.value = `${+itemHowMany.value - 1}`;
                 this.decreaseFromCart(`${product.id}`, '1');
                 currentAmount = +itemHowMany.value;
                 this.sayCartIsEmpty();
+                if (+itemHowMany.value - 1 <= 0) {
+                    this.addItemsfromLocalStorage();
+                    itemNum.parentElement?.remove();
+                }
             });
             itemPlus.addEventListener('click', () => {
                 if (+itemHowMany.value >= product.stock) {
