@@ -34,7 +34,6 @@ class CartPage extends Page {
         const localData: localStorageData[] = JSON.parse(localStorage['RS-store-data']);
         localData.map((el) => {
             if (el.id) {
-                console.log(el, 'очищен');
                 this.decreaseFromCart(`${el.id}`, `${el.amount}`);
             }
         });
