@@ -10,21 +10,22 @@ class cartInfo {
         this.localCartList = [];
     }
 
+    private getLocalData() {
+        const localData: localStorageData[] = localStorage['RS-store-data']
+            ? JSON.parse(localStorage['RS-store-data'])
+            : [];
+
+        localStorage.removeItem('RS-store-data');
+        return localData;
+    }
+
     addToCart(newItemId: string, newItemAmount: string): void {
         const newCartItem = {
             id: '',
             amount: '',
         };
 
-        let localData: localStorageData[];
-
-        if (localStorage['RS-store-data']) {
-            localData = JSON.parse(localStorage['RS-store-data']);
-            localStorage.removeItem('RS-store-data');
-        } else {
-            localData = [];
-            localStorage.removeItem('RS-store-data');
-        }
+        const localData = this.getLocalData();
 
         const alreadyInLocalData: localStorageData | undefined = localData.filter((el) => el.id === newItemId)[0];
         if (alreadyInLocalData) {
@@ -41,15 +42,7 @@ class cartInfo {
         return;
     }
     reduceItemAmount(itemId: string, howMuchToReduce = '1'): void {
-        let localData: localStorageData[];
-
-        if (localStorage['RS-store-data']) {
-            localData = JSON.parse(localStorage['RS-store-data']);
-            localStorage.removeItem('RS-store-data');
-        } else {
-            localData = [];
-            localStorage.removeItem('RS-store-data');
-        }
+        const localData = this.getLocalData();
 
         const alreadyInLocalData: localStorageData | undefined = localData.filter((el) => el.id === itemId)[0];
         if (alreadyInLocalData) {
