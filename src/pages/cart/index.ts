@@ -1,7 +1,7 @@
 import Page from '../../global/templates/page';
 import data from '../../global/data/data';
 import { localStorageData } from '../../global/types/index';
-import { Data } from '../../global/types/index';
+import { IData } from '../../global/types/index';
 import cartInfo from '../../global/components/cartInfo';
 
 class CartPage extends Page {
@@ -12,8 +12,8 @@ class CartPage extends Page {
 
     private cartInf: cartInfo = new cartInfo(1, 1);
 
-    static findViaId(itemId: number): Data {
-        return <Data>(<unknown>data.filter((el) => el.id === itemId)[0]);
+    static findViaId(itemId: number): IData {
+        return <IData>(<unknown>data.filter((el) => el.id === itemId)[0]);
     }
 
     static getTotalSum(): number {

@@ -1,4 +1,4 @@
-export type Data = {
+export interface IData {
     id: number;
     title: string;
     description: string;
@@ -13,7 +13,7 @@ export type Data = {
 };
 
 export interface IElemInfo {
-    dataItem: Data;
+    dataItem: IData;
     descriptionsTitle: ProductInfoForMainPage | ProductInfoForProductPage;
     parentElem: HTMLElement;
 }
@@ -41,18 +41,17 @@ export interface footerHTMLTypes {
     href?: string;
 }
 
+interface IRange {
+    from: number;
+    to: number;
+}
+
 export interface Isettings {
     viewMode: string;
     sort: string;
     fltredCollection: Map<string, Set<string>>;
     rangeValues: {
-        price: {
-            from: number;
-            to: number;
-        };
-        stock: {
-            from: number;
-            to: number;
-        };
+        price: IRange;
+        stock: IRange;
     };
 }

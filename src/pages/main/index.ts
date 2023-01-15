@@ -1,7 +1,7 @@
 import Page from '../../global/templates/page';
 import Products from '../../global/components/products';
 import data from '../../global/data/data';
-import { Data, Isettings } from '../../global/types';
+import { IData, Isettings } from '../../global/types';
 
 class MainPage extends Page {
     static products = new Products('div', 'products');
@@ -316,7 +316,7 @@ class MainPage extends Page {
         return MainPage.resultFiltringData;
     }
 
-    static productsFilteringUsingSearch(data: Data[]) {
+    static productsFilteringUsingSearch(data: IData[]) {
         const searchInput = document.querySelector<HTMLInputElement>('.search-bar input');
         if (searchInput) {
             const keyword = searchInput.value.toLowerCase();

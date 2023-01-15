@@ -1,5 +1,5 @@
 import Component from '../../templates/component';
-import { Data, localStorageData, ProductInfoForMainPage } from '../../types';
+import { IData, localStorageData, ProductInfoForMainPage } from '../../types';
 import data from '../../data/data';
 import { ProductProperty, SortBy, SortOptions, SortOrder } from '../../constants';
 import MainPage from '../../../pages/main';
@@ -23,7 +23,7 @@ class Products extends Component {
         this.cartInfo = new cartInfo(1, 1);
     }
 
-    private createHTML(data: Data[]) {
+    private createHTML(data: IData[]) {
         const sortHTML = this.createSortHTML();
         data.sort((a, b) => a.id - b.id);
         const productsHTML = this.createProductsHTML(data);
@@ -100,7 +100,7 @@ class Products extends Component {
         }
     }
 
-    public createProductsHTML(data: Data[]) {
+    public createProductsHTML(data: IData[]) {
         const fragment = document.createDocumentFragment();
         const productsItemTemp: HTMLTemplateElement | null = document.querySelector('#productsItemTemp');
 
@@ -179,7 +179,7 @@ class Products extends Component {
         }
     }
 
-    private addInfo(dataItem: Data, parentElem: HTMLElement) {
+    private addInfo(dataItem: IData, parentElem: HTMLElement) {
         for (const prop in Products.ProductDatailsData) {
             const key = prop as ProductInfoForMainPage;
             const infoItem = document.createElement('div');
