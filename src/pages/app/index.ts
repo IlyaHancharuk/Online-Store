@@ -7,7 +7,7 @@ import Header from '../../global/components/header';
 import Main from '../../global/components/main';
 import Footer from '../../global/components/footer';
 import cartInfo from '../../global/components/cartInfo';
-import { PageIds } from '../../global/constants';
+import { PageIds, PRODUCT_DETAILS_PAGE_HASH_LENGTH } from '../../global/constants';
 
 class App {
     private static container: HTMLElement = document.body;
@@ -37,7 +37,7 @@ class App {
         }
 
         if (idPage.includes('product-details-page')) {
-            const productId = Number(idPage.slice(21));
+            const productId = Number(idPage.slice(PRODUCT_DETAILS_PAGE_HASH_LENGTH));
             page = new ProductDetailsPage(idPage, productId);
         }
 

@@ -1,7 +1,7 @@
 import Component from '../../templates/component';
 import { Data, localStorageData, ProductInfoForMainPage } from '../../types';
 import data from '../../data/data';
-import { SortOptions } from '../../constants';
+import { ProductProperty, SortBy, SortOptions, SortOrder } from '../../constants';
 import MainPage from '../../../pages/main';
 import cartInfo from '../cartInfo';
 import CartPage from '../../../pages/cart';
@@ -10,12 +10,12 @@ class Products extends Component {
     private cartInfo: cartInfo;
 
     static ProductDatailsData = {
-        category: 'Category:',
-        brand: 'Brand:',
-        price: 'Price:',
-        rating: 'Rating:',
-        discountPercentage: 'Discount:',
-        stock: 'Stock:',
+        category: ProductProperty.category,
+        brand: ProductProperty.brand,
+        price: ProductProperty.price,
+        rating: ProductProperty.rating,
+        discountPercentage: ProductProperty.discountPercentage,
+        stock: ProductProperty.stock,
     };
 
     constructor(tagName: string, className: string) {
@@ -211,19 +211,19 @@ class Products extends Component {
         select.onchange = () => {
             switch (select.value) {
                 case SortOptions.default:
-                    MainPage.productsSorting('id');
+                    MainPage.productsSorting(SortBy.id);
                     break;
                 case SortOptions.priceASC:
-                    MainPage.productsSorting('price', 'ASC');
+                    MainPage.productsSorting(SortBy.price, SortOrder.ASC);
                     break;
                 case SortOptions.priceDESC:
-                    MainPage.productsSorting('price', 'DESC');
+                    MainPage.productsSorting(SortBy.price, SortOrder.DESC);
                     break;
                 case SortOptions.ratingASC:
-                    MainPage.productsSorting('rating', 'ASC');
+                    MainPage.productsSorting(SortBy.rating, SortOrder.ASC);
                     break;
                 case SortOptions.ratingDESC:
-                    MainPage.productsSorting('rating', 'DESC');
+                    MainPage.productsSorting(SortBy.rating, SortOrder.DESC);
                     break;
             }
         };
