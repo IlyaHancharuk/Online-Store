@@ -10,7 +10,6 @@ class CartPage extends Page {
         super(id);
     }
 
-    // ? тащим метод класса из другого класса. хохох
     private cartInf: cartInfo = new cartInfo(1, 1);
 
     static findViaId(itemId: number): Data {
@@ -61,7 +60,6 @@ class CartPage extends Page {
         const cartList = this.createElement('ol', 'cart__list');
         cartLeftBody.append(cartList);
 
-        // pages block
         if (document.querySelector('.cart__pages')) {
             document.querySelector('.cart__pages')?.remove();
         }
@@ -88,7 +86,6 @@ class CartPage extends Page {
         pagesCounterBody.append(pagesRightArrow);
         cartLeftBody.append(pagesCounterBody);
 
-        // popup adding
         const fragment2 = document.createDocumentFragment();
         const popupTemplate: HTMLTemplateElement | null = document.querySelector('#cartPopup');
         const popupClone: HTMLElement | null = <HTMLElement>popupTemplate?.content.cloneNode(true);
@@ -195,12 +192,10 @@ class CartPage extends Page {
         fragment2.append(popupClone);
         const boddy = document.body;
         boddy?.append(fragment2);
-        // this.sayCartIsEmpty();
         this.refreshCartSummary();
         this.refreshPromocodeInf();
         return;
     }
-    // проще было оставить нолик висеть. Но это некрасиво! Вызывай эту ф-цию при клике по кнопке добавить в корзину!
     static refreshCartIcontotal(): string {
         const cartIconTotal = document.querySelector('.header__total-amount');
         if (cartIconTotal) {
@@ -303,7 +298,6 @@ class CartPage extends Page {
                 });
                 return;
             });
-            // если коды есть, то
             if (currentPromoList.length !== 0) {
                 const summaryPrice = this.container.querySelector('.cart__total-sum');
                 summaryPrice?.classList.add('crossed');
@@ -342,7 +336,6 @@ class CartPage extends Page {
         const promoList = ['RS2022', 'Hello Kovale.V!', 'admin'];
         const cartPromoField: HTMLInputElement | null = document.querySelector('.cart__promo-field');
         if (cartPromoField) {
-            //    если нету совсем промокодов
             if (!localStorage['RS-store-promo'] && promoList.includes(promocode)) {
                 const currentPromoList: string[] = [];
                 currentPromoList.push(promocode);
@@ -350,17 +343,14 @@ class CartPage extends Page {
                 this.alertPromocodeState('new');
                 this.refreshPromocodeInf();
                 return true;
-                // если какие-то промо уже есть
             } else if (localStorage['RS-store-promo']) {
                 const currentPromoList = JSON.parse(localStorage['RS-store-promo']);
 
-                // если уже есть такой промо, то светим и выходим
                 if (currentPromoList.includes(promocode)) {
                     this.alertPromocodeState('exist');
                     return true;
                 }
 
-                // если новый хороший промо, добавляем его
                 if (promoList.includes(promocode) && !currentPromoList.includes(promocode)) {
                     currentPromoList.push(promocode);
                     localStorage.setItem('RS-store-promo', JSON.stringify(currentPromoList));
@@ -369,7 +359,6 @@ class CartPage extends Page {
                     return true;
                 }
             }
-            // если не валиден, светим и выходим (треклятые проверки убирают читаемость кода)
             if (!promoList.includes(promocode)) {
                 this.alertPromocodeState('wrong');
                 return false;
@@ -411,22 +400,17 @@ class CartPage extends Page {
 
         fragment.append(cartSumClone);
 
-        // remove old
         const oldSummary: HTMLElement | null = this.container.querySelector('.cart__total');
         oldSummary?.remove();
 
-        // add new
         const cartSumBody: HTMLElement | null = this.container.querySelector('.cart');
         if (cartSumBody) {
             cartSumBody.append(fragment);
             this.container.append(cartSumBody);
         }
-        //change header total
         this.refreshHeaderTotal(CartPage.getTotalSum().toString());
 
-        // add total to cart icon (header)
         CartPage.refreshCartIcontotal();
-        // close when click out of the popup
         cartOuter?.addEventListener('mousedown', (event) => {
             const target = event.target as HTMLElement;
             if (event.target as Element) {
@@ -443,7 +427,6 @@ class CartPage extends Page {
     }
 
     private addItemViaTemplate(itemId: number, itemAmount: number): void {
-        // find item via itemId
         let currentAmount = itemAmount;
         const productArr = data.filter((dataItem) => dataItem.id == itemId);
         const product = productArr[0];
@@ -477,7 +460,6 @@ class CartPage extends Page {
             itemHowMany &&
             itemPlus
         ) {
-            // по стандарту один, а если есть localStorage, то ищем из localStorage.indexOf и тык
             itemNum.textContent = `1`;
             if (localStorage['RS-store-data']) {
                 const LStrg = JSON.parse(localStorage['RS-store-data']);
@@ -495,7 +477,6 @@ class CartPage extends Page {
             itemHowMany.value = `${itemAmount}`;
 
             itemHowMany.max = `${product.stock}`;
-            // акуенно интересная но сложно написанная мною ф-ция. Надо научиться делать проще
             itemHowMany.addEventListener('change', (): void => {
                 if (+itemHowMany.value === 0) {
                     itemHowMany.value = '1';
@@ -512,7 +493,6 @@ class CartPage extends Page {
                 this.sayCartIsEmpty();
                 this.refreshCartSummary();
             });
-            // делаем кнопки + и - рабочими
             itemMinus.addEventListener('click', (): void => {
                 itemHowMany.value = `${+itemHowMany.value - 1}`;
                 this.decreaseFromCart(`${product.id}`, '1');
@@ -531,7 +511,6 @@ class CartPage extends Page {
 
                     return;
                 }
-                // просто вызываем с минусом. Функция уменьшения почитает красиво
                 itemHowMany.value = `${+itemHowMany.value + 1}`;
                 this.decreaseFromCart(`${product.id}`, '-1');
                 currentAmount = +itemHowMany.value;
@@ -541,12 +520,10 @@ class CartPage extends Page {
 
         fragment.append(cartClone);
 
-        // добавляем фрагмент в список
         const cartList: HTMLElement | null = this.container.querySelector('.cart__list');
         cartList?.append(fragment);
     }
 
-    // ! можно переписать под чуть красивее. Но кукуха пока не варит. Работает превосходно
     private sayCartIsEmpty(): void {
         if (!localStorage['RS-store-data']) {
             const alredyHaveMessage: HTMLElement | null = this.container.querySelector('.cart__empty-text');
@@ -574,7 +551,6 @@ class CartPage extends Page {
     }
 
     addToCart(newItemId: string, newItemAmount: string): void {
-        // if no such ItemId in database:
         const productArr = data.filter((dataItem) => dataItem.id == +newItemId)[0];
         if (!productArr) {
             console.log(`no item with id ${newItemId}`);
@@ -595,7 +571,6 @@ class CartPage extends Page {
     }
 
     private addItemsfromLocalStorage(): void {
-        // clear list and renew it;
         this.refreshCartSummary();
         const cartList: HTMLElement | null = this.container.querySelector('.cart__list');
         if (cartList) {

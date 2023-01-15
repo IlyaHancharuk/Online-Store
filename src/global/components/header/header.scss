@@ -3,7 +3,6 @@ $main_logo: url("./assets/logo.svg");
 $mainPink: #ff9999;
 .header {
   padding: 20px 0;
-  // background-color: rgba(255, 0, 0, 0.45);
   background-color: $mainPink;
 }
 .nav__body {
@@ -24,7 +23,6 @@ $mainPink: #ff9999;
   background-repeat: no-repeat;
   background-size: 38px;
 
-  // подчеркивание при наведении
   &::after {
     content: "";
     display: block;
@@ -52,10 +50,8 @@ $mainPink: #ff9999;
   height: 40px;
   width: 40px;
   border-radius: 50%;
-
-  // TODO make animation
-  // не работает, козолина, из-за скрытия текста
   transition: all 0.3s ease 0s;
+  
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0px 0px 21px 0px rgb(255, 240, 227);
@@ -64,7 +60,6 @@ $mainPink: #ff9999;
 
 .header__total {
   order: 1;
-  // background-color: #e64900;
   background-color: #ffcc33;
 }
 
@@ -79,9 +74,7 @@ $mainPink: #ff9999;
   font-size: 1.1rem;
   text-align: center;
   border-radius: 50%;
-  // border: 2px solid rgb(0, 0, 0);
   box-shadow: 0px 0px 14px 2px rgb(255 240 227);
-
   top: -4px;
   right: -5px;
 }

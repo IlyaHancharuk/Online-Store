@@ -19,33 +19,6 @@ class MainPage extends Page {
         },
     };
 
-    /* static getSettings() {
-        if (localStorage['RS-store-settings']) {
-            const localSett = JSON.parse(localStorage['RS-store-settings']);
-            console.log(localSett);
-            MainPage.settings = {
-                ...localSett,
-                fltredCollection: new Map([
-                    ['category', new Set(localSett.fltredCollection.category)],
-                    ['brand', new Set(localSett.fltredCollection.brand)],
-                ]),
-            }
-        }
-    }
-
-    static setSettings() {
-        const categories = MainPage.settings.fltredCollection.get('category');
-        const brands = MainPage.settings.fltredCollection.get('brand');
-        const localSett = {
-            ...MainPage.settings,
-            fltredCollection: {
-                category: categories ? Array.from(categories) : [],
-                brand: brands ? Array.from(brands) : [],
-            },
-        }
-        localStorage['RS-store-settings'] = JSON.stringify(localSett);
-    } */
-
     static filtredByCheckboxesData = data;
     static filtredBySlidersData = data;
     static filtredBySearchData = data;

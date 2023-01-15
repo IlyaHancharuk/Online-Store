@@ -55,8 +55,6 @@ $rs-logo: url("assets/rs_school_js.svg");
     display: flex;
     align-items: center;
     gap: 3px;
-    &_anchor {
-    }
 
     &_git-image {
       background-image: $redGit;
@@ -67,8 +65,6 @@ $rs-logo: url("assets/rs_school_js.svg");
     display: flex;
     align-items: center;
     gap: 3px;
-    &_anchor {
-    }
 
     &_git-image {
       background-image: $blueGit;

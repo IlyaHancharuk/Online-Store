@@ -2,7 +2,6 @@
   transition: all 0.3s ease 0s;
 
   &:hover {
-    // transform: translateY(-3%);
     box-shadow: 0px 0px 21px 0px rgba(226, 108, 82, 0.541);
   }
 }
@@ -16,6 +15,7 @@
   background-image: linear-gradient(to right, #006bd7, #cd2d00);
   border-radius: 5px;
 }
+
 .header__total {
   position: relative;
   font-size: 1.25rem;
@@ -23,21 +23,25 @@
   color: rgb(0, 13, 18);
   background-color: rgba(234, 255, 0, 0.446);
 }
+
 .cart {
-  // background: cyan;
   display: flex;
 }
+
 .cart__empty-text {
   padding: 120px 0px 0px 0px;
   text-align: center;
   font-size: 3rem;
 }
+
 .cart__left-body {
   flex: 1 1 auto;
 }
+
 .cart__body {
   position: relative;
 }
+
 .cart__list {
   display: flex;
   flex-direction: column;
@@ -52,9 +56,11 @@
   justify-content: space-between;
   width: 100%;
 }
+
 .cart__start {
   display: flex;
 }
+
 .item__number {
   color: seashell;
   padding: 10px;
@@ -62,8 +68,7 @@
   background-color: teal;
   border-radius: 7px;
 }
-.item__photo-outer {
-}
+
 .item__photo-inner {
   border-radius: 10px;
   object-fit: cover;
@@ -75,7 +80,6 @@
 .item__inner-body {
   margin-right: auto;
   padding: 5px 0px 0px 0px;
-  // flex: 1 0 auto;
   align-self: start;
   padding-left: 10px;
 
@@ -105,10 +109,7 @@
   background-size: contain;
   background-repeat: no-repeat;
 }
-.item__discount {
-}
 
-//
 .item__amount-body {
   width: 150px;
   min-width: 150px;
@@ -137,6 +138,7 @@
     box-shadow: 0px 0px 21px 0px rgb(255, 240, 227);
   }
 }
+
 .item__current-amount {
   &[type="number"]::-webkit-outer-spin-button,
   &[type="number"]::-webkit-inner-spin-button {
@@ -151,10 +153,10 @@
   border: 2px solid #cd2d00;
   border-radius: 50%;
 }
+
 .item__in-stock {
   flex: 1 0 100%;
 }
-// pages
 
 .cart__pages {
   display: block;
@@ -164,13 +166,16 @@
   justify-content: center;
   align-items: center;
 }
+
 .cart__pages.closed {
   display: none;
 }
+
 .cart__pages-pages {
   font-size: 1.2rem;
   flex: 1 0 100%;
 }
+
 .cart__pages-left,
 .cart__pages-right {
   margin: 5px;
@@ -182,16 +187,17 @@
   cursor: pointer;
   transition: all 0.3s ease 0s;
 }
+
 .cart__pages-right {
   transform: rotate(180deg);
 }
+
 .cart__current-page,
 .cart__max-page,
 .cart__devider {
   font-size: 2rem;
 }
 
-// total Block
 .cart {
   &__total {
     display: flex;
@@ -287,7 +293,6 @@
     padding: 10px 7px;
     border-radius: 10px;
     background-color: gold;
-    // font-weight: 200;
     font-size: 16px;
     transition: all 0.3s ease 0s;
 
@@ -369,18 +374,6 @@
     flex-direction: column;
   }
 
-  &__f-name {
-  }
-
-  &__country {
-  }
-
-  &__address {
-  }
-
-  &__l-name {
-  }
-
   &__add-inf-lab {
     padding: 10px 0;
     color: wheat;
@@ -396,6 +389,7 @@
     font-size: 18px;
   }
 }
+
 .required-field {
   &:valid {
     border: 2px solid blue;
@@ -403,8 +397,6 @@
   &:invalid {
     border: 2px solid rgb(255, 0, 0);
   }
-}
-.input-text {
 }
 
 .card {
