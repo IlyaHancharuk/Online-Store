@@ -18,15 +18,11 @@ export interface IElemInfo {
     parentElem: HTMLElement;
 }
 
-export type ProductInfoForMainPage = 'category' | 'brand' | 'price' | 'discountPercentage' | 'rating' | 'stock';
+type ProductInfo<T> = T |'category' | 'brand' | 'discountPercentage' | 'rating' | 'stock';
 
-export type ProductInfoForProductPage =
-    | 'description'
-    | 'discountPercentage'
-    | 'rating'
-    | 'stock'
-    | 'brand'
-    | 'category';
+export type ProductInfoForMainPage = ProductInfo<'price'>;
+
+export type ProductInfoForProductPage = ProductInfo<'description'>;
 
 export type localStorageData = {
     id: number | string;
