@@ -55,3 +55,7 @@ export interface Isettings {
         stock: IRange;
     };
 }
+
+export type localStorageKey = 'RS-store-data' | 'RS-store-promo';
+
+export type modeButtonType = 'grid' | 'list';

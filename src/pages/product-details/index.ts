@@ -1,5 +1,5 @@
 import Page from '../../global/templates/page';
-import { Data, localStorageData, ProductInfoForProductPage } from '../../global/types';
+import { IData, localStorageData, ProductInfoForProductPage } from '../../global/types';
 import data from '../../global/data/data';
 import cartInfo from '../../global/components/cartInfo';
 import CartPage from '../cart';
@@ -23,7 +23,7 @@ class ProductDetailsPage extends Page {
         this.cartInfo = new cartInfo(1, 1);
     }
 
-    createHTML(data: Data[]) {
+    createHTML(data: IData[]) {
         if (this.productId) {
             const index = this.productId - 1;
             const product = data[index];
@@ -97,7 +97,7 @@ class ProductDetailsPage extends Page {
         }
     }
 
-    private addPhotos(dataItem: Data, grandProtoElem: HTMLImageElement, parentElem: HTMLElement) {
+    private addPhotos(dataItem: IData, grandProtoElem: HTMLImageElement, parentElem: HTMLElement) {
         const data = dataItem.images;
         grandProtoElem.src = data[0];
 
@@ -122,7 +122,7 @@ class ProductDetailsPage extends Page {
         });
     }
 
-    private addInfo(dataItem: Data, parentElem: HTMLElement) {
+    private addInfo(dataItem: IData, parentElem: HTMLElement) {
         for (const prop in ProductDetailsPage.ProductDatailsData) {
             const key = prop as ProductInfoForProductPage;
             const infoItem = document.createElement('div');
@@ -140,7 +140,7 @@ class ProductDetailsPage extends Page {
         }
     }
 
-    private createBreadcrumb(dataItem: Data) {
+    private createBreadcrumb(dataItem: IData) {
         const breadcrumb = document.createElement('div');
         breadcrumb.className = 'breadcrumb';
 

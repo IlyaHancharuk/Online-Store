@@ -1,6 +1,6 @@
-import { Data } from '../types';
+import { IData } from '../types';
 
-const data: Data[] = [
+const data: IData[] = [
     {
         id: 1,
         title: 'iPhone 9',

@@ -3,6 +3,8 @@ import data from '../../global/data/data';
 import { localStorageData } from '../../global/types/index';
 import { IData } from '../../global/types/index';
 import cartInfo from '../../global/components/cartInfo';
+import { cleanLocalStorage } from '../../global/components/helpers';
+import { LocalStorageKey } from '../../global/constants';
 
 class CartPage extends Page {
     static container: HTMLElement;
@@ -38,14 +40,10 @@ class CartPage extends Page {
             }
         });
 
-        if (localStorage['RS-store-data']) {
-            localStorage.removeItem('RS-store-data');
-        }
-
-        if (localStorage['RS-store-promo']) {
-            localStorage.removeItem('RS-store-promo');
-        }
+        cleanLocalStorage(LocalStorageKey.data);
+        cleanLocalStorage(LocalStorageKey.promo);
     }
+
     private createCartBodyHTML(): void {
         const cartMain = this.createElement('div', 'cart');
         this.container.append(cartMain);

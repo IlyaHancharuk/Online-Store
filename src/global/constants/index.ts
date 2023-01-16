@@ -1,5 +1,9 @@
 export const PRODUCT_DETAILS_PAGE_HASH_LENGTH = 21;
 
+export const POINTS_COUNT_FOR_GRID_MODE = 16;
+
+export const POINTS_COUNT_FOR_LIST_MODE = 4;
+
 export const enum PageIds {
     MainPage = 'main-page',
     CartPage = 'cart-page',
@@ -32,4 +36,14 @@ export const enum SortBy {
 export const enum SortOrder {
     ASC = 'ASC',
     DESC = 'DESC',
+}
+
+export const enum LocalStorageKey {
+    data = 'RS-store-data',
+    promo = 'RS-store-promo',
+}
+
+export const enum ButtonsType {
+    grid = 'grid',
+    list = 'list',
 }

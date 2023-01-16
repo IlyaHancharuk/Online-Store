@@ -1,13 +1,15 @@
 import Component from '../../templates/component';
-import { IData, localStorageData, ProductInfoForMainPage } from '../../types';
+import { IData, ProductInfoForMainPage } from '../../types';
 import data from '../../data/data';
-import { ProductProperty, SortBy, SortOptions, SortOrder } from '../../constants';
-import MainPage from '../../../pages/main';
+import { ProductProperty } from '../../constants';
 import cartInfo from '../cartInfo';
 import CartPage from '../../../pages/cart';
+import { checkInLocalStorage } from '../helpers';
+import SortBar from '../sortbar';
 
 class Products extends Component {
     private cartInfo: cartInfo;
+    private sortBar: SortBar;
 
     static ProductDatailsData = {
         category: ProductProperty.category,
@@ -21,10 +23,11 @@ class Products extends Component {
     constructor(tagName: string, className: string) {
         super(tagName, className);
         this.cartInfo = new cartInfo(1, 1);
+        this.sortBar = new SortBar();
     }
 
     private createHTML(data: IData[]) {
-        const sortHTML = this.createSortHTML();
+        const sortHTML = this.sortBar.createHTML();
         data.sort((a, b) => a.id - b.id);
         const productsHTML = this.createProductsHTML(data);
 
@@ -32,71 +35,6 @@ class Products extends Component {
             this.container.innerHTML = '';
             this.container.appendChild(sortHTML);
             this.container.append(productsHTML);
-        }
-    }
-
-    private createSortHTML() {
-        const fragment = document.createDocumentFragment();
-        const productsSortTemp: HTMLTemplateElement | null = document.querySelector('#productsSortTemp');
-
-        if (productsSortTemp) {
-            const productClone: HTMLElement = <HTMLElement>productsSortTemp.content.cloneNode(true);
-            if (productClone) {
-                const sortBar = productClone.querySelector<HTMLElement>('.sort-bar');
-                const stat = productClone.querySelector<HTMLElement>('.stat');
-                const searchBar = productClone.querySelector<HTMLElement>('.search-bar');
-                const viewMode = productClone.querySelector<HTMLElement>('.view-mode');
-
-                if (sortBar && stat && searchBar && viewMode) {
-                    this.addSortOptions(sortBar);
-                    stat.innerText = `Found: ${data.length}`;
-
-                    const searchInput = document.createElement('input');
-                    searchInput.type = 'text';
-                    searchInput.placeholder = 'Search product';
-                    searchInput.addEventListener('keyup', () => {
-                        MainPage.productsFilteringUsingSearch(data);
-                    });
-                    searchBar.append(searchInput);
-
-                    const gridModeBtn = document.createElement('div');
-                    const listModeBtn = document.createElement('div');
-
-                    gridModeBtn.className = 'grid-mode-btn active-mode';
-                    for (let i = 0; i < 16; i += 1) {
-                        const point = document.createElement('div');
-                        point.innerText = '.';
-                        gridModeBtn.append(point);
-                    }
-                    gridModeBtn.onclick = () => {
-                        if (document.querySelector('.products__items')?.classList.contains('list-mode')) {
-                            document.querySelector('.products__items')?.classList.remove('list-mode');
-                            gridModeBtn.classList.add('active-mode');
-                            listModeBtn.classList.remove('active-mode');
-                        }
-                    };
-
-                    listModeBtn.className = 'list-mode-btn';
-                    for (let i = 0; i < 4; i += 1) {
-                        const point = document.createElement('div');
-                        point.innerText = '.';
-                        listModeBtn.append(point);
-                    }
-                    listModeBtn.onclick = () => {
-                        if (!document.querySelector('.products__items')?.classList.contains('list-mode')) {
-                            document.querySelector('.products__items')?.classList.add('list-mode');
-                            listModeBtn.classList.add('active-mode');
-                            gridModeBtn.classList.remove('active-mode');
-                        }
-                    };
-
-                    viewMode.append(gridModeBtn);
-                    viewMode.append(listModeBtn);
-
-                    fragment.append(productClone);
-                }
-            }
-            return fragment;
         }
     }
 
@@ -136,16 +74,11 @@ class Products extends Component {
                         this.addInfo(item, itemInfo);
 
                         const itemId = item.id.toString();
-
-                        if (this.checkInLocalStorage(itemId)) {
-                            dropButton.innerText = 'Drop from cart';
-                        } else {
-                            dropButton.innerText = 'Add to cart';
-                        }
+                        dropButton.innerText = checkInLocalStorage(itemId) ? 'Drop from cart' : 'Add to cart';
 
                         dropButton.addEventListener('click', () => {
-                            if (this.checkInLocalStorage(itemId)) {
-                                while (this.checkInLocalStorage(itemId)) {
+                            if (checkInLocalStorage(itemId)) {
+                                while (checkInLocalStorage(itemId)) {
                                     this.cartInfo.reduceItemAmount(itemId);
                                 }
                                 dropButton.innerText = 'Add to cart';
@@ -156,9 +89,7 @@ class Products extends Component {
 
                             const sum = CartPage.getTotalSum();
                             const total = document.querySelector<HTMLElement>('.header__total');
-                            if (total) {
-                                total.innerText = `Cart total: €${sum}`;
-                            }
+                            if (total) total.innerText = `Cart total: €${sum}`;
 
                             const totalAmount = document.querySelector<HTMLElement>('.header__total-amount');
                             if (totalAmount) totalAmount.textContent = `${CartPage.refreshCartIcontotal()}`;
@@ -194,55 +125,6 @@ class Products extends Component {
             infoItem.append(text);
 
             parentElem.append(infoItem);
-        }
-    }
-
-    private addSortOptions(container: HTMLElement) {
-        const select = document.createElement('select');
-        select.options[0] = new Option('Sort options:', 'sort-title');
-        select.options[0].disabled = true;
-        select.options[0].selected = true;
-        select.options[1] = new Option('Default', SortOptions.default);
-        select.options[2] = new Option('Sort by price ASC', SortOptions.priceASC);
-        select.options[3] = new Option('Sort by price DESC', SortOptions.priceDESC);
-        select.options[4] = new Option('Sort by rating ASC', SortOptions.ratingASC);
-        select.options[5] = new Option('Sort by rating DESC', SortOptions.ratingDESC);
-
-        select.onchange = () => {
-            switch (select.value) {
-                case SortOptions.default:
-                    MainPage.productsSorting(SortBy.id);
-                    break;
-                case SortOptions.priceASC:
-                    MainPage.productsSorting(SortBy.price, SortOrder.ASC);
-                    break;
-                case SortOptions.priceDESC:
-                    MainPage.productsSorting(SortBy.price, SortOrder.DESC);
-                    break;
-                case SortOptions.ratingASC:
-                    MainPage.productsSorting(SortBy.rating, SortOrder.ASC);
-                    break;
-                case SortOptions.ratingDESC:
-                    MainPage.productsSorting(SortBy.rating, SortOrder.DESC);
-                    break;
-            }
-        };
-
-        container.append(select);
-    }
-
-    private checkInLocalStorage(id: string) {
-        let localData: localStorageData[] = [];
-
-        if (localStorage['RS-store-data']) {
-            localData = JSON.parse(localStorage['RS-store-data']);
-        }
-
-        const alreadyInLocalData: localStorageData = localData.filter((el) => el.id === id)[0];
-        if (alreadyInLocalData) {
-            return true;
-        } else {
-            return false;
         }
     }
 
