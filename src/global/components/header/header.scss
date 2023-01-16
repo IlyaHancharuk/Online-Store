@@ -1,0 +1,80 @@
+$cart: url("./assets/cart.svg");
+$main_logo: url("./assets/logo.svg");
+$mainPink: #ff9999;
+.header {
+  padding: 20px 0;
+  background-color: $mainPink;
+}
+.nav__body {
+  display: flex;
+  padding: 0px 30px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__online-store {
+  order: 0;
+  padding-left: 40px;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 38px;
+  color: rgb(255, 255, 255);
+  background-image: $main_logo;
+  background-repeat: no-repeat;
+  background-size: 38px;
+
+  &::after {
+    content: "";
+    display: block;
+    padding-top: 0;
+    width: 0%;
+    border-bottom: 3px solid #0096e6;
+    border-radius: 33px;
+    transition: width 0.4s ease-in-out;
+  }
+  &:hover:after {
+    width: 100%;
+  }
+}
+
+.product-details {
+  position: absolute;
+  top: 80px;
+  right: 40px;
+}
+
+.header__cart {
+  position: relative;
+  order: 2;
+  background: $cart no-repeat center;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  transition: all 0.3s ease 0s;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 0px 21px 0px rgb(255, 240, 227);
+  }
+}
+
+.header__total {
+  order: 1;
+  background-color: #ffcc33;
+}
+
+.header__total-amount {
+  position: absolute;
+  display: inline-block;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  padding: 0px 5px;
+  color: black;
+  background-color: #ffbd39;
+  vertical-align: middle;
+  font-size: 1.1rem;
+  text-align: center;
+  border-radius: 50%;
+  box-shadow: 0px 0px 14px 2px rgb(255 240 227);
+  top: -4px;
+  right: -5px;
+}

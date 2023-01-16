@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Store</title>
+</head>
+
+<body>
+
+  <template id="footer">
+    <footer class="footer">
+      <div class="footer__body">
+        <div class="footer__rs">
+          <a href="https://rs.school/js/" target="_blank" class="footer__rs_git-image footer-image"></a>
+        </div>
+
+        <div class="footer__year">2022</div>
+
+        <div class="footer__authors">
+          <div class="footer__ilua">
+            <div class="footer__ilua_git-image footer-image"></div>
+            <a href="https://github.com/IlyaHancharuk" target="_blank"
+              class="footer__ilua_anchor footer-anchor">IlyaHancharuk</a>
+          </div>
+
+          <div class="footer__lights0n">
+            <div class="footer__lights0n_git-image footer-image"></div>
+            <a href="https://github.com/Lights0n" target="_blank"
+              class="footer__lights0n_anchor footer-anchor">Lights0n</a>
+          </div>
+        </div>
+
+      </div>
+    </footer>
+  </template>
+
+  <template id="cartBodyTemplate">
+    <li class="cart__product-item">
+      <div></div>
+      <p class="item__number"></p>
+      <p class="item__photo-outer">
+        <img class="item__photo-inner" src="">
+      </p>
+      <div class="item__inner-body">
+        <div class="item__title"></div>
+        <div class="item__descr"></div>
+        <div class="item__rating"></div>
+        <div class="item__discount"></div>
+      </div>
+      <div class="item__amount-body">
+        <p class="item__price"></p>
+        <input class="item__amount-minus" type="button" value="-">
+        <input class="item__current-amount" type="number" value="1">
+        <input class="item__amount-plus" type="button" value="+">
+        <p class="item__in-stock"></p>
+      </div>
+    </li>
+  </template>
+
+  <template id="cartSummaryTemplate">
+    <section class="cart__total">
+      <h2 class="cart__total-head">Summary</h2>
+      <p class="cart__products-amount">Products: %N%</p>
+      <div class="cart__total-sum">Total %N%</div>
+      <div class="cart__total-discount-sum hidden"></div>
+      <form class="cart__promo-form">
+        <input type="search" class="cart__promo-field" placeholder="I GOT PROMO CODE!">
+        <input type="submit" value="Add code" class="cart__promo-submit">
+      </form>
+      <ul class="cart__promo-list">
+        <p class="cart__promo-legend">Activated promocodes:</p>
+        <li class="cart__promo-code"></li>
+      </ul>
+      <p class="cart__promo-hint">Try"RS2022" or"Hello Kovale.V!"</p>
+      <button type="button" class="cart__checkout">Proceed to checkout</button>
+    </section>
+  </template>
+
+  <template id="cartPopup">
+    <section class="cart-pup__outer closed">
+      <div class="cart-pup__body">
+        <div class="cart-pup__redirect hidden">your order accepted succesfully. you will redirect on the start page in 3
+          seconds</div>
+        <span class="cart-pup__closeBTN">X</span>
+        <h2 class="cart-pup__title">Personal details</h2>
+
+        <form class="cart-pup__form">
+          <input type="text" class="cart-pup__f-name" placeholder="First and Last name" minlength="7"
+            pattern="[a-z|A-Z]{3,}\s[a-z|A-Z]{3,}" value="www www" title="It should contain First and Last name
+            each of 3+ letter length" required>
+
+          <input type="text" class="cart-pup__country" value="www www" placeholder="Cointy/Region" required>
+          <input type="text" class="cart-pup__address" placeholder="Full address" pattern="\w{5,}\s\w{5,}\s\w{5,}"
+            value="wwwww wwwww wwwww" required>
+          <input type="tel" class="cart-pup__phone-num" placeholder="Mobile phone" value="+1234567980"
+            pattern="^\+[0-9]{9,}$" minlength="10" title="Format: '+' *at least 9 digits*" required>
+          <input type="email" class="cart-pup__email" placeholder="Email" minlength="4" value="ss@mail.ru" required>
+
+          <label for="add-inf" class="cart-pup__add-inf-lab">Additional information</label>
+          <textarea name="add-inf" class="input-text" id="add-inf" placeholder="Notes about your order etc." rows="2"
+            cols="25"></textarea>
+
+          <div class="card__body">
+            <h3 class="card__title">Card information</h3>
+            <div class="card__number-outer">
+              <div class="card__logo"></div>
+              <input type="text" class="card__number" placeholder="xxxx xxxx xxxx xxxx" value="4444444444444444"
+                maxlength="16" pattern="[0-9]{16}" required>
+            </div>
+            <div class="card__bottom"> <input type="text" class="card__data" value="11/11" placeholder="Expiration date"
+                pattern="[0-9]{2}/[0-9]{2}" required>
+              <input class="card__cvv" placeholder="CVV" pattern="[0-9]{3}" required>
+            </div>
+
+          </div>
+
+          <button class="cart-pup__button">Confirm</button>
+        </form>
+
+      </div>
+    </section>
+  </template>
+
+  <template id="productsItemTemp">
+    <div class="products__item">
+      <div class="item__text">
+        <h3 class="item__title"></h3>
+        <div class="item__info"></div>
+      </div>
+      <div class="item__buttons">
+        <div class="drop-button button"></div>
+        <div class="details-button button"></div>
+      </div>
+    </div>
+  </template>
+
+  <template id="productsSortTemp">
+    <div class="products__sort">
+      <div class="sort-bar"></div>
+      <div class="stat"></div>
+      <div class="search-bar"></div>
+      <div class="view-mode"></div>
+    </div>
+  </template>
+
+  <template id="productDetailsTemp">
+    <div class="product">
+      <div class="product__title">
+        <h1></h1>
+      </div>
+      <div class="product__data">
+        <div class="product__photos">
+          <div class="slides"></div>
+          <div class="grand-photo">
+            <img alt="grand-photo">
+          </div>
+        </div>
+        <div class="product__info info"></div>
+        <div class="add-to-cart">
+          <div class="price"></div>
+          <div class="cart-buttons">
+            <div class="drop-button button"></div>
+            <div class="buy-button button"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="productFiltersTemp">
+    <div class="filters">
+      <div class="filters__buttons">
+        <button class="reset-button button">Reset Filters</button>
+      </div>
+      <div class="filter__container filter-by-category">
+        <h3>Category</h3>
+        <div class="filter-list"></div>
+      </div>
+      <div class="filter__container filter-by-brand">
+        <h3>Brand</h3>
+        <div class="filter-list"></div>
+      </div>
+      <div class="slider__container filter-by-price"></div>
+      <div class="slider__container filter-by-stock"></div>
+    </div>
+  </template>
+
+</body>
+
+</html>
