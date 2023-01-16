@@ -1,8 +1,9 @@
 import Page from '../../global/templates/page';
-import { IData, localStorageData, ProductInfoForProductPage } from '../../global/types';
+import { IData, ProductInfoForProductPage } from '../../global/types';
 import data from '../../global/data/data';
 import cartInfo from '../../global/components/cartInfo';
 import CartPage from '../cart';
+import { checkInLocalStorage } from '../../global/components/helpers';
 
 class ProductDetailsPage extends Page {
     private productId: number | undefined;
@@ -51,15 +52,15 @@ class ProductDetailsPage extends Page {
 
                         const itemId = product.id.toString();
 
-                        if (this.checkInLocalStorage(itemId)) {
+                        if (checkInLocalStorage(itemId)) {
                             dropButton.innerText = 'DROP FROM CART';
                         } else {
                             dropButton.innerText = 'ADD TO CART';
                         }
 
                         dropButton.addEventListener('click', () => {
-                            if (this.checkInLocalStorage(itemId)) {
-                                while (this.checkInLocalStorage(itemId)) {
+                            if (checkInLocalStorage(itemId)) {
+                                while (checkInLocalStorage(itemId)) {
                                     this.cartInfo.reduceItemAmount(itemId);
                                 }
                                 dropButton.innerText = 'ADD TO CART';
@@ -80,7 +81,7 @@ class ProductDetailsPage extends Page {
 
                         buyButton.innerText = 'BUY NOW';
                         buyButton.addEventListener('click', () => {
-                            if (!this.checkInLocalStorage(itemId)) {
+                            if (!checkInLocalStorage(itemId)) {
                                 this.cartInfo.addToCart(itemId, '1');
                             }
                             CartPage.openPopup();
@@ -165,21 +166,6 @@ class ProductDetailsPage extends Page {
         breadcrumb.append(spanTitle);
 
         this.container.append(breadcrumb);
-    }
-
-    private checkInLocalStorage(id: string) {
-        let localData: localStorageData[] = [];
-
-        if (localStorage['RS-store-data']) {
-            localData = JSON.parse(localStorage['RS-store-data']);
-        }
-
-        const alreadyInLocalData: localStorageData = localData.filter((el) => el.id === id)[0];
-        if (alreadyInLocalData) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     render() {
