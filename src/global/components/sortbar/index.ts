@@ -1,4 +1,3 @@
-import MainPage from '../../../pages/main';
 import {
     ButtonsType,
     POINTS_COUNT_FOR_GRID_MODE,
@@ -9,6 +8,7 @@ import {
 } from '../../constants';
 import data from '../../data/data';
 import { modeButtonType } from '../../types';
+import { productsFilteringUsingSearch, productsSorting } from '../helpers';
 
 class SortBar {
     public createHTML() {
@@ -31,7 +31,7 @@ class SortBar {
                     searchInput.type = 'text';
                     searchInput.placeholder = 'Search product';
                     searchInput.addEventListener('keyup', () => {
-                        MainPage.productsFilteringUsingSearch(data);
+                        productsFilteringUsingSearch();
                     });
                     searchBar.append(searchInput);
 
@@ -90,19 +90,19 @@ class SortBar {
         select.onchange = () => {
             switch (select.value) {
                 case SortOptions.default:
-                    MainPage.productsSorting(SortBy.id);
+                    productsSorting(SortBy.id);
                     break;
                 case SortOptions.priceASC:
-                    MainPage.productsSorting(SortBy.price, SortOrder.ASC);
+                    productsSorting(SortBy.price, SortOrder.ASC);
                     break;
                 case SortOptions.priceDESC:
-                    MainPage.productsSorting(SortBy.price, SortOrder.DESC);
+                    productsSorting(SortBy.price, SortOrder.DESC);
                     break;
                 case SortOptions.ratingASC:
-                    MainPage.productsSorting(SortBy.rating, SortOrder.ASC);
+                    productsSorting(SortBy.rating, SortOrder.ASC);
                     break;
                 case SortOptions.ratingDESC:
-                    MainPage.productsSorting(SortBy.rating, SortOrder.DESC);
+                    productsSorting(SortBy.rating, SortOrder.DESC);
                     break;
             }
         };
