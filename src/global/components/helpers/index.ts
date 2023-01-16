@@ -1,4 +1,5 @@
 import MainPage from '../../../pages/main';
+import { LocalStorageKey } from '../../constants';
 import data from '../../data/data';
 import { localStorageData, localStorageKey } from '../../types';
 
@@ -11,8 +12,8 @@ export const cleanLocalStorage = (key: localStorageKey) => {
 export const checkInLocalStorage = (id: string) => {
     let localData: localStorageData[] = [];
 
-    if (localStorage['RS-store-data']) {
-        localData = JSON.parse(localStorage['RS-store-data']);
+    if (localStorage[LocalStorageKey.data]) {
+        localData = JSON.parse(localStorage[LocalStorageKey.data]);
     }
 
     const alreadyInLocalData: localStorageData = localData.filter((el) => el.id === id)[0];

@@ -1,3 +1,4 @@
+import { LocalStorageKey } from '../../constants';
 import { localStorageData } from '../../types';
 class cartInfo {
     localCartList: localStorageData[];
@@ -11,11 +12,11 @@ class cartInfo {
     }
 
     private getLocalData() {
-        const localData: localStorageData[] = localStorage['RS-store-data']
-            ? JSON.parse(localStorage['RS-store-data'])
+        const localData: localStorageData[] = localStorage[LocalStorageKey.data]
+            ? JSON.parse(localStorage[LocalStorageKey.data])
             : [];
 
-        localStorage.removeItem('RS-store-data');
+        localStorage.removeItem(LocalStorageKey.data);
         return localData;
     }
 
@@ -31,14 +32,14 @@ class cartInfo {
         if (alreadyInLocalData) {
             localData[localData.indexOf(alreadyInLocalData)].amount =
                 +localData[localData.indexOf(alreadyInLocalData)].amount + +newItemAmount;
-            localStorage['RS-store-data'] = JSON.stringify(localData);
+            localStorage[LocalStorageKey.data] = JSON.stringify(localData);
             return;
         }
 
         newCartItem.id = newItemId;
         newCartItem.amount = newItemAmount;
         localData.push(newCartItem);
-        localStorage['RS-store-data'] = JSON.stringify(localData);
+        localStorage[LocalStorageKey.data] = JSON.stringify(localData);
         return;
     }
     reduceItemAmount(itemId: string, howMuchToReduce = '1'): void {
@@ -53,10 +54,10 @@ class cartInfo {
         if (alreadyInLocalData.amount <= 0) {
             localData.splice(localData.indexOf(alreadyInLocalData), 1);
         }
-        localStorage['RS-store-data'] = JSON.stringify(localData);
+        localStorage[LocalStorageKey.data] = JSON.stringify(localData);
 
-        if (localStorage['RS-store-data'] === '[]') {
-            localStorage.removeItem('RS-store-data');
+        if (localStorage[LocalStorageKey.data] === '[]') {
+            localStorage.removeItem(LocalStorageKey.data);
         }
         return;
     }

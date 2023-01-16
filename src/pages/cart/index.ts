@@ -19,8 +19,8 @@ class CartPage extends Page {
     }
 
     static getTotalSum(): number {
-        if (!localStorage['RS-store-data']) return 0;
-        const localData: localStorageData[] = JSON.parse(localStorage['RS-store-data']);
+        if (!localStorage[LocalStorageKey.data]) return 0;
+        const localData: localStorageData[] = JSON.parse(localStorage[LocalStorageKey.data]);
         return localData.reduce((acc, el) => {
             return acc + +CartPage.findViaId(+el.id).price * +el.amount;
         }, 0);
@@ -33,7 +33,7 @@ class CartPage extends Page {
         }
     }
     private cleanCart(): void {
-        const localData: localStorageData[] = JSON.parse(localStorage['RS-store-data']);
+        const localData: localStorageData[] = JSON.parse(localStorage[LocalStorageKey.data]);
         localData.map((el) => {
             if (el.id) {
                 this.decreaseFromCart(`${el.id}`, `${el.amount}`);
@@ -218,8 +218,8 @@ class CartPage extends Page {
         popupBody?.classList.remove('closed');
     }
     static getTotalItems(): string {
-        if (!localStorage['RS-store-data']) return '';
-        const localData: localStorageData[] = JSON.parse(localStorage['RS-store-data']);
+        if (!localStorage[LocalStorageKey.data]) return '';
+        const localData: localStorageData[] = JSON.parse(localStorage[LocalStorageKey.data]);
         const totalProductsAmount = localData.reduce((acc, el) => {
             return acc + +el.amount;
         }, 0);
@@ -458,8 +458,8 @@ class CartPage extends Page {
             itemPlus
         ) {
             itemNum.textContent = `1`;
-            if (localStorage['RS-store-data']) {
-                const LStrg = JSON.parse(localStorage['RS-store-data']);
+            if (localStorage[LocalStorageKey.data]) {
+                const LStrg = JSON.parse(localStorage[LocalStorageKey.data]);
                 const blabla = LStrg.filter((el: localStorageData) => +el.id === itemId)[0];
                 const itemListIndex = LStrg.indexOf(blabla);
                 itemNum.textContent = `${itemListIndex + 1}`;
@@ -522,7 +522,7 @@ class CartPage extends Page {
     }
 
     private sayCartIsEmpty(): void {
-        if (!localStorage['RS-store-data']) {
+        if (!localStorage[LocalStorageKey.data]) {
             const alredyHaveMessage: HTMLElement | null = this.container.querySelector('.cart__empty-text');
             const emptyCartPageText = this.createElement('p', 'cart__empty-text');
             emptyCartPageText.innerText = 'The cart is empty yet ¯\\_( ◡ ₒ ◡ )_/¯';
@@ -574,11 +574,11 @@ class CartPage extends Page {
             cartList.innerHTML = '';
         }
 
-        if (!localStorage['RS-store-data']) {
+        if (!localStorage[LocalStorageKey.data]) {
             this.sayCartIsEmpty();
             return;
         } else {
-            const localData = JSON.parse(localStorage['RS-store-data']);
+            const localData = JSON.parse(localStorage[LocalStorageKey.data]);
             localData.forEach((el: localStorageData) => {
                 this.addItemViaTemplate(+el.id, +el.amount);
             });
